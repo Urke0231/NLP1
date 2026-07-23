@@ -1,0 +1,12 @@
+
+### Klasa: negative
+ZA:     rec__pad, rec__zbog, char__ pa, rec__cen, rec__pao, rec__poskup, rec__man, rec__jesam iznos, rec__negativ, char__skup, rec__pal jesam, char__ ne, rec__nij, rec__defic, rec__pal, char__osk, char__gub, rec__smanj, rec__oslab, char__ otp
+PROTIV: rec__rast od, rec__jesam da, rec__srbi, rec__odst i, rec__o, rec__visx neg, rec__dob, rec__don, rec__saopsxt jesam, rec__iznos jesam, rec__vred, rec__bit man, char__,4 , rec__ban, rec__kup, rec__proizvod, rec__danas, rec__odst visx, rec__u 2022, rec__pov jesam
+
+### Klasa: neutral
+ZA:     rec__jesam da, rec__iznos jesam, rec__o, rec__direktor, rec__u vrednos, rec__od 2,8, char__men, rec__vred, rec__24, rec__porez, rec__jesam stabil, char__uni, rec__razlicx, rec__odst i, rec__jav, rec__ali, rec__uni, char__ bo, rec__sajt, rec__0,1 odst
+PROTIV: rec__rast, rec__pov, rec__od, rec__sxt jesam, rec__pad, rec__radn mest, rec__sxt, char__ pa, rec__cen, rec__god, rec__na, rec__dostig, char__god, rec__defic, rec__poras jesam, char__st , char__ otp, rec__pal, rec__vecy, rec__milijard evr
+
+### Klasa: positive
+ZA:     rec__rast, rec__por, rec__rast od, rec__rekord, char__,4 , rec__visx neg, char__ast, rec__zahvalj, rec__pov, rec__pad cen, rec__pov jesam, char__rast , char__por , char__ast , rec__inflaci smanj, rec__nov radn, char__ por , rec__let, char__rast, rec__skok
+PROTIV: rec__ali, rec__nij, char__ ne, rec__pao, rec__zbog, rec__ost, rec__man, char__ gu, rec__pad, rec__zva, char__gub, char__ al, rec__dug, rec__apr, char__skup, rec__odst man, rec__stop inflaci, char__ man, rec__najv u, rec__5,1
