@@ -226,14 +226,119 @@ def stem_batch(texts: List[str]) -> List[str]:
 
 
 # ---------------------------------------------------------------------------
+# 4b. Uklanjanje geografskih/politickih imena
+# ---------------------------------------------------------------------------
+# Imena drzava/gradova mogu slucajno korelisati sa sentimentom u skupu
+# podataka (npr. vesti o domacoj vs. stranoj ekonomiji), a da sama rec nema
+# nikakav sentiment - model bi ih onda naucio kao laznu odliku. Dve opcije:
+#   "stopwords" - rucna lista korena (brzo, bez zavisnosti)
+#   "ner"       - automatska NER detekcija (CLASSLA), sporije, ali ne trazi
+#                 rucno odrzavanje liste. Radi na tekstu SA velikim slovima
+#                 (pre lowercasing-a), jer se NER model na to oslanja.
+
+GEO_STOPWORD_ROOTS = [
+    "srbij", "beograd", "novi sad", "nis", "kragujev",
+    "nemack", "berlin", "keln", "sxtutgart", "stutgart", "minhen",
+    "frankfurt", "hamburg",
+    "hrvat", "zagreb", "crn gor", "crnogor", "podgoric",
+    "bosn", "sarajev", "makedonij", "skoplj", "slovenij", "ljubljan",
+    "madxarsk", "budimpesxt", "budimpest", "rumunij", "bukuresxt",
+    "bugarsk", "sofij", "grck", "atin", "albanij", "tiran",
+    "evrop", "amerik", "kin", "rusij", "moskv",
+    "francusk", "pariz", "italij", "rim", "spanij", "madrid",
+    "britanij", "london", "svajcarsk", "cirih", "austrij", "becx",
+]
+
+
+def strip_geo_stopwords(text: str) -> str:
+    """Uklanja tokene koji pocinju korenom geografskog/politickog imena."""
+    kept = [t for t in tokenize(text)
+            if not any(t.lower().startswith(r) for r in GEO_STOPWORD_ROOTS)]
+    return " ".join(kept)
+
+
+def strip_geo_stopwords_batch(texts: List[str]) -> List[str]:
+    return [strip_geo_stopwords(t) for t in texts]
+
+
+_NER_PIPELINE = None
+
+
+def _get_classla_ner(use_gpu: bool = False):
+    global _NER_PIPELINE
+    if _NER_PIPELINE is None:
+        import classla  # lokalni import, da modul radi i bez classla
+
+        try:
+            _NER_PIPELINE = classla.Pipeline(
+                "sr", processors="tokenize,ner", use_gpu=use_gpu
+            )
+        except Exception:
+            classla.download("sr")
+            _NER_PIPELINE = classla.Pipeline(
+                "sr", processors="tokenize,ner", use_gpu=use_gpu
+            )
+    return _NER_PIPELINE
+
+
+def strip_named_entities_batch(texts: List[str], use_gpu: bool = False,
+                               entity_types=("LOC", "ORG")) -> List[str]:
+    """Uklanja tokene prepoznate kao imenovani entiteti (drzave, gradovi,
+    organizacije...) pomocu CLASSLA NER-a. Rezultat se kesira na disku, kao
+    stemovanje i lematizacija.
+    """
+    key = hashlib.md5(
+        (json.dumps(texts, ensure_ascii=False) + f"|ner={entity_types}")
+        .encode("utf-8")
+    ).hexdigest()
+    cache_file = CACHE_DIR / f"ner_{key}.json"
+    if cache_file.exists():
+        return json.loads(cache_file.read_text(encoding="utf-8"))
+
+    nlp = _get_classla_ner(use_gpu=use_gpu)
+    out: List[str] = []
+    for i, t in enumerate(texts):
+        doc = nlp(t if t.strip() else "prazno")
+        kept = []
+        for sent in doc.sentences:
+            for token in sent.tokens:
+                tag = token.ner or "O"
+                if not any(tag.endswith(f"-{et}") for et in entity_types):
+                    kept.append(token.text)
+        out.append(" ".join(kept))
+        if (i + 1) % 100 == 0:
+            print(f"  NER obrada {i + 1}/{len(texts)}", flush=True)
+
+    cache_file.write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
+    return out
+
+
+# ---------------------------------------------------------------------------
 # 5. Varijante pretprocesiranja koje se porede u eksperimentu
 # ---------------------------------------------------------------------------
 
 def build_variants(raw_texts: List[str],
                    include_lemma: bool = True,
-                   lemma_use_gpu: bool = False) -> Dict[str, List[str]]:
-    """Vraca recnik: naziv varijante -> lista pretprocesiranih tekstova."""
+                   lemma_use_gpu: bool = False,
+                   geo_filter: Optional[str] = None) -> Dict[str, List[str]]:
+    """Vraca recnik: naziv varijante -> lista pretprocesiranih tekstova.
+
+    geo_filter: None (nista), "stopwords" (rucna lista korena) ili "ner"
+    (automatska CLASSLA NER detekcija). Uklanja geografska/politicka imena
+    PRE lowercasing-a/stemovanja/lematizacije, da ne bi lazno uticala na
+    ocenu sentimenta.
+    """
     cleaned = [basic_clean(t) for t in raw_texts]
+
+    if geo_filter == "stopwords":
+        cleaned = strip_geo_stopwords_batch(cleaned)
+    elif geo_filter == "ner":
+        print("NER detekcija geografskih/politickih imena u toku "
+             "(CLASSLA, koristi se kes)...")
+        cleaned = strip_named_entities_batch(cleaned, use_gpu=lemma_use_gpu)
+    elif geo_filter is not None:
+        raise ValueError(f"Nepoznat geo_filter: {geo_filter!r}")
+
     lowered = [t.lower() for t in cleaned]
 
     variants: Dict[str, List[str]] = {

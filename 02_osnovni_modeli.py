@@ -53,7 +53,7 @@ warnings.filterwarnings("ignore")
 PUTANJA_PODACI = "./stemovani_podaci2.json"
 
 # Direktorijum za tabele i grafikone. Kreira se automatski.
-IZLAZNI_DIREKTORIJUM = "rezultati2"
+IZLAZNI_DIREKTORIJUM = "rezultati3"
 
 # --- STA SE POREDI ------------------------------------------------------------
 
@@ -113,7 +113,7 @@ MIN_DF_KARAKTER = 3
 # Broj tredova za paralelizaciju spoljasnje petlje po konfiguracijama
 # (pretprocesiranje x odlike x model). Svaka konfiguracija se trenira i
 # validira nezavisno, pa se dobro paralelizuje.
-BROJ_NITI = 10
+BROJ_NITI = 6
 
 # Broj procesorskih jezgara za pretragu hiperparametara UNUTAR jedne
 # konfiguracije (GridSearchCV). -1 = sva. Kada je BROJ_NITI > 1, ovo se
@@ -130,7 +130,7 @@ BRZI_TEST = False
 
 TOK = r"(?u)\S+"  # tekstovi su vec tokenizovani i razdvojeni razmakom
 
-
+1
 def _feature_defs() -> Dict[str, callable]:
     return {
         "TF": lambda: CountVectorizer(token_pattern=TOK, min_df=MIN_DF_REC),
@@ -231,6 +231,23 @@ def evaluate_config(pname: str, texts: List[str], fname: str, vec_factory,
     return row, pred_test.astype(str)
 
 
+def _pitaj_geo_filter() -> str | None:
+    """Pita korisnika na pocetku pokretanja da li da se uklone geografska/
+    politicka imena (npr. drzave, gradovi) pre vektorizacije, da ne bi lazno
+    uticala na ocenu sentimenta (npr. "Srbija" korelira sa sentimentom samo
+    zato sto se cesce pojavljuje u domacim vestima, ne zato sto nosi sentiment).
+    """
+    print("\nUkloniti geografska/politicka imena iz teksta pre vektorizacije?")
+    print("  1 = rucna lista korena (brzo)")
+    print("  2 = automatska NER detekcija (CLASSLA, sporije)")
+    print("  Enter = ne uklanjaj nista")
+    izbor = input("Izbor [1/2/Enter]: ").strip()
+    mapa = {"1": "stopwords", "2": "ner"}
+    if izbor and izbor not in mapa:
+        print(f"Nepoznat unos '{izbor}' - nastavljam bez uklanjanja imena.")
+    return mapa.get(izbor)
+
+
 def main():
     put = Path(PUTANJA_PODACI)
     if not put.exists():
@@ -248,11 +265,14 @@ def main():
         print("UPOZORENJE: SerbianStemmer.py nije pronadjen - koristi se "
               "ugradjeni rezervni stemer. Vidi README.")
 
+    geo_filter = _pitaj_geo_filter()
+
     # Svaka varijanta pretprocesiranja (lower, lower+stem, lower+lema) se
     # racuna TACNO JEDNOM ovde - stem/lema su i kesirani na disku
     # (preprocessing.py) - i deli se izmedju svih niti i konfiguracija ispod.
     trazi_lemu = "lower+lema" in VARIJANTE_PRETPROCESIRANJA
-    variants = build_variants(df["tekst"].tolist(), include_lemma=trazi_lemu)
+    variants = build_variants(df["tekst"].tolist(), include_lemma=trazi_lemu, lemma_use_gpu=True,
+                              geo_filter=geo_filter)
     variants = {k: v for k, v in variants.items()
                 if k in VARIJANTE_PRETPROCESIRANJA}
     features = {k: v for k, v in _feature_defs().items()
