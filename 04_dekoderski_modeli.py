@@ -17,6 +17,7 @@ import os
 import re
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List
 
@@ -43,27 +44,25 @@ IZLAZNI_DIREKTORIJUM = "rezultati"
 # --- IZBOR MODELA ------------------------------------------------------------
 
 # "openai" | "gemini" | "ollama" | "dummy"
-#   openai -> pip install openai
-#   gemini -> pip install google-genai
-#   ollama -> lokalni server na http://localhost:11434 (bez API kljuca)
-#   dummy  -> nasumicne oznake; sluzi da proverite da skripta radi bez trosenja
-#             kredita. Rezultati su besmisleni, ne stavljajte ih u izvestaj.
-BACKEND = "dummy"
+BACKEND = "ollama"
 
 # Naziv modela u okviru izabranog backend-a.
-#   openai: "gpt-4o-mini", "gpt-4o"
-#   gemini: "gemini-2.0-flash"
-#   ollama: "qwen2.5:7b-instruct", "llama3.1:8b"
-NAZIV_MODELA = "gpt-4o-mini"
+NAZIV_MODELA = "qwen2.5:1.5b-instruct"
 
-# API kljuc. Ostavite prazan string ako ga postavljate kroz promenljivu
-# okruzenja (OPENAI_API_KEY odnosno GOOGLE_API_KEY). Ne ostavljajte pravi
-# kljuc u fajlu koji predajete uz projekat.
+# API kljuc za eksterne servise.
 API_KLJUC = ""
+
+# --- PERFORMANSE I PARALELIZAM ----------------------------------------------
+
+# Sa RTX 4060 + 7900X3D, optimalno je 2-3 paralelna zahteva kako bi GPU
+# efikasno obradjivao vise sekvenci bez prevelikog overhead-a prebacivanja konteksta.
+BROJ_NITI = 3
+
+# Restrikcija broja CPU niti po Ollama procesu (kada delom radi na CPU)
+CPU_THREADS_PER_REQ = 4
 
 # --- STA SE EVALUIRA ---------------------------------------------------------
 
-# Koje varijante upita pustiti. Zakomentarisite red da izbacite varijantu.
 UPITI = [
     "sr_zero",   # srpski, bez primera i bez definicija
     "sr_def",    # srpski, sa definicijama oznaka
@@ -73,20 +72,13 @@ UPITI = [
     "en_few",    # engleski, sa primerima (few-shot)
 ]
 
-# Koliko primera po klasi ide u few-shot upit. Ti primeri se automatski
-# izbacuju iz evaluacionog skupa, da ne bi doslo do curenja podataka.
 BROJ_FEW_SHOT_PRIMERA = 3
 
-# Broj primera na kojima se evaluira. None = ceo skup (tako trazi postavka).
-# Stavite npr. 50 dok testirate, da ne biste potrosili kredite.
+# Broj primera na kojima se evaluira. None = ceo skup.
 VELICINA_UZORKA = None
 
-# Pauza izmedju poziva u sekundama. Povecajte ako dobijate rate-limit greske.
 PAUZA_IZMEDJU_POZIVA = 0.0
 
-# Odgovori se kesiraju u .cache/, pa ponovno pokretanje iste kombinacije
-# (model + upit + velicina skupa) ne trosi kredite. Postavite na True da se
-# kes zanemari i svi pozivi ponove.
 IGNORISI_KES = False
 
 # =============================================================================
@@ -111,7 +103,7 @@ PROMPTS: Dict[str, Dict[str, str]] = {
             "Odredi sentiment sledece recenice prema ovim definicijama:\n"
             "- pozitivan: recenica prenosi povoljan ishod, korist ili odobravanje\n"
             "- negativan: recenica prenosi nepovoljan ishod, stetu ili neodobravanje\n"
-            "- neutralan: recenica samo iznosi cinjenice, bez vrednosnog stava\n\n"
+            "- neutralan: recenica samo iznosi cinjenice, bez vrednosnogstava\n\n"
             "Vazno: ocenjuje se stav koji tekst prenosi, a ne tvoje misljenje o "
             "temi. Odgovori iskljucivo jednom recju.\n\n"
             "Recenica: {tekst}\n\nSentiment:"
@@ -185,7 +177,7 @@ def make_backend():
 
         def call(sys_msg, user_msg):
             r = client.chat.completions.create(
-                model=NAZIV_MODELA, temperature=0, max_tokens=10,
+                model=NAZIV_MODELA, temperature=0, max_tokens=5,
                 messages=[{"role": "system", "content": sys_msg},
                           {"role": "user", "content": user_msg}])
             return r.choices[0].message.content
@@ -206,20 +198,27 @@ def make_backend():
         return call
 
     if BACKEND == "ollama":
-        import urllib.request
+        import requests
+
+        session = requests.Session()
+        # Keep connection pool open for parallel threads
+        adapter = requests.adapters.HTTPAdapter(pool_connections=10, pool_maxsize=10)
+        session.mount("http://", adapter)
 
         def call(sys_msg, user_msg):
-            body = json.dumps({
-                "model": NAZIV_MODELA, "stream": False,
-                "options": {"temperature": 0, "num_predict": 10},
+            body = {
+                "model": NAZIV_MODELA,
+                "stream": False,
+                "options": {
+                    "temperature": 0,
+                    "num_predict": 15,
+                },
                 "messages": [{"role": "system", "content": sys_msg},
                              {"role": "user", "content": user_msg}],
-            }).encode()
-            req = urllib.request.Request(
-                "http://localhost:11434/api/chat", data=body,
-                headers={"Content-Type": "application/json"})
-            with urllib.request.urlopen(req, timeout=180) as resp:
-                return json.loads(resp.read())["message"]["content"]
+            }
+            resp = session.post("http://localhost:11434/api/chat", json=body, timeout=120)
+            return resp.json()["message"]["content"]
+
         return call
 
     if BACKEND == "dummy":
@@ -242,8 +241,24 @@ def few_shot_block(df, labels, lang: str, seed: int = 7):
     lines = []
     for _, r in ex.iterrows():
         lab = sr_map[r["sentiment"]] if lang == "sr" else r["sentiment"]
-        lines.append(f"{head}: {basic_clean(r['tekst'])}\nSentiment: {lab}\n")
+        lines.append(f"{head}: {r['tekst_clean']}\nSentiment: {lab}\n")
     return "\n".join(lines), set(ex.index)
+
+
+def _call_one(call, sys_msg, user_msg):
+    """Jedan poziv modelu sa retry logikom."""
+    for attempt in range(4):
+        try:
+            res = call(sys_msg, user_msg)
+            if PAUZA_IZMEDJU_POZIVA > 0:
+                time.sleep(PAUZA_IZMEDJU_POZIVA)
+            return res
+        except Exception as e:
+            if attempt == 3:
+                print(f"  greska: {e}")
+                return ""
+            time.sleep(2 ** attempt)
+    return ""
 
 
 def evaluate_prompt(call, pname, tmpl, df_eval):
@@ -253,24 +268,27 @@ def evaluate_prompt(call, pname, tmpl, df_eval):
         print("  (ucitano iz kesa)")
         return json.loads(cache_f.read_text(encoding="utf-8"))
 
-    raw_out = []
-    for i, t in enumerate(df_eval["tekst"]):
-        msg = tmpl["user"].format(tekst=basic_clean(t),
-                                  primeri=tmpl.get("_primeri", ""))
-        for attempt in range(4):
-            try:
-                raw_out.append(call(tmpl["sys"], msg))
-                break
-            except Exception as e:
-                if attempt == 3:
-                    print(f"  greska na primeru {i}: {e}")
-                    raw_out.append("")
-                else:
-                    time.sleep(2 ** attempt)
-        if PAUZA_IZMEDJU_POZIVA:
-            time.sleep(PAUZA_IZMEDJU_POZIVA)
-        if (i + 1) % 50 == 0:
-            print(f"    {i + 1}/{len(df_eval)}", flush=True)
+    # Koristimo unapred ociscen tekst za brzu pripremu poruka
+    texts = df_eval["tekst_clean"].tolist()
+    msgs = [
+        tmpl["user"].format(tekst=t, primeri=tmpl.get("_primeri", ""))
+        for t in texts
+    ]
+
+    raw_out = [None] * len(msgs)
+    done = 0
+
+    with ThreadPoolExecutor(max_workers=BROJ_NITI) as ex:
+        futures = {
+            ex.submit(_call_one, call, tmpl["sys"], msg): i
+            for i, msg in enumerate(msgs)
+        }
+        for fut in as_completed(futures):
+            i = futures[fut]
+            raw_out[i] = fut.result()
+            done += 1
+            if done % 50 == 0 or done == len(msgs):
+                print(f"    {done}/{len(msgs)}", flush=True)
 
     cache_f.write_text(json.dumps(raw_out, ensure_ascii=False), encoding="utf-8")
     return raw_out
@@ -286,6 +304,11 @@ def main():
     outdir.mkdir(parents=True, exist_ok=True)
 
     df = load_dataset(put)
+
+    # Optimizacija: ciscenje teksta se vrsi samo JEDNOM na celom skupu
+    print("Priprema podataka...")
+    df["tekst_clean"] = df["tekst"].apply(basic_clean)
+
     labels = present_labels(df)
     call = make_backend()
     if BACKEND == "dummy":
@@ -308,7 +331,10 @@ def main():
                                      random_state=1)
 
         print(f"\n=== UPIT: {pname} ({len(df_eval)} primera) ===")
+        start_time = time.time()
         raw = evaluate_prompt(call, pname, tmpl, df_eval)
+        elapsed = time.time() - start_time
+
         pred = [parse_label(r, labels) for r in raw]
         gold = df_eval["sentiment"].tolist()
 
@@ -327,8 +353,8 @@ def main():
             "neparsirano": neparsirano, "n": len(df_eval),
         })
         preds_store[pname] = (gold, pred)
-        print(f"macro-F1 = {f1:.4f} | tacnost = {acc:.4f} | "
-              f"neparsiranih odgovora: {neparsirano}")
+        print(f"Vreme: {elapsed:.2f}s | macro-F1 = {f1:.4f} | tacnost = {acc:.4f} | "
+              f"neparsiranih: {neparsirano}")
         print(classification_report(g2, p2, labels=labels, digits=3,
                                     zero_division=0))
 
