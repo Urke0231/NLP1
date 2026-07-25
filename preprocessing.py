@@ -248,7 +248,7 @@ def build_variants(raw_texts: List[str],
 
 
 if __name__ == "__main__":
-    PUTANJA_PODACI = "./anotacije-2026-07-23 (2).json"
+    PUTANJA_PODACI = "./anotacije-2026-07-25.json"
 
     put = Path(PUTANJA_PODACI)
     if put.exists():
@@ -282,7 +282,7 @@ if __name__ == "__main__":
             {"tekst": stem, "sentiment": sentiment, "duzina": duzina, "uneo": uneo_}
             for stem, sentiment, duzina, uneo_ in zip(stemmed_all, df["sentiment"], duzine, uneo)
         ]
-        out_path = Path("stemovani_podaci.json")
+        out_path = Path("stemovani_podaci2.json")
         out_path.write_text(
             json.dumps(out_records, ensure_ascii=False, indent=2), encoding="utf-8"
         )

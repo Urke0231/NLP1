@@ -39,8 +39,9 @@ projekat/
 | `VARIJANTE_PRETPROCESIRANJA` | `sirovo` / `lower` / `lower+stem` / `lower+lema` |
 | `VARIJANTE_ODLIKA` | `TF`, `IDF`, `TFIDF`, `TFIDF_1-2`, `TFIDF_1-3`, `CHAR_3-5`, `REC+CHAR` |
 | `MODELI` | `Vecinski`, `MultinomialNB`, `LogRegresija`, `LinearSVM` |
-| `BROJ_SPOLJASNJIH_FOLDOVA` | 10, kako traži postavka |
-| `BROJ_UNUTRASNJIH_FOLDOVA` | 5, za ugnežđenu optimizaciju hiperparametara |
+| `VELICINA_TEST` | 0.1 — 1/10 podataka se izdvaja kao test skup, ne koristi se za trening/podešavanje |
+| `BROJ_VALIDACIONIH_FOLDOVA` | 5 — preostalih 9/10 se deli na 4 trening / 1 validacija, rotira se (krosvalidacija) |
+| `BROJ_NITI` | broj tredova za paralelno računanje konfiguracija (pretprocesiranje × odlike × model) |
 | `MREZA_C`, `MREZA_ALPHA` | opsezi hiperparametara |
 | `MIN_DF_REC`, `MIN_DF_KARAKTER` | spustite na 1 ako imate < 500 primera |
 | `BROJ_JEZGARA` | `-1` = sva |
