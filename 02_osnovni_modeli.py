@@ -50,10 +50,10 @@ warnings.filterwarnings("ignore")
 # --- OBAVEZNO ----------------------------------------------------------------
 
 # Putanja do anotiranog skupa (JSON lista objekata ili JSONL).
-PUTANJA_PODACI = "./stemovani_podaci2.json"
+PUTANJA_PODACI = "./anotacije-2026-07-26.json"
 
 # Direktorijum za tabele i grafikone. Kreira se automatski.
-IZLAZNI_DIREKTORIJUM = "rezultati3"
+IZLAZNI_DIREKTORIJUM = "rezultati_jednostavni_konacni_CLASSLA_ner"
 
 # --- STA SE POREDI ------------------------------------------------------------
 

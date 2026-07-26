@@ -62,8 +62,8 @@ from preprocessing import basic_clean
 
 # --- OBAVEZNO ----------------------------------------------------------------
 
-PUTANJA_PODACI = "./anotacije-2026-07-25.json"
-IZLAZNI_DIREKTORIJUM = "rezultati_enkoder"
+PUTANJA_PODACI = "./anotacije-2026-07-26.json"
+IZLAZNI_DIREKTORIJUM = "rezultati_enkoder_konacno"
 
 # --- OLLAMA --------------------------------------------------------------
 
@@ -200,7 +200,7 @@ def _model_defs():
             {"clf__C": MREZA_C}, True),
         "LinearSVM": (
             LinearSVC(class_weight="balanced", random_state=SLUCAJNO_SEME,
-                      max_iter=5000),
+                      dual=False, max_iter=20000),
             {"clf__C": MREZA_C}, True),
         "RBF-SVM": (
             SVC(kernel="rbf", class_weight="balanced", random_state=SLUCAJNO_SEME),

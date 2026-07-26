@@ -38,8 +38,8 @@ from preprocessing import basic_clean
 
 # --- OBAVEZNO ----------------------------------------------------------------
 
-PUTANJA_PODACI = "podaci/anotirano.json"
-IZLAZNI_DIREKTORIJUM = "rezultati"
+PUTANJA_PODACI = "./anotacije-2026-07-26.json"
+IZLAZNI_DIREKTORIJUM = "rezultati_dekoder_konacno"
 
 # --- IZBOR MODELA ------------------------------------------------------------
 
@@ -47,7 +47,8 @@ IZLAZNI_DIREKTORIJUM = "rezultati"
 BACKEND = "ollama"
 
 # Naziv modela u okviru izabranog backend-a.
-NAZIV_MODELA = "qwen2.5:1.5b-instruct"
+NAZIV_MODELA = "olivilo/zora"
+# NAZIV_MODELA = "hf.co/sovasoft/zora-v1:Q3_K_M"
 
 # API kljuc za eksterne servise.
 API_KLJUC = ""
@@ -56,7 +57,7 @@ API_KLJUC = ""
 
 # Sa RTX 4060 + 7900X3D, optimalno je 2-3 paralelna zahteva kako bi GPU
 # efikasno obradjivao vise sekvenci bez prevelikog overhead-a prebacivanja konteksta.
-BROJ_NITI = 3
+BROJ_NITI = 40
 
 # Restrikcija broja CPU niti po Ollama procesu (kada delom radi na CPU)
 CPU_THREADS_PER_REQ = 4
