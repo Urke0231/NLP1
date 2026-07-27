@@ -53,7 +53,7 @@ warnings.filterwarnings("ignore")
 PUTANJA_PODACI = "./anotacije-2026-07-26.json"
 
 # Direktorijum za tabele i grafikone. Kreira se automatski.
-IZLAZNI_DIREKTORIJUM = "rezultati_jednostavni_konacni_CLASSLA_ner"
+IZLAZNI_DIREKTORIJUM = "rezultati_jednostavni_konacni_10_CV_NER"
 
 # --- STA SE POREDI ------------------------------------------------------------
 
@@ -95,7 +95,7 @@ VELICINA_TEST = 0.1
 # Preostalih 9/10 se deli na 5 delova: 4 za trening, 1 za validaciju. Ta
 # raspodela rotira (5-slojna unakrsna validacija) - koristi se i za
 # podesavanje hiperparametara (GridSearchCV) i za procenu stabilnosti modela.
-BROJ_VALIDACIONIH_FOLDOVA = 5
+BROJ_VALIDACIONIH_FOLDOVA = 10
 
 SLUCAJNO_SEME = 42   # isti seed => isti test skup i isti foldovi za sve konfiguracije
 
@@ -113,7 +113,7 @@ MIN_DF_KARAKTER = 3
 # Broj tredova za paralelizaciju spoljasnje petlje po konfiguracijama
 # (pretprocesiranje x odlike x model). Svaka konfiguracija se trenira i
 # validira nezavisno, pa se dobro paralelizuje.
-BROJ_NITI = 6
+BROJ_NITI = 12
 
 # Broj procesorskih jezgara za pretragu hiperparametara UNUTAR jedne
 # konfiguracije (GridSearchCV). -1 = sva. Kada je BROJ_NITI > 1, ovo se

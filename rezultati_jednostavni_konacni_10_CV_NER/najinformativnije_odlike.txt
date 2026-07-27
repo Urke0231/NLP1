@@ -1,0 +1,132 @@
+
+### Klasa: negative
+ZA:
+    rec__pad                  +2.6428
+    rec__zbog                 +2.0274
+    rec__pasti                +1.8232
+    char__ pa                 +1.8071
+    rec__%                    +1.7155
+    rec__kredit               +1.6726
+    rec__gubitak              +1.6723
+    rec__pasti biti           +1.6476
+    char__ ne                 +1.5987
+    rec__cena                 +1.5655
+    rec__negativan            +1.5639
+    rec__slab                 +1.5463
+    rec__posto                +1.4498
+    rec__% )                  +1.4218
+    rec__trošak               +1.3855
+    char__ otp                +1.3850
+    rec__poskupeti            +1.3789
+    char__pad                 +1.3594
+    char__pad                 +1.3582
+    rec__malo                 +1.3516
+PROTIV:
+    rec__odsto i              -1.8989
+    rec__biti da              -1.7677
+    rec__rast od              -1.7286
+    rec__i (                  -1.4174
+    rec__mnogo nego           -1.4113
+    rec__odsto mnogo          -1.2311
+    rec__u 2022.              -1.2174
+    rec__o                    -1.2049
+    rec__vredan               -1.1747
+    char__,4                  -1.1736
+    rec__danas                -1.1158
+    rec__pad cena             -1.1028
+    rec__saopštiti biti       -1.0965
+    rec__doneti               -1.0700
+    rec__dobar                -1.0589
+    rec__rast bdp             -1.0337
+    rec__odnosno              -1.0267
+    rec__porez                -1.0114
+    rec__treći                -1.0112
+    rec__proizvodni           -0.9887
+
+### Klasa: neutral
+ZA:
+    rec__danas .              +2.1010
+    rec__i (                  +1.8261
+    rec__, (                  +1.8045
+    rec__biti da              +1.6786
+    rec__o                    +1.6523
+    rec__u vrednost           +1.6309
+    rec__prodati              +1.6298
+    rec__iznositi biti        +1.3711
+    rec__mart .               +1.2993
+    char__men                 +1.2971
+    rec__privrednik           +1.2465
+    rec__evro i               +1.2291
+    rec__direktor             +1.2093
+    rec__menjati              +1.1881
+    rec__odsto )              +1.1809
+    rec__činiti               +1.1719
+    rec__na prethodan         +1.1709
+    rec__moguć                +1.1614
+    rec__porez                +1.1112
+    rec__stopa inflacija      +1.0824
+PROTIV:
+    rec__%                    -3.0604
+    rec__% u                  -1.9282
+    char__ %                  -1.8406
+    char__ast                 -1.8013
+    rec__rast                 -1.5643
+    rec__"                    -1.5209
+    rec__godina .             -1.4925
+    rec__pad                  -1.4571
+    rec__cena                 -1.4270
+    char__rast                -1.4165
+    rec__od                   -1.4063
+    char__ pa                 -1.3799
+    rec__dostići              -1.3605
+    rec__radni mesto          -1.3325
+    rec__zaposlen u           -1.3288
+    rec__taj                  -1.2982
+    rec__povećati biti        -1.2876
+    char__ otp                -1.2436
+    rec__) u                  -1.2355
+    char__ras                 -1.1878
+
+### Klasa: positive
+ZA:
+    rec__rast                 +2.4508
+    rec__rast od              +1.9568
+    rec__pad cena             +1.5499
+    rec__biti nastaviti       +1.5403
+    char__ast                 +1.5219
+    char__rast                +1.5088
+    rec__nov radni            +1.5060
+    char__ast                 +1.4977
+    char__rast                +1.4801
+    rec__povećati biti        +1.4718
+    rec__na                   +1.4340
+    rec__odsto mnogo          +1.3820
+    char__,4                  +1.3820
+    rec__ovaj                 +1.3697
+    rec__%                    +1.3449
+    char__ras                 +1.3214
+    rec__mnogo nego           +1.3036
+    rec__beležiti rast        +1.2698
+    rec__i u                  +1.2656
+    rec__rekordan             +1.2391
+PROTIV:
+    rec__ali                  -1.4507
+    rec__zbog                 -1.3800
+    char__ ne                 -1.3434
+    rec__, ali                -1.3197
+    rec__ostati               -1.2157
+    rec__pad                  -1.1857
+    rec__stopa inflacija      -1.1836
+    rec__gubitak              -1.1805
+    rec__% )                  -1.1648
+    rec__5,1                  -1.1489
+    rec__trošak               -1.1467
+    rec__pasti                -1.1421
+    rec__malo od              -1.1273
+    rec__negativan            -1.1262
+    rec__danas .              -1.1193
+    char__mal                 -1.0789
+    rec__dinar .              -1.0694
+    rec__, biti               -1.0674
+    rec__usled                -1.0614
+    rec__malo                 -1.0593
