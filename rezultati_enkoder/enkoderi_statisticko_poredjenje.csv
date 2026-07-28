@@ -1,3 +1,0 @@
-model,cv_macroF1,razlika,p_vrednost,znacajno_p<0.05
-LogRegresija,0.7407,0.0242,0.0625,False
-LinearSVM,0.7335,0.0314,0.0625,False
