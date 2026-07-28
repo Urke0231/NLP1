@@ -153,21 +153,4 @@ repo; `preprocessing.py` ga automatski detektuje.
 PyTorch wheel-ovima i `transformers==4.46.3` (novije verzije pucaju na
 `torch.distributed.fsdp` uvozu).
 
-## Detalji na koje treba obratiti pažnju
 
-- **Metrika.** Klase su približno izbalansirane, ali glavna metrika je
-  ipak macro-F1 (tačnost ide uz nju radi poređenja sa većinskim
-  klasifikatorom).
-- **Ćirilica/latinica.** Sve se prevodi u latinicu pre svega ostalog.
-- **Geografska/politička imena.** Ekonomske vesti često pominju „Srbija",
-  „EU" i sl., što bi moglo lažno korelirati sa klasom — `02` nudi
-  opciono uklanjanje (ručna lista ili CLASSLA NER); finalni rezultat
-  koristi NER varijantu.
-- **Curenje podataka.** Vektorizacija je unutar `Pipeline`-a (rečnik/IDF
-  računat samo na trening foldu); test skup (10%) se izdvaja pre
-  unakrsne validacije i ne koristi se za podešavanje hiperparametara.
-- **Statistička značajnost.** `statisticko_poredjenje.csv` u svakom
-  `rezultati_*` direktorijumu sadrži Wilcoxonov upareni test po foldovima.
-- **Broj epoha kod fine-tuninga.** Kriva epohe→macro-F1 se dobija
-  evaluacijom na CV foldovima; izbor „najboljeg" broja epoha je post hoc
-  (napomenuto i u izveštaju).
