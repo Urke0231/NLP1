@@ -6,8 +6,7 @@ ekonomskih vesti na srpskom, uz poređenje klasičnih linearnih modela,
 enkoderskih transformera (zamrznuti embedinzi i pravi fine-tuning) i
 dekoderskih LLM-ova preko promptovanja.
 
-Tim: Uroš, Manojlo, Jelena, Damjan (imena anotatora, vidi `uneo` polje u
-podacima).
+Tim: Uroš, Manojlo, Jelena, Damjan 
 
 Nijedna skripta nema parametre iz komandne linije. Svaka na vrhu ima blok
 `KONFIGURACIJA` sa promenljivim koje se menjaju, pa se pokreće prosto sa
@@ -20,12 +19,6 @@ interaktivno pitanje (uklanjanje geografskih/političkih imena, vidi niže).
   polja `tekst`, `sentiment` (`positive`/`negative`/`neutral`), `duzina`
   (`kratak`/`srednji`/`dugacak`), `uneo` (ime anotatora). Klase su
   približno izbalansirane (964 negative / 1000 neutral / 955 positive).
-  `anotacije-2026-07-23 (2).json`, `-07-24`, `-07-25` su međuverzije iz
-  ranijih faza anotiranja, ostavljene radi tragova rada.
-- **`podaci/anotirano.json`** — verzija skupa korišćena u ranijoj fazi
-  (Faza 2, deskriptivna statistika); `01_statistika.py` još uvek pokazuje
-  na `anotacije-2026-07-23 (2).json`, a ne na finalni `-07-26` skup —
-  ako se statistika ponovo generiše, prvo ažurirati `PUTANJA_PODACI`.
 - **`Skripte za anotiranje/le_script_withExtraSteps.py`** — Tkinter GUI
   alat kojim su članovi tima nezavisno anotirali/kalibrisali tekstove
   (upisuje `dataset.json` i `poredjenje_annotacija.json`).
@@ -71,14 +64,11 @@ pokretanja i obrisani su — trenutno važeći su oni sa sufiksom `_konacno` /
 
 ### `01_statistika.py` — Faza 2
 Deskriptivna statistika (dužine, distribucija klasa, najčešće reči po
-klasi) i Cohen κ nad kalibracionim skupom. **Napomena:** ovaj skript je
-najstariji u pajplajnu i još uvek gleta na predfinalnu verziju podataka
-(vidi gore); rezultat u `rezultati/` je obrisan iz repoa jer je zamenjen
-detaljnijom analizom u `analiza_saglasnosti/`.
+klasi) i Cohen κ nad kalibracionim skupom.
 
 ### `02_osnovni_modeli.py` — Faza 3a
 Poredi 3 varijante pretprocesiranja (`lower`, `lower+stem`, `lower+lema`;
-`sirovo` je zakomentarisano) × 7 varijanti odlika (`TF`, `IDF`, `TFIDF`,
+`sirovo` je zakomentarisano posto je nepotrebno) × 7 varijanti odlika (`TF`, `IDF`, `TFIDF`,
 `TFIDF_1-2`, `TFIDF_1-3`, `CHAR_3-5`, `REC+CHAR`) × 4 modela (`Vecinski`,
 `MultinomialNB`, `LogRegresija`, `LinearSVM`), 10-slojna stratifikovana
 unakrsna validacija sa ugnežđenom `GridSearchCV` optimizacijom i
@@ -92,7 +82,7 @@ korišćeno je sa NER filtriranjem.
 Rečenične vektore računa lokalni Ollama servis (`paraphrase-multilingual`,
 port 11434, keširano u `.cache/`); model se ne dotrenirava, već se iznad
 vektora treniraju `LogRegresija`, `LinearSVM`, `RBF-SVM` (uz `Vecinski`
-baseline). Isti protokol evaluacije kao `02` (test 10% + 5-slojna CV).
+baseline). Slican protokol evaluacije kao `02` (test 10% + 5-slojna CV).
 
 ### `03b_encoder_finetuning.py` — Faza 3b (pravi fine-tuning)
 Stvarno dotrenirava težine enkoderskog transformera (ručna petlja
@@ -109,10 +99,8 @@ Dekoderski LLM se ne trenira — ceo skup je evaluacioni. Varira jezik
 upita (srpski/engleski) × tip upita (zero-shot / zero-shot sa definicijama
 / few-shot), 6 kombinacija. Finalno pokretanje: `BACKEND = "ollama"`,
 `NAZIV_MODELA = "olivilo/zora"` (lokalni srpski model preko Ollama-e).
-Odgovori se keširaju u `.cache/`.
+Odgovori se keširaju u `.cache/`. Pokrenut i sa llama i qwen modelom.
 
-Ako `data.py`-jev `LABEL_MAP` ne prepozna neku oznaku, skripta pukne sa
-jasnom porukom — dopuniti mapu.
 
 ## Rezultati (finalna pokretanja)
 
