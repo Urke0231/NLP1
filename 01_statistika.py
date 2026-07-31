@@ -32,7 +32,7 @@ from preprocessing import basic_clean, tokenize
 
 # Putanja do glavnog anotiranog skupa. JSON lista objekata ili JSONL.
 # Obavezna polja: "tekst", "sentiment". Opciona: "duzina", "uneo".
-PUTANJA_PODACI = "./anotacije-2026-07-23 (2).json"
+PUTANJA_PODACI = "./anotacije-2026-07-26.json"
 
 # Direktorijum u koji se upisuju tabele i grafikoni. Kreira se automatski.
 IZLAZNI_DIREKTORIJUM = "rezultati"

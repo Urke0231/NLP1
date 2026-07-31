@@ -81,14 +81,14 @@ from preprocessing import basic_clean
 # --- OBAVEZNO ----------------------------------------------------------------
 
 PUTANJA_PODACI = "./anotacije-2026-07-26.json"
-IZLAZNI_DIREKTORIJUM = "rezultati_finetuning_konacno"
+IZLAZNI_DIREKTORIJUM = "rezultati_finetuning_konacno2"
 
 # --- IZBOR MODELA ------------------------------------------------------------
 
 # Postavka trazi bar jedan monolingvalni i bar jedan visejezicni model.
 # Zakomentarisite red da biste model izbacili iz eksperimenta.
 MODELI = [
-    # "classla/bcms-bertic",           # MONOLINGVALNI (BCMS), ELECTRA, ~110M par.
+    "classla/bcms-bertic",           # MONOLINGVALNI (BCMS), ELECTRA, ~110M par.
     "xlm-roberta-base",              # VISEJEZICNI, primarni izbor, 278M par.
     "bert-base-multilingual-cased",  # VISEJEZICNI, referentna tacka
     # "classla/xlm-r-bertic",        # XLM-R-large dotreniran na juznoslovenskim
@@ -115,7 +115,7 @@ STOPA_UCENJA = 2e-5
 
 # Maksimalna duzina sekvence u podrec-tokenima. 256 obicno pokriva par
 # recenica; smanjenje na 128 znacajno ubrzava obucavanje.
-MAKSIMALNA_DUZINA = 256
+MAKSIMALNA_DUZINA = 128
 
 # Da li se u funkciji gubitka koriste tezine klasa (preporuceno kod
 # neuravnotezenog sentimenta).

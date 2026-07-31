@@ -30,10 +30,9 @@ from sklearn.base import clone
 from sklearn.dummy import DummyClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (ConfusionMatrixDisplay, classification_report,
-                             confusion_matrix, f1_score)
+from sklearn.metrics import ConfusionMatrixDisplay, classification_report, confusion_matrix
 from sklearn.model_selection import (GridSearchCV, StratifiedKFold,
-                                     cross_val_score, train_test_split)
+                                     cross_val_predict, cross_val_score)
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.svm import LinearSVC
@@ -53,7 +52,7 @@ warnings.filterwarnings("ignore")
 PUTANJA_PODACI = "./anotacije-2026-07-26.json"
 
 # Direktorijum za tabele i grafikone. Kreira se automatski.
-IZLAZNI_DIREKTORIJUM = "rezultati_jednostavni_konacni_10_CV_NER"
+IZLAZNI_DIREKTORIJUM = "rezultati_jednostavni_konacni_10_CV_revizija"
 
 # --- STA SE POREDI ------------------------------------------------------------
 
@@ -88,13 +87,10 @@ MODELI = [
 
 # --- PROTOKOL EVALUACIJE -----------------------------------------------------
 
-# 1/10 podataka se izdvaja kao test skup i ne koristi se ni za treniranje ni
-# za podesavanje hiperparametara - sluzi samo za finalnu, nepristrasnu procenu.
-VELICINA_TEST = 0.1
-
-# Preostalih 9/10 se deli na 5 delova: 4 za trening, 1 za validaciju. Ta
-# raspodela rotira (5-slojna unakrsna validacija) - koristi se i za
-# podesavanje hiperparametara (GridSearchCV) i za procenu stabilnosti modela.
+# Ceo skup se deli na BROJ_VALIDACIONIH_FOLDOVA delova (stratifikovano). Ta
+# raspodela rotira (unakrsna validacija) - koristi se i za podesavanje
+# hiperparametara (GridSearchCV) i za procenu stabilnosti modela. Nema
+# odvojenog test skupa - sve sto se izvestava dolazi iz unakrsne validacije.
 BROJ_VALIDACIONIH_FOLDOVA = 10
 
 SLUCAJNO_SEME = 42   # isti seed => isti test skup i isti foldovi za sve konfiguracije
@@ -113,7 +109,7 @@ MIN_DF_KARAKTER = 3
 # Broj tredova za paralelizaciju spoljasnje petlje po konfiguracijama
 # (pretprocesiranje x odlike x model). Svaka konfiguracija se trenira i
 # validira nezavisno, pa se dobro paralelizuje.
-BROJ_NITI = 12
+BROJ_NITI = 4
 
 # Broj procesorskih jezgara za pretragu hiperparametara UNUTAR jedne
 # konfiguracije (GridSearchCV). -1 = sva. Kada je BROJ_NITI > 1, ovo se
@@ -179,19 +175,15 @@ def _model_defs() -> Dict[str, tuple]:
 
 def evaluate_config(pname: str, texts: List[str], fname: str, vec_factory,
                     mname: str, clf, grid: dict, y: np.ndarray,
-                    train_idx: np.ndarray, test_idx: np.ndarray,
-                    labels: List[str], n_jobs: int):
-    """Trenira i podesava jednu konfiguraciju na 90% podataka (5-slojna
-    unakrsna validacija: 4 dela za trening, 1 za validaciju, rotira se), a
-    zatim je JEDNOM ocenjuje na izdvojenom test skupu (10%), koji nije video
-    ni trening ni podesavanje hiperparametara.
+                    n_jobs: int):
+    """Trenira i podesava jednu konfiguraciju kroz stratifikovanu unakrsnu
+    validaciju na CELOM skupu podataka. Nema izdvojenog test skupa - jedini
+    izvestaj je macro-F1 iz CV foldova.
 
     Bezbedno za pozivanje iz vise niti - klasifikator se klonira, pa dve niti
     nikad ne dele isti mutabilni estimator objekat.
     """
     X = np.asarray(texts, dtype=object)
-    X_tr, X_te = X[train_idx], X[test_idx]
-    y_tr, y_te = y[train_idx], y[test_idx]
 
     cv = StratifiedKFold(n_splits=BROJ_VALIDACIONIH_FOLDOVA, shuffle=True,
                          random_state=SLUCAJNO_SEME)
@@ -200,20 +192,18 @@ def evaluate_config(pname: str, texts: List[str], fname: str, vec_factory,
     t = time.time()
     if grid:
         search = GridSearchCV(pipe, grid, scoring="f1_macro", cv=cv,
-                              n_jobs=n_jobs, refit=True)
-        search.fit(X_tr, y_tr)
-        est, best = search.best_estimator_, search.best_params_
+                              n_jobs=n_jobs, refit=False)
+        search.fit(X, y)
+        best = search.best_params_
         idx = search.best_index_
         fold_skorovi = [search.cv_results_[f"split{k}_test_score"][idx]
                         for k in range(BROJ_VALIDACIONIH_FOLDOVA)]
     else:
-        fold_skorovi = cross_val_score(pipe, X_tr, y_tr, scoring="f1_macro",
+        fold_skorovi = cross_val_score(pipe, X, y, scoring="f1_macro",
                                        cv=cv, n_jobs=n_jobs).tolist()
-        pipe.fit(X_tr, y_tr)
-        est, best = pipe, {}
+        best = {}
 
     fold_skorovi = np.array(fold_skorovi)
-    pred_test = est.predict(X_te)
 
     row = {
         "pretprocesiranje": pname,
@@ -221,14 +211,11 @@ def evaluate_config(pname: str, texts: List[str], fname: str, vec_factory,
         "model": mname,
         "cv_macroF1_sr": fold_skorovi.mean(),
         "cv_macroF1_std": fold_skorovi.std(),
-        "test_macroF1": f1_score(y_te, pred_test, average="macro",
-                                 labels=labels, zero_division=0),
-        "test_tacnost": (pred_test == y_te).mean(),
         "hiperparametri": json.dumps(best),
         "fold_skorovi": fold_skorovi.tolist(),
         "vreme_s": round(time.time() - t, 1),
     }
-    return row, pred_test.astype(str)
+    return row
 
 
 def _pitaj_geo_filter() -> str | None:
@@ -287,14 +274,8 @@ def main():
     if not variants or not features or not models:
         sys.exit("GRESKA: prazna lista varijanti. Proverite konfiguraciju.")
 
-    # Fiksni test skup (1/10) - isti za sve konfiguracije, izdvaja se PRE bilo
-    # kakvog treniranja ili podesavanja hiperparametara.
-    train_idx, test_idx = train_test_split(
-        np.arange(len(y)), test_size=VELICINA_TEST, stratify=y,
-        random_state=SLUCAJNO_SEME)
-    print(f"Test skup: {len(test_idx)} primera ({VELICINA_TEST:.0%}), "
-         f"trening+validacija: {len(train_idx)} primera "
-         f"({BROJ_VALIDACIONIH_FOLDOVA}-slojna krosvalidacija)")
+    print(f"Nema izdvojenog test skupa - svih {len(y)} primera ulazi u "
+         f"{BROJ_VALIDACIONIH_FOLDOVA}-slojnu krosvalidaciju.")
 
     n_jobs = BROJ_JEZGARA if BROJ_NITI <= 1 else max(
         1, (os.cpu_count() or BROJ_NITI) // BROJ_NITI)
@@ -314,25 +295,22 @@ def main():
     print(f"Pokrecem {total} konfiguracija na {BROJ_NITI} niti(i), "
          f"{n_jobs} jezgro/a po niti...")
 
-    rows, test_pred_store = [], {}
+    rows = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=BROJ_NITI) as ex:
         futures = [
             ex.submit(evaluate_config, pname, texts, fname, fac, mname, clf,
-                      grid, y, train_idx, test_idx, labels, n_jobs)
+                      grid, y, n_jobs)
             for pname, texts, fname, fac, mname, clf, grid in tasks
         ]
         for i, fut in enumerate(concurrent.futures.as_completed(futures), 1):
-            row, pred_test = fut.result()
+            row = fut.result()
             key = f"{row['pretprocesiranje']} | {row['odlike']} | {row['model']}"
-            test_pred_store[key] = pred_test
             rows.append(row)
             print(f"[{i:>3}/{total}] {key:<45} CV macro-F1 = "
                  f"{row['cv_macroF1_sr']:.4f} +/- {row['cv_macroF1_std']:.4f} "
-                 f"| TEST macro-F1 = {row['test_macroF1']:.4f} "
                  f"({row['vreme_s']:.1f}s)", flush=True)
 
-    # Rangiranje po CV skoru (validacija) - test skup se NE koristi za izbor
-    # najbolje konfiguracije, samo za finalno nepristrasno izvestavanje.
+    # Rangiranje po CV skoru (validacija).
     res = pd.DataFrame(rows).sort_values("cv_macroF1_sr", ascending=False)
     res.drop(columns=["fold_skorovi"]).to_csv(
         outdir / "rezultati_osnovni_modeli.csv", index=False, encoding="utf-8")
@@ -343,51 +321,50 @@ def main():
     print(f"\nUkupno vreme: {(time.time() - t0) / 60:.1f} min")
     print("\n=== TOP 10 KONFIGURACIJA (rangirano po CV macro-F1) ===")
     print(res.head(10)[["pretprocesiranje", "odlike", "model",
-                        "cv_macroF1_sr", "cv_macroF1_std",
-                        "test_macroF1"]].to_string(index=False))
+                        "cv_macroF1_sr", "cv_macroF1_std"]].to_string(index=False))
 
-    _analiza_najboljeg(res, test_pred_store, y, train_idx, test_idx, labels,
-                       variants, features, models, outdir)
+    _analiza_najboljeg(res, y, labels, variants, features, models, outdir)
     _statisticko_poredjenje(rows, outdir)
     _grafikoni(res, outdir)
 
 
-def _analiza_najboljeg(res, test_pred_store, y, train_idx, test_idx, labels,
-                       variants, features, models, outdir: Path):
+def _analiza_najboljeg(res, y, labels, variants, features, models, outdir: Path):
+    """Matrica konfuzije i classification_report za najbolju konfiguraciju,
+    racunati preko cross_val_predict (van-uzorka predikcije iz istih CV
+    foldova) - nema odvojenog test skupa."""
     best = res.iloc[0]
     key = f"{best.pretprocesiranje} | {best.odlike} | {best.model}"
-    pred_test = test_pred_store[key]
-    y_test = y[test_idx]
+
+    X = np.asarray(variants[best.pretprocesiranje], dtype=object)
+    clf, _ = models[best.model]
+    best_params = json.loads(best.hiperparametri)
+    pipe = Pipeline([("vec", features[best.odlike]()), ("clf", clone(clf))])
+    pipe.set_params(**best_params)
+
+    cv = StratifiedKFold(n_splits=BROJ_VALIDACIONIH_FOLDOVA, shuffle=True,
+                         random_state=SLUCAJNO_SEME)
+    pred_cv = cross_val_predict(pipe, X, y, cv=cv, n_jobs=BROJ_JEZGARA)
 
     print(f"\n=== NAJBOLJA KONFIGURACIJA: {key} ===")
-    print(classification_report(y_test, pred_test, labels=labels, digits=3,
+    print(classification_report(y, pred_cv, labels=labels, digits=3,
                                 zero_division=0))
 
     fig, ax = plt.subplots(figsize=(6, 5))
-    cm = confusion_matrix(y_test, pred_test, labels=labels)
+    cm = confusion_matrix(y, pred_cv, labels=labels)
     ConfusionMatrixDisplay(cm, display_labels=labels).plot(
         ax=ax, cmap="Blues", colorbar=False, values_format="d")
-    ax.set_title(f"Matrica konfuzije (test skup)\n{key}")
+    ax.set_title(f"Matrica konfuzije (unakrsna validacija)\n{key}")
     ax.set_xlabel("predvidjeno")
     ax.set_ylabel("stvarno")
     fig.tight_layout()
     fig.savefig(outdir / "matrica_konfuzije.png", dpi=150)
 
-    # Najinformativnije odlike po klasi (samo za linearne modele).
+    # Najinformativnije odlike po klasi (samo za linearne modele). Model se
+    # trenira na celom skupu (sa vec pronadjenim najboljim hiperparametrima)
+    # samo da bi se procitali koeficijenti - ne za izvestavanje metrika.
     if best.model not in ("LogRegresija", "LinearSVM"):
         return
-    clf, grid = models[best.model]
-    X_tr = np.asarray(variants[best.pretprocesiranje], dtype=object)[train_idx]
-    y_tr = y[train_idx]
-    pipe = Pipeline([("vec", features[best.odlike]()), ("clf", clone(clf))])
-    if grid:
-        pipe = GridSearchCV(
-            pipe, grid, scoring="f1_macro",
-            cv=StratifiedKFold(BROJ_VALIDACIONIH_FOLDOVA, shuffle=True,
-                               random_state=SLUCAJNO_SEME),
-            n_jobs=BROJ_JEZGARA).fit(X_tr, y_tr).best_estimator_
-    else:
-        pipe.fit(X_tr, y_tr)
+    pipe.fit(X, y)
 
     try:
         names = np.array(pipe.named_steps["vec"].get_feature_names_out())

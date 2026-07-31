@@ -6,7 +6,7 @@ ekonomskih vesti na srpskom, uz poređenje klasičnih linearnih modela,
 enkoderskih transformera (zamrznuti embedinzi i pravi fine-tuning) i
 dekoderskih LLM-ova preko promptovanja.
 
-Tim: Uroš, Manojlo, Jelena, Damjan 
+Tim: Jelena, Manojlo , Damjan, Uroš  
 
 Nijedna skripta nema parametre iz komandne linije. Svaka na vrhu ima blok
 `KONFIGURACIJA` sa promenljivim koje se menjaju, pa se pokreće prosto sa

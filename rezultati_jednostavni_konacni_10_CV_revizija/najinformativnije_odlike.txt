@@ -1,0 +1,132 @@
+
+### Klasa: negative
+ZA:
+    rec__pad                  +1.3875
+    rec__zbog                 +1.1883
+    rec__cen                  +1.1467
+    char__ pa                 +0.9932
+    rec__manj                 +0.9382
+    char__ ne                 +0.8430
+    rec__pal                  +0.8212
+    rec__nij                  +0.8074
+    rec__poskup               +0.7864
+    char__gub                 +0.7795
+    rec__pao                  +0.7692
+    rec__negativ              +0.7673
+    rec__pal jesam            +0.7647
+    char__pad                 +0.7419
+    rec__gubitak              +0.7378
+    char__pad                 +0.7133
+    char__manj                +0.6959
+    char__ pad                +0.6892
+    char__ gu                 +0.6878
+    rec__trosxk               +0.6806
+PROTIV:
+    rec__o                    -0.7858
+    rec__rast od              -0.7752
+    rec__jesam da             -0.6828
+    rec__odst i               -0.6327
+    rec__visx neg             -0.6112
+    rec__saopsxt jesam        -0.5880
+    rec__danas                -0.5841
+    rec__vred                 -0.5194
+    rec__podrsx               -0.5125
+    rec__odst visx            -0.5075
+    rec__dob                  -0.4964
+    rec__tim                  -0.4915
+    char__ re                 -0.4902
+    rec__prv                  -0.4889
+    char__dob                 -0.4846
+    char__lat                 -0.4708
+    rec__cil                  -0.4694
+    rec__izgradnj             -0.4458
+    rec__rast bdp             -0.4362
+    rec__povecy jesam         -0.4322
+
+### Klasa: neutral
+ZA:
+    rec__o                    +1.0788
+    rec__jesam da             +0.6589
+    char__men                 +0.6301
+    rec__iznos jesam          +0.5756
+    rec__direktor             +0.5730
+    rec__odst i               +0.5548
+    rec__u vrednos            +0.5269
+    rec__rad                  +0.5225
+    rec__24                   +0.5131
+    rec__mog                  +0.5097
+    rec__porez                +0.5090
+    char__ o                  +0.5077
+    rec__dok                  +0.4978
+    rec__vred                 +0.4879
+    rec__tender               +0.4789
+    rec__razgovar             +0.4730
+    rec__imen                 +0.4440
+    char__jek                 +0.4382
+    rec__stop                 +0.4366
+    rec__jav                  +0.4335
+PROTIV:
+    rec__rast                 -0.9647
+    rec__sxt jesam            -0.8579
+    rec__povecy               -0.8557
+    rec__sxt                  -0.8010
+    rec__od                   -0.7891
+    rec__cen                  -0.7530
+    char__ast                 -0.7234
+    rec__pad                  -0.7018
+    rec__vecy                 -0.6792
+    char__ras                 -0.6532
+    rec__poras                -0.6489
+    char__rast                -0.6478
+    rec__radni                -0.6262
+    char__vecy                -0.6151
+    char__ pa                 -0.6146
+    char__vec                 -0.5978
+    char__ rast               -0.5968
+    rec__na                   -0.5962
+    rec__radn mest            -0.5957
+    rec__dostig               -0.5920
+
+### Klasa: positive
+ZA:
+    rec__rast                 +1.1667
+    char__ast                 +0.9309
+    rec__povecy               +0.9200
+    rec__rast od              +0.9093
+    rec__rekord               +0.8216
+    char__rast                +0.8084
+    rec__povecy jesam         +0.7896
+    char__rast                +0.7742
+    rec__visx neg             +0.7627
+    char__ast                 +0.7518
+    char__ras                 +0.7385
+    rec__jesam i              +0.6983
+    rec__izjav jesam          +0.6637
+    char__ rast               +0.6613
+    rec__let                  +0.6356
+    rec__na                   +0.6010
+    rec__sxt jesam            +0.5937
+    char__por                 +0.5832
+    char__ po                 +0.5772
+    char__vecy                +0.5731
+PROTIV:
+    rec__zbog                 -0.8134
+    rec__nij                  -0.7729
+    rec__ali                  -0.7413
+    rec__pad                  -0.6857
+    char__ ne                 -0.6385
+    rec__manj                 -0.6364
+    rec__pao                  -0.5711
+    char__gub                 -0.5570
+    rec__trosxk               -0.5412
+    rec__ost                  -0.5297
+    rec__mog                  -0.5154
+    rec__stop inflacij        -0.5082
+    char__ man                -0.4986
+    char__ gu                 -0.4949
+    rec__usled                -0.4751
+    char__bog                 -0.4745
+    char__ gub                -0.4739
+    char__zbo                 -0.4703
+    char__skup                -0.4608
+    char__ gubi               -0.4604
