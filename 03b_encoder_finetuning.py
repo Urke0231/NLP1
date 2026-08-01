@@ -231,7 +231,7 @@ def main():
     outdir = Path(IZLAZNI_DIREKTORIJUM)
     outdir.mkdir(parents=True, exist_ok=True)
 
-    df = load_dataset(put)
+    df = load_dataset(put,drop_duplicates=True)
     labels = present_labels(df)
     lab2id = {l: i for i, l in enumerate(labels)}
     X = np.array([basic_clean(t) for t in df["tekst"]], dtype=object)

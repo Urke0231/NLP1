@@ -330,7 +330,7 @@ def main():
     output_directory = Path(IZLAZNI_DIREKTORIJUM)
     output_directory.mkdir(parents=True, exist_ok=True)
 
-    dataframe = load_dataset(data_path)
+    dataframe = load_dataset(data_path,drop_duplicates=True)
     labels = present_labels(dataframe)
     texts = [basic_clean(text) for text in dataframe["tekst"]]
     y = dataframe["sentiment"].to_numpy()

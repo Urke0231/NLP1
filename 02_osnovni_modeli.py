@@ -244,7 +244,7 @@ def main():
     outdir = Path(IZLAZNI_DIREKTORIJUM)
     outdir.mkdir(parents=True, exist_ok=True)
 
-    df = load_dataset(put)
+    df = load_dataset(put,drop_duplicates=True)
     labels = present_labels(df)
     y = df["sentiment"].to_numpy()
     print(f"Ucitano {len(df)} primera, klase: {labels}")

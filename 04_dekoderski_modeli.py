@@ -304,7 +304,7 @@ def main():
     outdir = Path(IZLAZNI_DIREKTORIJUM)
     outdir.mkdir(parents=True, exist_ok=True)
 
-    df = load_dataset(put)
+    df = load_dataset(put, drop_duplicates=True)
 
     # Optimizacija: ciscenje teksta se vrsi samo JEDNOM na celom skupu
     print("Priprema podataka...")
