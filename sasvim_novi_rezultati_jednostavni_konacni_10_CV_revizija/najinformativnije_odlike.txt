@@ -1,0 +1,132 @@
+
+### Klasa: negative
+ZA:
+    rec__zbog                 +0.7139
+    rec__cene                 +0.5942
+    rec__pad                  +0.5634
+    char__ pa                 +0.4940
+    rec__gubitak              +0.4436
+    rec__manje                +0.4169
+    rec__pao                  +0.4072
+    char__ ne                 +0.3988
+    char__gub                 +0.3850
+    char__pad                 +0.3793
+    char__gubi                +0.3789
+    char__ pad                +0.3769
+    char__ubi                 +0.3701
+    rec__nije                 +0.3661
+    char__manj                +0.3441
+    rec__radnika              +0.3343
+    rec__su                   +0.3286
+    char__ otp                +0.3255
+    rec__već                  +0.3241
+    char__ zbo                +0.3189
+PROTIV:
+    rec__rast od              -0.4029
+    rec__o                    -0.3951
+    rec__više nego            -0.3088
+    rec__odsto više           -0.2903
+    rec__danas                -0.2880
+    rec__odsto i              -0.2574
+    rec__iznosila je          -0.2428
+    char__dob                 -0.2293
+    rec__je da                -0.2250
+    char__ re                 -0.2175
+    rec__je danas             -0.2028
+    char__lat                 -0.2013
+    char__tav                 -0.1995
+    rec__odnosno              -0.1948
+    rec__zarada               -0.1939
+    char__ o                  -0.1880
+    char__nas                 -0.1852
+    char__ dob                -0.1852
+    rec__iznosila             -0.1850
+    char__,4                  -0.1828
+
+### Klasa: neutral
+ZA:
+    rec__o                    +0.5686
+    char__men                 +0.3249
+    rec__je da                +0.2650
+    rec__poziv za             +0.2601
+    rec__iznosila je          +0.2576
+    rec__u je                 +0.2466
+    char__jek                 +0.2441
+    rec__24                   +0.2410
+    char__ o                  +0.2398
+    rec__eu                   +0.2372
+    rec__direktora            +0.2352
+    char__uni                 +0.2326
+    rec__u vrednosti          +0.2301
+    rec__poziv                +0.2198
+    rec__ukupno               +0.2196
+    rec__tender za            +0.2193
+    rec__tender               +0.2193
+    rec__ministarstvo         +0.2162
+    rec__javni                +0.2143
+    rec__mestu                +0.2116
+PROTIV:
+    rec__rast                 -0.4834
+    char__ast                 -0.4016
+    rec__što                  -0.3991
+    rec__od                   -0.3808
+    rec__što je               -0.3751
+    char__rast                -0.3676
+    char__ras                 -0.3526
+    rec__akcije               -0.3272
+    rec__inflacija            -0.3196
+    rec__cene                 -0.3129
+    rec__sektoru              -0.3118
+    char__ rast               -0.3091
+    char__već                 -0.3029
+    rec__radnika              -0.3018
+    char__ pa                 -0.2930
+    rec__povećanje            -0.2928
+    char__veća                -0.2895
+    char__to                  -0.2827
+    rec__zbog                 -0.2821
+    char__ast                 -0.2816
+
+### Klasa: positive
+ZA:
+    rec__rast                 +0.6406
+    char__ast                 +0.5333
+    char__rast                +0.4621
+    char__ras                 +0.4368
+    rec__rast od              +0.4348
+    char__ast                 +0.3892
+    char__rast                +0.3715
+    rec__više nego            +0.3712
+    char__ rast               +0.3556
+    rec__je i                 +0.3330
+    char__asta                +0.3178
+    char__veća                +0.3134
+    char__već                 +0.3115
+    rec__je                   +0.3049
+    rec__sektoru              +0.2994
+    char__oras                +0.2978
+    char__poras               +0.2978
+    rec__zahvaljujući         +0.2930
+    char__ pora               +0.2923
+    rec__više                 +0.2920
+PROTIV:
+    rec__zbog                 -0.4376
+    rec__pad                  -0.3885
+    rec__nije                 -0.3634
+    rec__ali                  -0.3614
+    rec__manje                -0.3144
+    rec__pao                  -0.2970
+    rec__cene                 -0.2856
+    rec__gubitak              -0.2817
+    char__gub                 -0.2679
+    rec__dug                  -0.2658
+    rec__pad od               -0.2615
+    char__gubi                -0.2591
+    char__ man                -0.2582
+    char__ ne                 -0.2582
+    char__ubi                 -0.2441
+    char__ manj               -0.2417
+    char__ gub                -0.2331
+    rec__stopa                -0.2317
+    char__ gubi               -0.2315
+    rec__usled                -0.2309

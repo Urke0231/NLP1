@@ -80,8 +80,8 @@ from preprocessing import basic_clean
 
 # --- OBAVEZNO ----------------------------------------------------------------
 
-PUTANJA_PODACI = "./anotacije-2026-07-26.json"
-IZLAZNI_DIREKTORIJUM = "rezultati_finetuning_konacno2"
+PUTANJA_PODACI = "./opj_dataset_no_duplicates.json"
+IZLAZNI_DIREKTORIJUM = "sasvim_novi_rezultati_finetuning_konacno2"
 
 # --- IZBOR MODELA ------------------------------------------------------------
 

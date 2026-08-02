@@ -52,7 +52,7 @@ warnings.filterwarnings("ignore")
 PUTANJA_PODACI = "./anotacije-2026-07-26.json"
 
 # Direktorijum za tabele i grafikone. Kreira se automatski.
-IZLAZNI_DIREKTORIJUM = "rezultati_jednostavni_konacni_10_CV_revizija"
+IZLAZNI_DIREKTORIJUM = "sasvim_novi_rezultati_jednostavni_konacni_10_CV_revizija"
 
 # --- STA SE POREDI ------------------------------------------------------------
 
