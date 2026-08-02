@@ -3,3 +3,12 @@
 .venv312/
 .claude/
 .vscode/
+.env
+rezultati/
+
+anotacije*
+*.docx
+poredjenje*
+*pdf
+
+
