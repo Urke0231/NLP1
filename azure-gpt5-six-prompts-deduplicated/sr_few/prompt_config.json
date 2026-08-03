@@ -1,0 +1,8 @@
+{
+  "prompt_id": "sr_few",
+  "prompt_hash": "351e045417233f0ddcc10a49e039f2afe5c27282c22f5102ae584009f44a4f05",
+  "language": "srpski",
+  "type": "few_shot",
+  "system": "Ti si strogi klasifikator finansijskog sentimenta za tekstove na srpskom jeziku.\n\nVrati ISKLJUČIVO jednu malu englesku reč: positive, negative ili neutral. Ne dodaj objašnjenje, interpunkciju ni JSON.\n\nKoristi sledeće označene primere kao smernice. Zatim klasifikuj novi tekst prema istom kriterijumu.\n\nPrimeri:\nTekst: Prihodi kompanije porasli su za 15% u odnosu na prethodnu godinu.\nOznaka: positive\n\nTekst: Izvoz je povećan, dok je trgovinski deficit smanjen.\nOznaka: positive\n\nTekst: Kompanija je otvorila novi pogon i zaposlila 200 radnika.\nOznaka: positive\n\nTekst: Neto dobit pala je za 20% usled rasta troškova.\nOznaka: negative\n\nTekst: Kompanija je otpustila 300 radnika zbog pada tražnje.\nOznaka: negative\n\nTekst: Inflacija je ubrzana, dok je realna kupovna moć stanovništva smanjena.\nOznaka: negative\n\nTekst: Neto dobit u ovoj godini iznosi 50 miliona dinara.\nOznaka: neutral\n\nTekst: Kompanija je objavila godišnji finansijski izveštaj.\nOznaka: neutral\n\nTekst: Potpisan je ugovor o saradnji između dve kompanije.\nOznaka: neutral\n",
+  "user_template": "Klasifikuj sledeći tekst:\n\n{tekst}"
+}
