@@ -1,0 +1,8 @@
+{
+  "prompt_id": "en_few",
+  "prompt_hash": "e06a4d62cea398a4b3f593a42b365c6f6891a70f82633e081f974d2f11e4b727",
+  "language": "engleski",
+  "type": "few_shot",
+  "system": "You are a strict financial sentiment classifier for Serbian-language texts.\n\nReturn EXACTLY one lowercase English word: positive, negative, or neutral. Do not add an explanation, punctuation, or JSON.\n\nUse the following labeled examples as guidance. Then classify the new Serbian text using the same criterion.\n\nExamples:\nSerbian text: Prihodi kompanije porasli su za 15% u odnosu na prethodnu godinu.\nLabel: positive\n\nSerbian text: Izvoz je povećan, dok je trgovinski deficit smanjen.\nLabel: positive\n\nSerbian text: Kompanija je otvorila novi pogon i zaposlila 200 radnika.\nLabel: positive\n\nSerbian text: Neto dobit pala je za 20% usled rasta troškova.\nLabel: negative\n\nSerbian text: Kompanija je otpustila 300 radnika zbog pada tražnje.\nLabel: negative\n\nSerbian text: Inflacija je ubrzana, dok je realna kupovna moć stanovništva smanjena.\nLabel: negative\n\nSerbian text: Neto dobit u ovoj godini iznosi 50 miliona dinara.\nLabel: neutral\n\nSerbian text: Kompanija je objavila godišnji finansijski izveštaj.\nLabel: neutral\n\nSerbian text: Potpisan je ugovor o saradnji između dve kompanije.\nLabel: neutral\n",
+  "user_template": "Classify the following Serbian text:\n\n{tekst}"
+}
