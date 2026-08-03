@@ -1,0 +1,111 @@
+{
+  "izvor": "C:\\Users\\manojlo\\Desktop\\org\\projects\\opj-proj\\rezultati\\azure-gpt5-six-prompts\\sr_few\\agregirani_rezultati.json",
+  "pravilo": "tekst.strip(); zadržava se prvo pojavljivanje",
+  "broj_pre": 2919,
+  "broj_posle": 2908,
+  "uklonjeno": 11,
+  "broj_grupa_sa_duplikatima": 11,
+  "broj_grupa_sa_konfliktnim_gold_oznakama": 1,
+  "broj_grupa_sa_razlicitim_predikcijama": 2,
+  "konflikti_gold_oznaka": [
+    {
+      "tekst": "U Evropskoj uniji, proizvodnja intermedijarnih dobara pala je za 0,1 odsto u odnosu na april, a trajnih potrošnih dobara za 0,4 odsto.",
+      "pozicije": [
+        1022,
+        1774
+      ],
+      "oznake": [
+        "negative",
+        "neutral"
+      ],
+      "zadrzana_oznaka": "neutral",
+      "napomena": "Zadržana je oznaka prvog pojavljivanja, kao kod pandas drop_duplicates."
+    }
+  ],
+  "konflikti_predikcija": [
+    {
+      "tekst": "Cena kafe porasla je na najviši nivo u poslednjih šest meseci, dostigavši 3,57 dolara po funti (0,454 kg) kafe, usled zabrinutosti da bi vremenske neprilike u Brazilu i Vijetnamu mogle da smanje buduću proizvodnju i zalihe i dovedu do manjka ponude na tržištu.",
+      "zadrzana_pozicija": 893,
+      "razlicite_pozicije": [
+        1824
+      ],
+      "napomena": "Zadržana je predikcija prvog pojavljivanja, kao kod pandas drop_duplicates."
+    },
+    {
+      "tekst": "U Evropskoj uniji, proizvodnja intermedijarnih dobara pala je za 0,1 odsto u odnosu na april, a trajnih potrošnih dobara za 0,4 odsto.",
+      "zadrzana_pozicija": 1022,
+      "razlicite_pozicije": [
+        1774
+      ],
+      "napomena": "Zadržana je predikcija prvog pojavljivanja, kao kod pandas drop_duplicates."
+    }
+  ],
+  "uklonjeni_zapisi": [
+    {
+      "uklonjena_pozicija": 2864,
+      "uklonjeni_id": 2864,
+      "zadrzani_id": 299,
+      "tekst": "Kao deo objavljivanja statistike finansijskih računa, Hrvatska narodna banka objavljuje podatke o stanju finansijske imovine i obaveza cele ekonomije i pojedinačnih institucionalnih sektora – nefinansijskih korporacija, domaćinstava, opšte države i finansijskog sektora – u datom trenutku. Finansijska neto vrednost ekonomije ili njenog dela izračunava se kao razlika između stanja njene finansijske imovine (npr. odobreni krediti i depoziti, investicije u hartije od vrednosti i akcije) i stanja njenih finansijskih obaveza (npr. primljeni krediti i depoziti, obaveze po osnovu izdatih hartija od vrednosti), gde ukupne finansijske obaveze uključuju dužničke obaveze, kao i procenjenu finansijsku vrednost kapitala."
+    },
+    {
+      "uklonjena_pozicija": 2867,
+      "uklonjeni_id": 2867,
+      "zadrzani_id": 301,
+      "tekst": "Izloženost hrvatskog finansijskog sistema sistemskim rizicima ostala je umereno povišena u prvoj polovini 2026. godine, što uglavnom odražava snažan rast kredita privatnom nefinansijskom sektoru i snažan rast cena stambenih nekretnina. Iako ovi razvoji delimično odražavaju povoljno makroekonomsko okruženje, sa rastućim raspoloživim dohotkom i snažnim tržištem rada koje podržava potražnju, rast cena kredita i nekretnina nadmašio je rast prihoda, povećavajući ciklične ranjivosti."
+    },
+    {
+      "uklonjena_pozicija": 1795,
+      "uklonjeni_id": 1795,
+      "zadrzani_id": 884,
+      "tekst": "Kompanija Fokskon, najveći svetski proizvođač elektronike po ugovoru, saopštila je da je u drugom kvartalu 2026. zabeležila rast prihoda za 39,8 odsto međugodišnje, zahvaljujući snažnoj potražnji za proizvodima vezanim za veštačku inteligenciju."
+    },
+    {
+      "uklonjena_pozicija": 1824,
+      "uklonjeni_id": 1824,
+      "zadrzani_id": 893,
+      "tekst": "Cena kafe porasla je na najviši nivo u poslednjih šest meseci, dostigavši 3,57 dolara po funti (0,454 kg) kafe, usled zabrinutosti da bi vremenske neprilike u Brazilu i Vijetnamu mogle da smanje buduću proizvodnju i zalihe i dovedu do manjka ponude na tržištu."
+    },
+    {
+      "uklonjena_pozicija": 1774,
+      "uklonjeni_id": 1774,
+      "zadrzani_id": 1022,
+      "tekst": "U Evropskoj uniji, proizvodnja intermedijarnih dobara pala je za 0,1 odsto u odnosu na april, a trajnih potrošnih dobara za 0,4 odsto."
+    },
+    {
+      "uklonjena_pozicija": 1215,
+      "uklonjeni_id": 1215,
+      "zadrzani_id": 1129,
+      "tekst": "Carinske tarife predsednika SAD-a uplašile su investitore, strahujući da će ekonomski pad dovesti do šire rasprodaje na berzama. Prodaja je već umanjila vrednost S&P 500 za četiri biliona dolara prošlog meseca, kada je Volstrit navijao za većinu plana američkog predsednika.\nNova politika američkog predsednika povećala je neizvesnost za preduzeća, potrošače i investitore, posebno uzastopni tarifni potezi protiv glavnih trgovinskih partnera poput Kanade, Meksika i Kine.\n„Jasno smo videli veliku promenu raspoloženja“, rekla je viši strateg za investicije u Wealth Enhancement-u. Dodala je da „mnogo od onoga što je funkcionisalo sada ne funkcioniše“.\nRasprodaja na berzi se produbila u ponedeljak. Referentni S&P 500 pao je 2,7 odsto, što predstavlja najveći dnevni pad u godini. Nasdaq Composite pao je za četiri odsto, što predstavlja najveći jednodnevni pad od septembra 2022.\nS&P 500 je u ponedeljak na zatvaranju trgovanja bio u padu za 8,6 odsto sa rekordnog maksimuma od 19. februara, smanjivši tržišnu vrednost od preko četiri biliona dolara od tada i približivši se padu od 10 odsto, što bi predstavljalo korekciju za indeks. Nasdaq je u četvrtak završio pad za više od 10 odsto u odnosu na najviši nivo u decembru."
+    },
+    {
+      "uklonjena_pozicija": 2394,
+      "uklonjeni_id": 2394,
+      "zadrzani_id": 1916,
+      "tekst": "Finansijski rezultati UG u prvom kvartalu 2026, kako je saopšteno, odražavaju kontinuirani rast prihoda i snažan napredak profitabilnosti. Prihodi su međugodišnje porasli 14 odsto, na 717,7 miliona evra, zahvaljujući organskom rastu korisničke baze, unapređenju korisničkih paketa, povećanju cena usklađenom sa inflacijom i ICT projektima."
+    },
+    {
+      "uklonjena_pozicija": 2351,
+      "uklonjeni_id": 2351,
+      "zadrzani_id": 2350,
+      "tekst": "U Beogradu je potpisan Ugovor o zajedničkom ulaganju u projekat \"Beograd na vodi\". Republika Srbija će, prema danas potpisanom ugovoru, biti vlasnik 32 odsto kapitala, dok će partner iz ujedinjenih Arapskih Emirata biti vlasnik 68 odsto kapitala."
+    },
+    {
+      "uklonjena_pozicija": 2763,
+      "uklonjeni_id": 2763,
+      "zadrzani_id": 2357,
+      "tekst": "Narodna banka Srbije zadržala je referentnu kamatnu stopu na nivou od jedan odsto."
+    },
+    {
+      "uklonjena_pozicija": 2794,
+      "uklonjeni_id": 2794,
+      "zadrzani_id": 2790,
+      "tekst": "Investicijom vrednom oko 23 miliona evra samo u 2022. godini kompanija proširuje svoje poslovanje u Srbiji."
+    },
+    {
+      "uklonjena_pozicija": 2877,
+      "uklonjeni_id": 2877,
+      "zadrzani_id": 2863,
+      "tekst": "Od 1. januara 2026. godine reciklažne kompanije prestale su da preuzimaju stare gume, električni i elektronski otpad, kao i dotrajale akumulatore. Ovaj potez je posledica odluke Vlade Srbije da obustavi podsticajna sredstva za tretman posebnih tokova otpada.\n\nU praksi, to znači da je finansijski mehanizam koji je godinama omogućavao isplativu reciklažu ove specifične vrste otpada – zaustavljen, a sa njim i veliki deo operacija u reciklažnom sektoru.\n\nPosebni tokovi otpada obuhvataju kategorije koje su tehnički zahtevne i skupe za obradu: elektronski uređaji, otpadne gume, akumulatori, vozila i ulja. Upravo zbog toga njihovo zbrinjavanje nikada nije bilo tržišno samoodrživo.\n\nPrihod koji recikleri mogu da ostvare prodajom izdvojenih sirovina ne pokriva realne troškove sakupljanja, transporta i tretmana."
+    }
+  ]
+}

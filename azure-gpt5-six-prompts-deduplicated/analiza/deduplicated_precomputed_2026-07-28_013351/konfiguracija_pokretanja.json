@@ -1,0 +1,49 @@
+{
+  "vreme_pokretanja": "2026-07-28T01:33:51",
+  "nacin_evaluacije": "unapred_izracunate",
+  "izlazni_direktorijum": "C:\\Users\\manojlo\\Desktop\\org\\projects\\opj-proj\\rezultati\\azure-gpt5-six-prompts-deduplicated\\analiza\\deduplicated_precomputed_2026-07-28_013351",
+  "oznaka_pokretanja": "deduplicated_precomputed",
+  "putanja_podaci": "podaci/anotirano.json",
+  "backend": "ollama",
+  "naziv_modela": "qwen2.5:1.5b-instruct",
+  "upiti": [
+    "sr_zero",
+    "sr_def",
+    "sr_few",
+    "en_zero",
+    "en_def",
+    "en_few"
+  ],
+  "broj_few_shot_primera": 3,
+  "velicina_uzorka": null,
+  "broj_niti": 3,
+  "modeli": [
+    "gpt-5-mini"
+  ],
+  "precomputed_ulazi": [
+    {
+      "naziv": "en_def",
+      "putanja": "C:\\Users\\manojlo\\Desktop\\org\\projects\\opj-proj\\rezultati\\azure-gpt5-six-prompts-deduplicated\\en_def\\agregirani_rezultati.json"
+    },
+    {
+      "naziv": "en_few",
+      "putanja": "C:\\Users\\manojlo\\Desktop\\org\\projects\\opj-proj\\rezultati\\azure-gpt5-six-prompts-deduplicated\\en_few\\agregirani_rezultati.json"
+    },
+    {
+      "naziv": "en_zero",
+      "putanja": "C:\\Users\\manojlo\\Desktop\\org\\projects\\opj-proj\\rezultati\\azure-gpt5-six-prompts-deduplicated\\en_zero\\agregirani_rezultati.json"
+    },
+    {
+      "naziv": "sr_def",
+      "putanja": "C:\\Users\\manojlo\\Desktop\\org\\projects\\opj-proj\\rezultati\\azure-gpt5-six-prompts-deduplicated\\sr_def\\agregirani_rezultati.json"
+    },
+    {
+      "naziv": "sr_few",
+      "putanja": "C:\\Users\\manojlo\\Desktop\\org\\projects\\opj-proj\\rezultati\\azure-gpt5-six-prompts-deduplicated\\sr_few\\agregirani_rezultati.json"
+    },
+    {
+      "naziv": "sr_zero",
+      "putanja": "C:\\Users\\manojlo\\Desktop\\org\\projects\\opj-proj\\rezultati\\azure-gpt5-six-prompts-deduplicated\\sr_zero\\agregirani_rezultati.json"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "prompt_id": "sr_zero",
+  "prompt_hash": "2629c0a82ca399850ae07b58f4e761fcde88d7220f185c3a3ef803d61eb25950",
+  "language": "srpski",
+  "type": "zero",
+  "system": "Ti si strogi klasifikator finansijskog sentimenta za tekstove na srpskom jeziku.\n\nVrati ISKLJUČIVO jednu malu englesku reč: positive, negative ili neutral. Ne dodaj objašnjenje, interpunkciju ni JSON.\n",
+  "user_template": "Klasifikuj sledeći tekst:\n\n{tekst}"
+}

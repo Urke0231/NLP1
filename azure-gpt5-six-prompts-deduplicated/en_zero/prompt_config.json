@@ -1,0 +1,8 @@
+{
+  "prompt_id": "en_zero",
+  "prompt_hash": "61de023b98e7de61a6e044694e5205e1eac18cd282876a93a1ad240123279ff2",
+  "language": "engleski",
+  "type": "zero",
+  "system": "You are a strict financial sentiment classifier for Serbian-language texts.\n\nReturn EXACTLY one lowercase English word: positive, negative, or neutral. Do not add an explanation, punctuation, or JSON.\n",
+  "user_template": "Classify the following Serbian text:\n\n{tekst}"
+}
