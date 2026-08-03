@@ -22,8 +22,21 @@ Nema parametara iz komandne linije - sve se podesava u bloku KONFIGURACIJA.
 
 from __future__ import annotations
 
-import concurrent.futures
 import os
+
+# MORA da se postavi PRE uvoza numpy/scipy/sklearn (i u glavnom i u svakom
+# spawn-ovanom procesu, jer Windows ProcessPoolExecutor iznova izvrsava ovaj
+# modul od vrha za svaki worker). Bez ovoga, BLAS biblioteka (OpenBLAS/MKL)
+# podrazumevano otvara sopstvene niti po procesu - sa BROJ_PROCESA=20 to
+# stvara na hiljade konkurentnih native niti, sto na Windows-u pouzdano
+# obara worker proces (BrokenProcessPool) jer je svaki proces vec ogranicen
+# na n_jobs=1 preko BROJ_JEZGARA, pa dodatne BLAS niti ne pomazu nista.
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
+os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
+
+import concurrent.futures
 import sys
 import time
 import warnings
@@ -93,15 +106,15 @@ VARIJANTE_ODLIKA = [
 MIN_DF_REC = 2
 MIN_DF_KARAKTER = 3
 
-# Broj foldova za "obicnu" unakrsnu validaciju (kao cv=10 u celijama 2-4
-# notebook-a).
+# Broj SPOLJNIH foldova - isti za sve modele (i obicne i GridSearch varijante),
+# tako da su sve konfiguracije direktno uporedive. Notebook je za razlicite
+# celije koristio razlicite vrednosti (cv=10 za celije 2-4, cv=5 za 5-6); ovde
+# je to namerno objedinjeno na 10 radi dosledne, fer evaluacije.
 BROJ_FOLDOVA = 10
 
-# Broj spoljnih foldova kada se model optimizuje GridSearchCV-om (kao cv=5 u
-# celijama 5-6 notebook-a).
-BROJ_FOLDOVA_SPOLJNI = 5
-
-# Broj unutrasnjih foldova za sam GridSearchCV (kao cv=2 u celijama 5-6).
+# Broj UNUTRASNJIH foldova za sam GridSearchCV (bira hiperparametar C) - manji
+# je namerno, jer se koristi samo za odabir C i ponavlja se za svaki spoljni
+# fold (kao cv=2 u notebook celijama 5-6).
 BROJ_FOLDOVA_UNUTRASNJI = 2
 
 # Mreza hiperparametra C - identicna onoj iz notebook-a.
@@ -113,15 +126,22 @@ SLUCAJNO_SEME = 42
 
 # --- PERFORMANSE -------------------------------------------------------------
 
-# Broj niti za paralelizaciju SPOLJASNJE petlje po konfiguracijama
+# Broj OS PROCESA za paralelizaciju spoljasnje petlje po konfiguracijama
 # (pretprocesiranje x odlike x model). Svaka konfiguracija se racuna
 # nezavisno, pa se dobro paralelizuje - isto kao u 02_osnovni_modeli.py.
-BROJ_NITI = 4
+# NAMERNO su ovo pravi procesi (ProcessPoolExecutor), a ne thread-ovi:
+# CountVectorizer/TfidfVectorizer tokenizuju tekst u cistom Python-u (regex),
+# sto drzi GIL i NE moze da se paralelizuje thread-ovima u istom procesu -
+# thread-ovi bi samo naizmenicno cekali na GIL bez stvarnog ubrzanja. Svaki
+# proces ima svoj GIL, pa se ovo realno paralelizuje na vise jezgara.
+# Idite blizu broja fizickih jezgara (npr. 16-24 na 24-jezgarnom CPU-u).
+BROJ_PROCESA = 20
 
-# Broj procesorskih jezgara za GridSearchCV UNUTAR jedne konfiguracije (deli
-# se na C-mrezu x unutrasnje foldove). -1 = sva. Kada je BROJ_NITI > 1, ovo se
-# automatski deli medju nitima da ne bi doslo do preraspodele jezgara.
-BROJ_JEZGARA = -1
+# Broj jezgara za GridSearchCV UNUTAR jednog procesa (n_jobs). Ostaje na 1 -
+# BROJ_PROCESA vec koristi sve fizicke procese/jezgra na spoljnom nivou, pa bi
+# n_jobs>1 ovde pokrenuo UGNJEZDENE pod-procese (proces u procesu) i samo
+# preraspodelio ista jezgra, bez dobitka.
+BROJ_JEZGARA = 1
 
 # =============================================================================
 #                    kraj konfiguracije - ispod ne treba menjati
@@ -167,12 +187,11 @@ def _cv_report(naziv: str, pretprocesiranje: str, model: str, odlika: str,
     (tacno kao u celiji 3 notebook-a, gde se za LogRegresiju racunaju i
     accuracy i F-measure).
 
-    Bezbedno za pozivanje iz vise niti - estimator se ovde ne mutira
-    (cross_val_score/GridSearchCV kloniraju pre fitovanja), pa dve niti nikad
-    ne dele isto fitovano stanje. Kada je estimator vec GridSearchCV (ima
-    svoj n_jobs za unutrasnju pretragu), spoljasnji cross_val_score se
-    namerno pusta sekvencijalno da ne bi doslo do ugnjezdene
-    preraspodele jezgara.
+    Poziva se iz zasebnog OS procesa (ProcessPoolExecutor) - svaki proces
+    dobija svoju kopiju estimator/corpus/y (pickle preko IPC-a), pa dve
+    konfiguracije nikad ne dele stanje. Kada je estimator vec GridSearchCV
+    (ima svoj n_jobs za unutrasnju pretragu), spoljasnji cross_val_score se
+    namerno pusta sekvencijalno da ne bi doslo do ugnjezdenih pod-procesa.
     """
     t0 = time.time()
     outer_n_jobs = 1 if isinstance(estimator, GridSearchCV) else n_jobs
@@ -221,7 +240,8 @@ def main():
 
     # Svaka varijanta pretprocesiranja (lower, lower+stem, lower+lema) se
     # racuna TACNO JEDNOM ovde - stem/lema su i kesirani na disku
-    # (preprocessing.py) - i deli se izmedju svih niti i konfiguracija ispod.
+    # (preprocessing.py) - i deli se (pickle-om) izmedju svih procesa i
+    # konfiguracija ispod.
     trazi_lemu = "lower+lema" in VARIJANTE_PRETPROCESIRANJA
     variants = build_variants(df["tekst"].tolist(), include_lemma=trazi_lemu,
                               lemma_use_gpu=True, geo_filter=GEO_FILTER)
@@ -247,8 +267,15 @@ def main():
          "MultinomialNB + CountVectorizer (sirov tekst) ---")
     print("Accuracy: ", (y_test == y_pred).sum() / X_test.shape[0])
 
-    n_jobs = BROJ_JEZGARA if BROJ_NITI <= 1 else max(
-        1, (os.cpu_count() or BROJ_NITI) // BROJ_NITI)
+    n_jobs = BROJ_JEZGARA
+
+    # Jedan te isti spoljni fold-splitter za BAS SVE konfiguracije (stratifikovan,
+    # promesan, fiksni seme) - direktna uporedivost rezultata. Unutrasnji
+    # splitter se koristi SAMO unutar GridSearchCV-a, za odabir C.
+    outer_cv = StratifiedKFold(n_splits=BROJ_FOLDOVA, shuffle=True,
+                               random_state=SLUCAJNO_SEME)
+    inner_cv = StratifiedKFold(n_splits=BROJ_FOLDOVA_UNUTRASNJI, shuffle=True,
+                               random_state=SLUCAJNO_SEME)
 
     # --- Gradimo listu (naziv, pretprocesiranje, model, odlika, estimator,
     #     corpus, cv, f1_takodje) za sve konfiguracije ---------------------
@@ -262,7 +289,7 @@ def main():
             naziv = f"{pname} | {fname} | MultinomialNB"
             p_clf = Pipeline([("vectorizer", vec_factory()), ("classifier", MultinomialNB())])
             tasks.append((naziv, pname, "MultinomialNB", fname, p_clf, corpus,
-                         BROJ_FOLDOVA, True))
+                         outer_cv, True))
             estimators[naziv] = (p_clf, corpus)
 
             # --- Celija 3/4: LogRegresija, 10-slojna CV (acc i F1) ----------
@@ -273,29 +300,24 @@ def main():
             clf = LogisticRegression(solver="lbfgs", max_iter=1000)
             p_clf = Pipeline([("vectorizer", vec_factory()), ("classifier", clf)])
             tasks.append((naziv, pname, "LogRegresija", fname, p_clf, corpus,
-                         BROJ_FOLDOVA, True))
+                         outer_cv, True))
             estimators[naziv] = (p_clf, corpus)
 
             # --- Celija 5: LogRegresija, optimizacija hiperparametara -------
-            # Rucno zadata stratifikovana CV podela tako da podaci budu
-            # promesani ("bolja opcija" iz notebook-a), sa fiksnim
-            # SLUCAJNO_SEME radi ponovljivosti. GridSearchCV dobija n_jobs da
-            # paralelizuje unutrasnju pretragu (C-mreza x unutrasnji
-            # foldovi); spoljni cross_val_score ostaje sekvencijalan (vidi
-            # _cv_report).
+            # GridSearchCV bira C na inner_cv (2 folda); vec optimizovan
+            # pipeline se onda ocenjuje na outer_cv (10 foldova) - to je
+            # ugnjezdena (nested) CV, pa je odabir C i finalna ocena strogo
+            # razdvojeni. GridSearchCV dobija n_jobs da paralelizuje
+            # unutrasnju pretragu (C-mreza x unutrasnji foldovi); spoljni
+            # cross_val_score ostaje sekvencijalan (vidi _cv_report).
             naziv = f"{pname} | {fname} | LogRegresija (GridSearch)"
             clf = LogisticRegression(solver="lbfgs", max_iter=1000)
             p_grid_lr = {"classifier__C": MREZA_C}
             p_clf = Pipeline([("vectorizer", vec_factory()), ("classifier", clf)])
-            gs_clf = GridSearchCV(
-                estimator=p_clf, param_grid=p_grid_lr,
-                cv=StratifiedKFold(shuffle=True, n_splits=BROJ_FOLDOVA_UNUTRASNJI,
-                                   random_state=SLUCAJNO_SEME),
-                scoring="accuracy", n_jobs=n_jobs)
-            vanjski_cv = StratifiedKFold(shuffle=True, n_splits=BROJ_FOLDOVA_SPOLJNI,
-                                         random_state=SLUCAJNO_SEME)
+            gs_clf = GridSearchCV(estimator=p_clf, param_grid=p_grid_lr,
+                                  cv=inner_cv, scoring="accuracy", n_jobs=n_jobs)
             tasks.append((naziv, pname, "LogRegresija (GridSearch)", fname,
-                         gs_clf, corpus, vanjski_cv, True))
+                         gs_clf, corpus, outer_cv, True))
             estimators[naziv] = (gs_clf, corpus)
 
             # --- Celija 6: LinearSVM, sa i bez optimizacije ------------------
@@ -307,38 +329,53 @@ def main():
 
             naziv = f"{pname} | {fname} | LinearSVM"
             tasks.append((naziv, pname, "LinearSVM", fname, p_clf, corpus,
-                         BROJ_FOLDOVA_SPOLJNI, True))
+                         outer_cv, True))
             estimators[naziv] = (p_clf, corpus)
 
+            # Isto nested-CV nacelo kao za LogRegresiju iznad: inner_cv bira
+            # C, outer_cv daje finalnu, nepristrasnu ocenu.
             naziv = f"{pname} | {fname} | LinearSVM (GridSearch)"
             p_grid_svm = {"classifier__C": MREZA_C}
             gs_clf = GridSearchCV(estimator=p_clf, param_grid=p_grid_svm,
-                                  cv=BROJ_FOLDOVA_UNUTRASNJI, scoring="accuracy",
-                                  n_jobs=n_jobs)
+                                  cv=inner_cv, scoring="accuracy", n_jobs=n_jobs)
             tasks.append((naziv, pname, "LinearSVM (GridSearch)", fname, gs_clf,
-                         corpus, BROJ_FOLDOVA_SPOLJNI, True))
+                         corpus, outer_cv, True))
             estimators[naziv] = (gs_clf, corpus)
 
-    # --- Izvrsavanje konfiguracija paralelno preko BROJ_NITI niti --------------
+    # --- Izvrsavanje konfiguracija paralelno preko BROJ_PROCESA OS procesa -----
     total = len(tasks)
     t0 = time.time()
-    print(f"\nPokrecem {total} konfiguracija na {BROJ_NITI} niti(i), "
-         f"{n_jobs} jezgro/a po niti...")
+    print(f"\nPokrecem {total} konfiguracija na {BROJ_PROCESA} procesa, "
+         f"{n_jobs} jezgro/a po procesu...")
 
     rows: List[Dict] = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=BROJ_NITI) as ex:
-        futures = [
-            ex.submit(_cv_report, naziv, pname, model, odlika, estimator,
-                     task_corpus, y, cv, f1_takodje, n_jobs)
-            for naziv, pname, model, odlika, estimator, task_corpus, cv, f1_takodje in tasks
-        ]
-        for i, fut in enumerate(concurrent.futures.as_completed(futures), 1):
-            row = fut.result()
-            rows.append(row)
-            f1_txt = f", macro-F1 = {row['cv_f1_sr']:.4f}" if row["cv_f1_sr"] is not None else ""
-            print(f"[{i:>3}/{total}] {row['konfiguracija']:<65} "
-                 f"accuracy = {row['cv_accuracy_sr']:.4f}{f1_txt} "
-                 f"({row['vreme_s']:.1f}s)", flush=True)
+    try:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=BROJ_PROCESA) as ex:
+            futures = {
+                ex.submit(_cv_report, naziv, pname, model, odlika, estimator,
+                         task_corpus, y, cv, f1_takodje, n_jobs): naziv
+                for naziv, pname, model, odlika, estimator, task_corpus, cv, f1_takodje in tasks
+            }
+            for i, fut in enumerate(concurrent.futures.as_completed(futures), 1):
+                row = fut.result()
+                rows.append(row)
+                f1_txt = f", macro-F1 = {row['cv_f1_sr']:.4f}" if row["cv_f1_sr"] is not None else ""
+                print(f"[{i:>3}/{total}] {row['konfiguracija']:<65} "
+                     f"accuracy = {row['cv_accuracy_sr']:.4f}{f1_txt} "
+                     f"({row['vreme_s']:.1f}s)", flush=True)
+    except concurrent.futures.process.BrokenProcessPool:
+        # Neki worker proces je oboren (najcesce OS-nivo, npr. crash u
+        # nativnoj biblioteci) - konfiguracija koja je bas bila u obradi se
+        # ne moze pouzdano identifikovati (proces je umro bez rezultata), ali
+        # rezultati vec zavrsenih konfiguracija se ne odbacuju.
+        print(f"\nUPOZORENJE: proces u pool-u je prekinut (BrokenProcessPool) "
+             f"nakon {len(rows)}/{total} zavrsenih konfiguracija. Cuvam "
+             f"delimicne rezultate i prekidam.", file=sys.stderr)
+        if rows:
+            pd.DataFrame(rows).drop(columns=["fold_accuracy"]).to_csv(
+                outdir / "rezultati_osnovni_modeli_notebook_stil_DELIMICNO.csv",
+                index=False, encoding="utf-8")
+        raise
 
     print(f"\nUkupno vreme: {(time.time() - t0) / 60:.1f} min")
 
