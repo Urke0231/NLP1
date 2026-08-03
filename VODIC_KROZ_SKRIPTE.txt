@@ -1,0 +1,1177 @@
+================================================================================
+VODIC KROZ PIPELINE ZA ANALIZU SENTIMENTA (OPJ projekat)
+Step-by-step objasnjenje: preprocessing.py, 01, 02, 03, 03b, 04
+================================================================================
+
+OPSTI PREGLED
+--------------------------------------------------------------------------------
+Ceo projekat je pipeline za klasifikaciju sentimenta srpskih tekstova (pozitivan
+/ negativan / neutralan / mesovit). Skripte se pokrecu OVIM REDOSLEDOM:
+
+  data.py                    -> pomocni modul, ucitava i cisti anotirani skup
+  preprocessing.py           -> pomocni modul, sprema varijante teksta
+  01_statistika.py           -> deskriptivna statistika + slaganje anotatora
+  02_osnovni_modeli.py       -> klasicni (linearni) ML modeli nad TF-IDF i sl.
+  03_enkoderski_modeli.py    -> Ollama embeddinzi (zamrznuti) + klasicni klasif.
+  03b_encoder_finetuning.py  -> PRAVI fine-tuning BERT-olikih transformera
+  04_dekoderski_modeli.py    -> veliki generativni jezicki modeli (LLM), prompt-ing
+
+data.py i preprocessing.py se ne pokrecu direktno (osim testa na dnu) - to su
+biblioteke koje 01-04 uvoze (import). Zato ih objasnjavamo prve.
+
+Svaka skripta iz faze 3 (02, 03, 03b, 04) resava ISTI problem (klasifikacija
+sentimenta) ali RAZLICITIM pristupom, da bi se pristupi mogli uporediti:
+  02  = klasicni "bag of words" pristup (TF-IDF + logisticka regresija/SVM/NB)
+  03  = recenicni vektori (embeddinzi) iz gotovog modela + klasicni klasifikator
+  03b = pravo fino podesavanje (fine-tuning) transformera
+  04  = veliki jezicki model kome se samo zada prompt (bez treniranja)
+
+Zajednicki protokol evaluacije (bitno da se razume pre citanja koda): SVUDA
+(osim 04, gde nema treniranja) koristi se K-slojna (obicno 10-slojna)
+stratifikovana unakrsna validacija (StratifiedKFold) BEZ odvojenog test skupa.
+To znaci da ne postoji "train/test split" u klasicnom smislu - ceo skup podataka
+prolazi kroz K rundi, u svakoj rundi 1/K je validacija a ostatak trening, i na
+kraju se sve metrike racunaju iz tih K rezultata. Razlog: skup podataka je mali
+(rucno anotiran), pa bi izdvajanje posebnog test skupa ostavilo premalo primera
+i za trening i za pouzdanu procenu.
+
+
+================================================================================
+DEO 0: data.py (pomocni modul - ucitavanje podataka)
+================================================================================
+
+Ova skripta se NE pokrece direktno. Nju importuju sve ostale skripte (01-04)
+da bi na isti nacin ucitale anotirani skup podataka.
+
+--- Sta radi i zasto ---
+
+1. LABEL_MAP - recnik koji razlicite zapise oznaka sentimenta (npr. "pozitivan",
+   "poz", "+1", "positive") svodi na jedinstven kanonski oblik ("positive").
+   Razlog: anotatori/anotacioni alati mogu koristiti razlicite nazive za istu
+   klasu, a sav kasniji kod (sklearn, matplotlib) ocekuje dosledne stringove.
+
+   LABEL_MAP = {
+       "positive": "positive", "pozitivan": "positive", "poz": "positive", "+1": "positive",
+       "negative": "negative", "negativan": "negative", "neg": "negative", "-1": "negative",
+       "neutral": "neutral", "neutralan": "neutral", "neu": "neutral", "0": "neutral",
+       "mixed": "mixed", "mesovit": "mixed",
+   }
+
+2. load_dataset(path, drop_duplicates=True) - centralna funkcija:
+   - cita JSON (lista objekata) ili JSONL (linija po linija) fajl
+   - proverava da postoje obavezna polja "tekst" i "sentiment" - ako ne postoje,
+     baca gresku odmah (fail-fast), umesto da pukne kasnije negde duboko u kodu
+   - normalizuje oznake sentimenta preko LABEL_MAP; ako se pojavi nepoznata
+     oznaka, PREKIDA izvrsavanje uz jasnu poruku (bolje da stane odmah nego da
+     tiho ubaci pogresnu klasu u model)
+   - opciono uklanja duplirane tekstove (bitno da isti tekst ne bude i u trening
+     i u validacionom foldu, sto bi lazno naduvalo rezultate)
+   - racuna izvedene kolone broj_reci i broj_karaktera (koriste ih 01 i 03b)
+
+   df["sentiment"] = (
+       df["sentiment"].astype(str).str.strip().str.lower().map(LABEL_MAP)
+   )
+   if df["sentiment"].isna().any():
+       raise ValueError(...)  # nepoznata oznaka -> odmah stani
+
+3. present_labels(df) - vraca listu klasa koje se STVARNO pojavljuju u datom
+   skupu, ali u fiksnom, smislenom redosledu (LABEL_ORDER = negative, neutral,
+   positive, mixed) umesto proizvoljnog. Ovo je bitno za grafikone i matrice
+   konfuzije - da klase uvek budu u istom redosledu, lakse se poredi izmedju
+   eksperimenata.
+
+4. xy(df) - jednostavan helper koji vraca (liste tekstova, liste oznaka) - malo
+   se koristi direktno, uglavnom se pristupa direktno kolonama df-a.
+
+
+================================================================================
+DEO 1: preprocessing.py (pomocni modul - pretprocesiranje teksta)
+================================================================================
+
+Takodje modul, ne pokrece se direktno (osim malog demo bloka na dnu). Uvoze ga
+01, 02, 03 i 03b/04 (basic_clean). Njegov zadatak je da od sirovog teksta
+napravi RAZLICITE VARIJANTE koje se onda mogu uporediti u 02_osnovni_modeli.py
+(koja varijanta pretprocesiranja daje bolji rezultat).
+
+--- CELINA 1: Transliteracija cirilica -> latinica ---
+
+Zasto: SerbianStemmer i vecina gotovih jezickih modela (CLASSLA, BERT-ici)
+ocekuju latinicu. Ako bi tekst ostao mesan (cirilica + latinica), isti pojam
+("Beograd" / "Београд") bi model video kao dve razlicite reci, sto razvodnjava
+statistiku i kvari klasifikator.
+
+_CYR2LAT = {
+    "А": "A", "Б": "B", ... "Љ": "Lj", "Њ": "Nj", "Џ": "Dž", ...
+}
+
+def cyr_to_lat(text: str) -> str:
+    """Prevodi cirilicki tekst u latinicu. Latinicki tekst ostaje nepromenjen."""
+    return "".join(_CYR2LAT.get(ch, ch) for ch in text)
+
+Napomena: visestruka slova (lj, nj, dz) se resavaju mapiranjem SVAKOG
+cirilickog znaka pojedinacno u odgovarajuci latinicki niz (npr. "Љ" -> "Lj"),
+tako da redosled obrade karaktera nije problematican.
+
+def normalize_whitespace(text): return re.sub(r"\s+", " ", text).strip()
+
+def basic_clean(text: str) -> str:
+    """Minimalno ciscenje koje se primenjuje na SVE varijante pretprocesiranja."""
+    return normalize_whitespace(cyr_to_lat(text))
+
+basic_clean je "baseline" korak koji ulazi u BAS SVE dalje varijante - cak i
+"sirovu" verziju teksta (tj. ni "sirovo" nije bas sirovo, vec vec transliterisano
+i sredjenih razmaka).
+
+--- CELINA 2: Tokenizacija ---
+
+Zasto regex a ne gotov tokenizator: potreban je jednostavan i brz tokenizator
+koji cuva dijakritike (č, ć, š, ž, đ), brojeve i procente (bitno za novinski
+domen, npr. "7,9%"), a ne zahteva eksternu zavisnost.
+
+_TOKEN_RE = re.compile(r"\w+(?:[.,]\w+)*%?", re.UNICODE)
+
+def tokenize(text: str) -> List[str]:
+    return _TOKEN_RE.findall(text)
+
+Ovo hvata reci, brojeve sa decimalnim zarezom/tackom (npr. "7,9") i opcioni
+znak procenta na kraju.
+
+--- CELINA 3: Stemovanje (SerbianStemmer adapter) ---
+
+Sta je stemovanje: grubo odsecanje sufiksa da bi razlicite oblike iste reci
+("kuca", "kucama", "kucu") pale na isti (priblizan) koren, sto smanjuje
+velicinu recnika i pomaze linearnim modelima kod malih skupova podataka.
+
+Zasto "adapter": SerbianStemmer.py je eksterni fajl (preuzima se sa GitHub-a
+autora Nikole Milosevica) i njegov API (naziv funkcije) varira izmedju verzija.
+Adapter zato PROBA vise mogucih imena funkcija dok ne nadje onu koja radi:
+
+_STEM_CANDIDATE_NAMES = [
+    "stem", "stemWord", "stem_word", "stemmer", "stemming",
+    "SerbianStemmer", "stem_text", "stemText","stem_arr","stem_str"
+]
+
+def _load_external_stemmer() -> Optional[Callable[[str], str]]:
+    sys.path.insert(0, str(Path(__file__).parent))
+    try:
+        import SerbianStemmer as _ss
+    except Exception:
+        return None
+    for name in _STEM_CANDIDATE_NAMES:
+        fn = getattr(_ss, name, None)
+        if callable(fn):
+            try:
+                out = fn("kucama")          # sanity-check poziv
+                if isinstance(out, str):
+                    return fn
+            except Exception:
+                continue
+    return None
+
+Ako fajl SerbianStemmer.py NIJE prisutan pored ovog modula, koristi se
+REZERVNI (fallback) stemer - jednostavno greedy odsecanje najduzeg poznatog
+sufiksa sa unapred definisane liste, sortirane po duzini (da se prvo proba
+najduzi mogudi sufiks, npr. "ovanje" pre "anje" pre "e"):
+
+_FALLBACK_SUFFIXES = sorted([...], key=len, reverse=True)
+
+def _fallback_stem(word: str) -> str:
+    if len(w) <= 3:
+        return w                       # kratke reci se ne diraju
+    for suf in _FALLBACK_SUFFIXES:
+        if w.endswith(suf) and len(w) - len(suf) >= 3:
+            return w[: -len(suf)]
+    return w
+
+VAZNO upozorenje iz koda: modul EKSPLICITNO belezi da li koristi pravi
+SerbianStemmer ili fallback (USING_EXTERNAL_STEMMER), i 02_osnovni_modeli.py
+ispisuje upozorenje ako fallback ostane aktivan - jer kvalitet stemovanja
+direktno utice na rezultate i to treba pomenuti u izvestaju.
+
+--- CELINA 4: Lematizacija (CLASSLA) ---
+
+Sta je lematizacija (za razliku od stemovanja): vraca STVARNI recnicki oblik
+reci (lemu) koristeci pravu morfolosku analizu (npr. "kucama" -> "kuca"), a ne
+grubo sečenje sufiksa. Preciznije od stemovanja, ali sporije jer zahteva pravi
+NLP model (CLASSLA pipeline za srpski).
+
+_CLASSLA_PIPELINE = None
+
+def _get_classla(use_gpu=False):
+    global _CLASSLA_PIPELINE
+    if _CLASSLA_PIPELINE is None:
+        import classla                      # lokalni import - modul radi i bez classla ako se ne koristi
+        try:
+            _CLASSLA_PIPELINE = classla.Pipeline("sr", processors="tokenize,pos,lemma", use_gpu=use_gpu)
+        except Exception:
+            classla.download("sr")          # prvi put: preuzmi model za srpski
+            _CLASSLA_PIPELINE = classla.Pipeline("sr", processors="tokenize,pos,lemma", use_gpu=use_gpu)
+    return _CLASSLA_PIPELINE
+
+def lemmatize_batch(texts, use_gpu=False, keep_pos=False) -> List[str]:
+    """Rezultat se kesira na disku (CLASSLA je spora)."""
+    key = hashlib.md5(...).hexdigest()
+    cache_file = CACHE_DIR / f"lemma_{key}.json"
+    if cache_file.exists():
+        return json.loads(cache_file.read_text(encoding="utf-8"))
+    ...
+    cache_file.write_text(json.dumps(out, ...))
+    return out
+
+Kesiranje na disku (preko md5 hash-a nad sadrzajem teksta) je kljucno: bez
+njega bi se svaki put pri ponovnom pokretanju skripte cekala ista spora
+lematizacija cele baze. Isti princip (kes u .cache/) koristi se za stemovanje,
+NER i Ollama embeddinge u ostalim skriptama.
+
+keep_pos=True dodaje UPOS oznaku uz lemu (npr. "rast_NOUN") - razdvaja
+homonime (npr. glagol vs. imenica istog oblika), sto ponekad pomaze linearnim
+modelima da bolje razlikuju znacenje.
+
+--- CELINA 4b: Uklanjanje geografskih/politickih imena ---
+
+Zasto ovo uopste postoji: imena drzava/gradova mogu SLUCAJNO korelirati sa
+sentimentom u skupu podataka (npr. vesti o domacoj vs. stranoj ekonomiji), a
+da sama rec ("Beograd", "Nemacka") nema nikakav sopstveni sentiment. Ako se to
+ne ukloni, model moze nauciti laznu (spurious) odliku - npr. da nauci
+"Nemacka => negativno" samo zato sto se u datom skupu tako slucajno poklopilo,
+a ne zato sto rec "Nemacka" zaista nosi sentiment.
+
+Dve opcije, obe pozivane PRE lowercasing-a/stemovanja/lematizacije:
+
+1) Rucna lista korena (brzo, bez zavisnosti):
+
+GEO_STOPWORD_ROOTS = [
+    "srbij", "beograd", "novi sad", "nis", "kragujev",
+    "nemack", "berlin", ... "evrop", "amerik", "kin", "rusij", "moskv", ...
+]
+
+def strip_geo_stopwords(text: str) -> str:
+    kept = [t for t in tokenize(text)
+            if not any(t.lower().startswith(r) for r in GEO_STOPWORD_ROOTS)]
+    return " ".join(kept)
+
+2) Automatska NER (Named Entity Recognition) detekcija preko CLASSLA - sporije,
+ali ne zahteva rucno odrzavanje liste i hvata imena koja lista propusti:
+
+def strip_named_entities_batch(texts, use_gpu=False, entity_types=("LOC","ORG")):
+    ...
+    for token in sent.tokens:
+        tag = token.ner or "O"
+        if not any(tag.endswith(f"-{et}") for et in entity_types):
+            kept.append(token.text)
+    ...
+
+Vazna napomena iz koda: NER MORA da radi na tekstu SA velikim slovima (dakle
+PRE lowercasing-a), jer se NER model oslanja na kapitalizaciju da prepozna
+vlastita imena.
+
+--- CELINA 5: build_variants() - sastavljanje svih varijanti za poredjenje ---
+
+Ovo je "glavna" funkcija modula - poziva je 02_osnovni_modeli.py da dobije
+recnik {naziv_varijante: lista_pretprocesiranih_tekstova}:
+
+def build_variants(raw_texts, include_lemma=True, lemma_use_gpu=False,
+                   geo_filter=None) -> Dict[str, List[str]]:
+    cleaned = [basic_clean(t) for t in raw_texts]
+
+    if geo_filter == "stopwords":
+        cleaned = strip_geo_stopwords_batch(cleaned)
+    elif geo_filter == "ner":
+        cleaned = strip_named_entities_batch(cleaned, use_gpu=lemma_use_gpu)
+
+    lowered = [t.lower() for t in cleaned]
+
+    variants = {
+        "sirovo": cleaned,            # samo translit + whitespace
+        "lower": lowered,             # + lowercasing
+        "lower+stem": stem_batch(lowered),
+    }
+    if include_lemma:
+        variants["lower+lema"] = lemmatize_batch(lowered, use_gpu=lemma_use_gpu)
+    return variants
+
+Redosled operacija je namerno biran: geo-filter ide PRE lowercasing-a (zbog
+NER-a), a stemovanje/lematizacija idu POSLE lowercasing-a (stem/lema
+algoritmi rade nad malim slovima).
+
+--- Demo blok (__main__) ---
+
+Kada se preprocessing.py pokrene DIREKTNO (python preprocessing.py), radi
+mali sanity-check: ucita jedan primer (iz podataka ako postoje, inace ugradjeni
+tekst na cirilici), i ispise original / latinicu / lowercase / stem, plus
+da li je pronadjen pravi SerbianStemmer. Ako podaci postoje, stemuje CEO skup
+i sacuva ga u stemovani_podaci_konacni.json - ovo je jednokratna pomocna
+alatka, ne deo glavnog pipeline-a.
+
+
+================================================================================
+DEO 2: 01_statistika.py (Faza 2 - deskriptivna statistika i slaganje anotatora)
+================================================================================
+
+Cilj skripte: pre nego sto se trenira ijedan model, razumeti PODATKE - koliko
+ih ima, da li su klase izbalansirane, kako izgleda recnik, i (ako postoji
+kalibracioni skup) koliko se anotatori medjusobno slazu. Pokrece se sa
+`python 01_statistika.py`, bez argumenata - sve je u bloku KONFIGURACIJA na
+vrhu fajla.
+
+--- KONFIGURACIJA (vrh fajla) ---
+
+PUTANJA_PODACI = "./anotacije-2026-07-26.json"   # glavni anotirani skup
+IZLAZNI_DIREKTORIJUM = "rezultati"                # gde idu tabele/grafikoni
+
+PUTANJE_KALIBRACIJA = [
+    # "podaci/kalibracija_anotator1.json",
+    # ...
+]  # po jedan fajl PO ANOTATORU, ISTI tekstovi anotirani nezavisno
+
+UKLONI_DUPLIKATE = True
+BROJ_NAJCESCIH_RECI = 15
+
+Sve je namerno gore, u komentarisanom bloku, a ne kao CLI argumenti - projekat
+je stanardizovan tako da se sve promene rade na jednom mestu na vrhu fajla,
+sto olaksava reproduktivnost (svako ko otvori fajl vidi tacno sta je koriscen).
+
+--- CELINA 1: opisna_statistika() ---
+
+Racuna i STAMPA (print) niz osnovnih statistika:
+
+  labels = present_labels(df)
+  dist = df["sentiment"].value_counts().reindex(labels)
+  print(f"Neuravnotezenost (max/min): {dist.max() / dist.min():.2f}")
+  print(f"Tacnost vecinskog klasifikatora: {dist.max() / len(df) * 100:.1f}%")
+
+Zasto bas ovo: "tacnost vecinskog klasifikatora" (accuracy kad model UVEK
+predvidja najcesu klasu) je referentna tacka - svaki stvarni model MORA da je
+nadmasi da bi imao smisla. Neuravnotezenost klasa objasnjava zasto se u 02/03
+kasnije koristi macro-F1 (a ne obicna tacnost) kao glavna metrika - macro-F1
+tretira sve klase podjednako vazno, pa ne moze da se "prevari" tako sto model
+uvek pogadja samo najcesu klasu.
+
+  if "duzina" in df.columns:
+      ct = pd.crosstab(df["duzina"], df["sentiment"])
+      chi2, p, dof, _ = chi2_contingency(ct)
+
+Ako postoji rucna oznaka duzine teksta, radi se hi-kvadrat test nezavisnosti
+duzine i sentimenta. Zasto: ako duzina teksta korelira sa sentimentom, to je
+BIAS u podacima (npr. duzi tekstovi su cesce neutralni jer su vesti) koji
+treba pomenuti u izvestaju, jer model moze "varati" koristeci duzinu umesto
+stvarnog sadrzaja.
+
+  if "uneo" in df.columns:
+      per_ann = pd.crosstab(df["uneo"], df["sentiment"])
+
+Raspodela oznaka PO ANOTATORU - ako se anotatori bitno razlikuju u tome koliko
+cesto biraju odredjenu klasu, to je signal da uputstva za anotiranje nisu
+dovoljno precizna (razliciti ljudi razlicito tumace istu instrukciju).
+
+  tokens = [t for txt in df["tekst"] for t in tokenize(basic_clean(txt).lower())]
+  vocab = pd.Series(tokens).value_counts()
+  print(f"Hapax legomena (frekvencija 1): {(vocab == 1).sum()} ...")
+
+Racuna velicinu recnika i broj "hapax legomena" (reci koje se pojavljuju samo
+jednom). Visok procenat hapax reci je vazan za 02 - znaci da ce TF-IDF
+vektorizacija imati mnogo retkih/ridak odlika, sto favorizuje jaci min_df filter
+ili stemovanje/lematizaciju (da se retke varijante reci spoje).
+
+--- CELINA 2: _grafikoni() ---
+
+Pravi 2x2 mrezu grafikona i cuva ih kao PNG (deskriptivna_statistika.png):
+  1. bar-graf raspodele klasa sentimenta
+  2. histogram duzine teksta (broj reci)
+  3. boxplot duzine teksta PO klasi (da li su npr. negativni tekstovi duzi?)
+  4. stacked bar: sentiment po rucnoj oznaci duzine (ako ta kolona postoji)
+
+matplotlib.use("Agg") na vrhu fajla je vazno: postavlja backend bez GUI-a,
+tako da skripta moze da radi na serveru/bez ekrana i samo snima PNG fajlove.
+
+--- CELINA 3: slaganje_anotatora() ---
+
+Racuna medjuanotatorsko slaganje (inter-annotator agreement) na KALIBRACIONOM
+skupu - fajlovima gde su VISE anotatora anotirali ISTE tekstove nezavisno.
+
+  common = sorted(set.intersection(*[set(s.index) for s in ann.values()]))
+
+Prvo se nadje presek tekstova koje su SVI anotatori oznacili (da poredjenje
+bude korektno - fer je porediti samo one primere koje su svi videli).
+
+  for a, b in itertools.combinations(names, 2):
+      k = cohen_kappa_score(ya, yb)
+
+Cohen's kappa se racuna za SVAKI PAR anotatora - ovo je standardna metrika
+slaganja koja (za razliku od proste "% slaganja") korigovanjem za slucajno
+poklapanje daje realisticniju sliku. Ispisuje se i interpretacija skale
+(Landis & Koch): <0.20 slabo ... >0.80 gotovo savrseno.
+
+  try:
+      from statsmodels.stats.inter_rater import aggregate_raters, fleiss_kappa
+      ...
+  except ImportError:
+      print("(za Fleiss kappa: pip install statsmodels)")
+
+Fleiss' kappa racuna slaganje za SVE anotatore ODJEDNOM (ne samo parove) - to
+je globalna mera konzistentnosti cele grupe. Import je "meko" (try/except) jer
+statsmodels nije obavezna zavisnost - ako fali, skripta samo preskoci taj deo
+umesto da pukne.
+
+  cm = confusion_matrix([ann[a][t] for t in common], [ann[b][t] for t in common])
+
+Matrica konfuzije izmedju PRVA DVA anotatora pokazuje KOJE se klase najcesce
+mesaju (npr. "neutralno" vs "negativno") - to je direktan input za doradu
+uputstava za anotiranje (ako se dve klase stalno mesaju, uputstvo za njih
+verovatno nije dovoljno jasno).
+
+--- main() ---
+
+def main() -> None:
+    put = Path(PUTANJA_PODACI)
+    if not put.exists():
+        sys.exit(f"GRESKA: ne postoji fajl sa podacima: ...")
+    df = load_dataset(put, drop_duplicates=UKLONI_DUPLIKATE)
+    opisna_statistika(df, outdir)
+    if PUTANJE_KALIBRACIJA:
+        slaganje_anotatora(PUTANJE_KALIBRACIJA, outdir)
+
+Jednostavan orkestrator: ucitaj podatke -> opisna statistika -> (opciono)
+slaganje anotatora ako je kalibracioni skup popunjen.
+
+
+================================================================================
+DEO 3: 02_osnovni_modeli.py (Faza 3a - osnovni/linearni modeli)
+================================================================================
+
+Cilj: sistematski uporediti kombinacije PRETPROCESIRANJA x ODLIKA x MODELA na
+klasicnim (ne-neuronskim) klasifikatorima, kroz 10-slojnu unakrsnu validaciju
+SA ugnjezdenom optimizacijom hiperparametara (GridSearchCV unutar svakog folda).
+Pokretanje: `python 02_osnovni_modeli.py`.
+
+--- KONFIGURACIJA ---
+
+VARIJANTE_PRETPROCESIRANJA = [
+    # "sirovo",
+    "lower",
+    "lower+stem",
+    "lower+lema",
+]
+
+VARIJANTE_ODLIKA = [
+    "TF", "IDF", "TFIDF", "TFIDF_1-2", "TFIDF_1-3", "CHAR_3-5", "REC+CHAR",
+]
+
+MODELI = ["Vecinski", "MultinomialNB", "LogRegresija", "LinearSVM"]
+
+BROJ_VALIDACIONIH_FOLDOVA = 10
+SLUCAJNO_SEME = 42          # ISTI seed => isti foldovi za SVE konfiguracije,
+                             # da poredjenje bude fer (uparen test kasnije)
+
+Zakomentarisani redovi ("sirovo") pokazuju kako se lako iskljucuje varijanta
+iz eksperimenta bez brisanja koda. "lower+lema" je najsporija (CLASSLA), pa
+komentar upozorava da se prvi put pusti preko noci ili privremeno iskljuci.
+
+BRZI_TEST = False  # kad je True: redukovana mreza + manja mreza hiperparam.
+                    # za brzu proveru da li sve radi pre punog pokretanja
+
+--- CELINA 1: _feature_defs() - definicije nacina vektorizacije teksta ---
+
+def _feature_defs() -> Dict[str, callable]:
+    return {
+        "TF":        lambda: CountVectorizer(token_pattern=TOK, min_df=MIN_DF_REC),
+        "IDF":       lambda: TfidfVectorizer(..., binary=True, use_idf=True),
+        "TFIDF":     lambda: TfidfVectorizer(..., sublinear_tf=True),
+        "TFIDF_1-2": lambda: TfidfVectorizer(..., ngram_range=(1, 2), ...),
+        "TFIDF_1-3": lambda: TfidfVectorizer(..., ngram_range=(1, 3), ...),
+        "CHAR_3-5":  lambda: TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5), ...),
+        "REC+CHAR":  lambda: FeatureUnion([("rec", TfidfVectorizer(...)),
+                                           ("char", TfidfVectorizer(analyzer="char_wb", ...))]),
+    }
+
+Objasnjenje razlika:
+  - TF: cista frekvencija reci, bez tezinjenja po redkosti
+  - IDF: binarno prisustvo x inverse-document-frequency
+  - TFIDF: standardni TF-IDF (sublinear_tf=True ublazava efekat vrlo cestih reci)
+  - TFIDF_1-2 / 1-3: dodaju bigrame/trigrame (hvataju fraze, npr. "nije dobro")
+  - CHAR_3-5: karakterski n-grami - korisni za jezike bogate morfologijom (kao
+    srpski), jer hvataju delove reci (koren, sufiks) i bolje se nose sa
+    razlicitim oblicima iste reci nego cist "bag of words"
+  - REC+CHAR: unija (konkatenacija) recnih i karakterskih odlika u jedan vektor
+
+TOK = r"(?u)\S+" - poseban token_pattern jer je tekst VEC tokenizovan i
+razdvojen razmakom (posebno posle stemovanja/lematizacije), pa se koristi
+"sve sto nije razmak" umesto podrazumevanog sklearn regexa koji bi drugacije
+parsirao vec obradjen tekst.
+
+--- CELINA 2: _model_defs() - modeli i njihove mreze hiperparametara ---
+
+def _model_defs() -> Dict[str, tuple]:
+    return {
+        "Vecinski":      (DummyClassifier(strategy="most_frequent"), {}),
+        "MultinomialNB": (MultinomialNB(), {"clf__alpha": a_grid}),
+        "LogRegresija":  (LogisticRegression(max_iter=3000, class_weight="balanced", ...),
+                          {"clf__C": c_grid}),
+        "LinearSVM":     (LinearSVC(class_weight="balanced", ...), {"clf__C": c_grid}),
+    }
+
+class_weight="balanced" je bitno: kompenzuje neuravnotezenost klasa (videnu u
+01_statistika.py) tako sto grese na manjinskoj klasi kosta model vise -
+suprotno bi model mogao naprosto uvek predvidjati najcesu klasu i dalje imati
+"pristojnu" tacnost.
+
+"Vecinski" (DummyClassifier) je isti baseline kao u 01_statistika.py, sada
+formalno ukljucen u poredjenje da se vidi koliko svaki stvaran model dobija u
+odnosu na trivijalno resenje.
+
+--- CELINA 3: evaluate_config() - jezgro evaluacije jedne konfiguracije ---
+
+def evaluate_config(pname, texts, fname, vec_factory, mname, clf, grid, y, n_jobs):
+    X = np.asarray(texts, dtype=object)
+    cv = StratifiedKFold(n_splits=BROJ_VALIDACIONIH_FOLDOVA, shuffle=True,
+                         random_state=SLUCAJNO_SEME)
+    pipe = Pipeline([("vec", vec_factory()), ("clf", clone(clf))])
+
+    if grid:
+        search = GridSearchCV(pipe, grid, scoring="f1_macro", cv=cv, n_jobs=n_jobs, refit=False)
+        search.fit(X, y)
+        best = search.best_params_
+        idx = search.best_index_
+        fold_skorovi = [search.cv_results_[f"split{k}_test_score"][idx] for k in range(BROJ_VALIDACIONIH_FOLDOVA)]
+    else:
+        fold_skorovi = cross_val_score(pipe, X, y, scoring="f1_macro", cv=cv, n_jobs=n_jobs).tolist()
+
+Kljucna tacka: GridSearchCV se pokrece SA refit=False i fold_skorovi se citaju
+IZ NAJBOLJE kombinacije hiperparametara direktno iz cv_results_, umesto da se
+naknadno rade dodatne CV runde. Ovo je namerno pojednostavljenje (nije "duboko
+ugnjezdena" CV u strogom smislu - hiperparametri se biraju na ISTIM foldovima
+na kojima se izvestava skor), sto skripta implicitno priznaje time sto je sve
+uporedjivo (isti seed = isti foldovi za sve konfiguracije).
+
+clone(clf) je bitno jer se funkcija poziva IZ VISE NITI paralelno (ThreadPool)
+- kloniranje osigurava da dve niti nikad ne dele isti mutabilni estimator
+objekat, sto bi izazvalo trke (race conditions).
+
+--- CELINA 4: _pitaj_geo_filter() - interaktivno pitanje na startu ---
+
+def _pitaj_geo_filter() -> str | None:
+    print("Ukloniti geografska/politicka imena iz teksta pre vektorizacije?")
+    print("  1 = rucna lista korena (brzo)")
+    print("  2 = automatska NER detekcija (CLASSLA, sporije)")
+    print("  Enter = ne uklanjaj nista")
+    izbor = input("Izbor [1/2/Enter]: ").strip()
+    mapa = {"1": "stopwords", "2": "ner"}
+    return mapa.get(izbor)
+
+Ovo je JEDINI interaktivni unos u celom pipeline-u (sve ostalo je hardkodovano
+u KONFIGURACIJA bloku) - namerno je pitanje na pocetku svakog pokretanja, jer
+je geo-filter eksperimentalna opcija koju cesto zelite da ukljucujete/
+iskljucujete izmedju pokretanja bez izmene koda.
+
+--- main() - orkestracija ---
+
+Koraci, redom:
+  1. Ucitaj podatke (load_dataset), izracunaj present_labels
+  2. Upozori ako fali pravi SerbianStemmer a trazi se "lower+stem"
+  3. Pitaj za geo-filter (_pitaj_geo_filter)
+  4. build_variants() - IZRACUNA SVAKU varijantu pretprocesiranja TACNO JEDNOM
+     (kljucno za performanse - da se stem/lema ne racunaju iznova za svaku
+     kombinaciju odlika x model)
+  5. Filtriraj variants/features/models na ono sto je stvarno trazeno u
+     konfiguraciji (VARIJANTE_*, MODELI)
+  6. BRZI_TEST skracuje mreze ako je ukljucen
+  7. Sastavi listu "tasks" - sve kombinacije (pretprocesiranje, odlike, model),
+     ALI: "Vecinski" baseline se racuna SAMO JEDNOM (ne zavisi od odlika teksta)
+
+     for pname, texts in variants.items():
+         for fname, fac in features.items():
+             for mname, (clf, grid) in models.items():
+                 if mname == "Vecinski" and fname != prva_odlika:
+                     continue
+                 tasks.append((pname, texts, fname, fac, mname, clf, grid))
+
+  8. Paralelno izvrsi sve taskove kroz ThreadPoolExecutor (BROJ_NITI niti,
+     svaka sa n_jobs jezgara za GridSearchCV - podeljeno da se ne otmu jezgra):
+
+     n_jobs = BROJ_JEZGARA if BROJ_NITI <= 1 else max(1, (os.cpu_count() or BROJ_NITI) // BROJ_NITI)
+
+  9. Sacuvaj rezultate (CSV + JSON sa fold skorovima), ispisi top 10
+  10. _analiza_najboljeg(), _statisticko_poredjenje(), _grafikoni()
+
+--- CELINA 5: _analiza_najboljeg() ---
+
+Za NAJBOLJU konfiguraciju (po prosecnom CV macro-F1):
+  - racuna cross_val_predict (van-uzorka/out-of-fold predikcije) da dobije
+    classification_report i matricu konfuzije BEZ curenja podataka (svaki
+    primer je predvidjen modelom koji ga NIJE video u treningu)
+  - ako je model linearan (LogRegresija/LinearSVM), trenira ga JOS JEDNOM na
+    CELOM skupu SAMO da procita koeficijente (tezine) odlika i ispise
+    najinformativnije reci "ZA" i "PROTIV" svake klase - eksplicitno
+    napomenuto u komentaru da ovaj drugi trening NIJE za izvestavanje metrika,
+    vec cisto za interpretabilnost (koje reci najvise "guraju" model ka
+    odredjenoj klasi)
+
+--- CELINA 6: _statisticko_poredjenje() ---
+
+def _statisticko_poredjenje(rows, outdir: Path):
+    """Uparen Wilcoxonov test po foldovima, u odnosu na najbolju konfiguraciju."""
+    for r in rows[1:]:
+        a, b = np.array(base["fold_skorovi"]), np.array(r["fold_skorovi"])
+        p = 1.0 if np.allclose(a, b) else wilcoxon(a, b).pvalue
+
+Zasto uparen (paired) test: buduci da SVE konfiguracije koriste ISTI seed (pa
+i iste foldove), moze se direktno uporediti skor konfiguracije A i B NA ISTOM
+foldu (par po par) - to je metodoloski jace nego prosto porediti prosecne
+skorove, jer eliminise varijansu izmedju foldova kao izvor razlike. Wilcoxon
+je neparametarski test (ne pretpostavlja normalnu raspodelu), pogodan za mali
+broj foldova (10 parova).
+
+--- CELINA 7: _grafikoni() ---
+
+Tri seta grafikona:
+  1. toplotna_mapa.png - heatmap (pretprocesiranje x odlike) PO MODELU, sa
+     brojevima upisanim u celije - vizuelno pokazuje koja kombinacija radi
+     najbolje za svaki model
+  2. top_konfiguracije.png - horizontalni bar-graf top 15 konfiguracija sa
+     error barovima (std devijacija kroz foldove)
+  3. marginalni_efekti.png - boxplot skorova GRUPISANIH po pretprocesiranju,
+     odnosno po odlikama (nezavisno od modela) - pokazuje "prosecan" efekat
+     svakog izbora preko svih ostalih dimenzija
+
+
+================================================================================
+DEO 4: 03_enkoderski_modeli.py (Faza 3b - ZAMRZNUTI Ollama embeddinzi)
+================================================================================
+
+Cilj: potpuno drugaciji pristup od 02 - umesto TF-IDF bag-of-words odlika,
+tekst se pretvara u GUSTI VEKTOR (embedding) pomocu gotovog visejezicnog
+modela ("paraphrase-multilingual") koji se NE trenira (zamrznut je). Iznad tih
+vektora treniraju se JEDNOSTAVNI klasifikatori. Poredi se koliko dobri su
+gotovi embeddinzi u odnosu na klasicni TF-IDF iz 02.
+
+Zahteva pokrenutu Ollama uslugu lokalno:
+  1) ollama serve
+  2) ollama pull paraphrase-multilingual
+  3) python 03_enkoderski_modeli.py
+
+--- KONFIGURACIJA ---
+
+OLLAMA_URL = "http://localhost:11434"
+OLLAMA_MODEL = "paraphrase-multilingual"
+OLLAMA_BATCH = 16   # koliko tekstova ide u jedan HTTP zahtev
+OLLAMA_NITI = 4     # broj paralelnih HTTP zahteva
+
+MODELI = ["Vecinski", "LogRegresija", "LinearSVM", "RBF-SVM"]
+
+# Fiksni hiperparametri (BEZ GridSearchCV unutar CV foldova!)
+LOGREG_C = 1.0
+LINEAR_SVM_C = 1.0
+RBF_SVM_C = 1.0
+RBF_SVM_GAMMA = "scale"
+
+Kljucna razlika u odnosu na 02: OVDE NEMA GridSearchCV/ugnjezdene pretrage
+hiperparametara - koriste se FIKSNE vrednosti. Razlog je eksplicitno naveden u
+docstring-u: RBF-SVM sa punom pretragom hiperparametara u svakom foldu bi bilo
+presporo, pa se ta cena svesno zrtvuje radi brzine.
+
+--- CELINA 1: _http_post / _embed_batch - komunikacija sa Ollama servisom ---
+
+def _http_post(path, payload, timeout=120) -> dict:
+    body = json.dumps(payload).encode("utf-8")
+    request = urllib.request.Request(f"{OLLAMA_URL}{path}", data=body,
+                                     headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        return json.loads(response.read())
+
+Koristi se cista urllib biblioteka (bez eksternih HTTP paketa) da bi ova
+skripta imala minimalne zavisnosti.
+
+def _embed_batch(texts: List[str]) -> List[List[float]]:
+    """Vraca embeddinge za jedan paket tekstova uz nekoliko ponovnih pokusaja."""
+    for attempt in range(4):
+        try:
+            output = _http_post("/api/embed", {"model": OLLAMA_MODEL, "input": texts})
+            return output["embeddings"]
+        except (urllib.error.HTTPError, KeyError):
+            break                       # batch endpoint ne postoji -> fallback ispod
+        except urllib.error.URLError:
+            if attempt == 3:
+                raise
+            time.sleep(2 ** attempt)    # eksponencijalni backoff
+
+    # Fallback: stariji /api/embeddings endpoint, JEDAN tekst po pozivu
+    embeddings = []
+    for text in texts:
+        ...
+
+Ovo pokazuje "graceful degradation" - prvo se proba brzi batch endpoint
+(/api/embed), a ako ne postoji (starija verzija Ollama-e), automatski se
+prelazi na sporiji endpoint koji radi tekst-po-tekst. Retry sa eksponencijalnim
+cekanjem (2**attempt sekundi) stiti od prolaznih mreznih gresaka.
+
+--- CELINA 2: get_embeddings() - racunanje i kesiranje vektora ---
+
+def get_embeddings(texts: List[str]) -> np.ndarray:
+    key = hashlib.md5((OLLAMA_MODEL + "|" + json.dumps(texts, ...)).encode()).hexdigest()
+    cache_file = CACHE / f"ollama_emb_{key}.npy"
+    if cache_file.exists() and not IGNORISI_KES:
+        return np.load(cache_file)
+
+    try:
+        urllib.request.urlopen(OLLAMA_URL, timeout=5)
+    except urllib.error.URLError:
+        sys.exit(f"GRESKA: Ollama nije dostupna na {OLLAMA_URL}. ...")
+
+    chunks = [texts[i:i+OLLAMA_BATCH] for i in range(0, len(texts), OLLAMA_BATCH)]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=OLLAMA_NITI) as executor:
+        futures = {executor.submit(_embed_batch, chunk): index for index, chunk in enumerate(chunks)}
+        ...
+    embeddings = np.array([vector for chunk in results for vector in chunk], dtype=np.float32)
+    np.save(cache_file, embeddings)
+    return embeddings
+
+Isti princip kesiranja kao kod stem/lema u preprocessing.py: hash sadrzaja
+tekstova odredjuje ime kes-fajla, tako da se skupo racunanje (HTTP pozivi ka
+modelu) ne ponavlja pri ponovnom pokretanju. Rani "brzi" health-check poziv
+(urllib.request.urlopen(OLLAMA_URL, timeout=5)) odmah javlja jasnu gresku ako
+Ollama servis uopste nije pokrenut, umesto da korisnik ceka i dobije nejasnu
+gresku duboko u paralelnim zahtevima.
+
+--- CELINA 3: evaluate_model() - K-fold CV RUCNO (bez GridSearchCV/cross_val_score) ---
+
+def evaluate_model(mname, clf, hyperparameters, use_scaler, X, y, labels):
+    cv = StratifiedKFold(n_splits=BROJ_VALIDACIONIH_FOLDOVA, shuffle=True, random_state=SLUCAJNO_SEME)
+    predictions_cv = np.empty_like(y)
+    for fold_number, (train_idx, validation_idx) in enumerate(cv.split(X, y), start=1):
+        steps = [("clf", clone(clf))]
+        if use_scaler:
+            steps.insert(0, ("scale", StandardScaler()))
+        pipeline = Pipeline(steps)
+        pipeline.fit(X[train_idx], y[train_idx])
+        fold_predictions = pipeline.predict(X[validation_idx])
+        predictions_cv[validation_idx] = fold_predictions
+        ...
+
+Ovde se CV petlja pise RUCNO (za razliku od 02 koji koristi cross_val_score/
+GridSearchCV) - razlog je da se istovremeno prikupe i skorovi PO FOLDU i
+kompletne OUT-OF-FOLD predikcije (predictions_cv) potrebne kasnije za
+classification_report i matricu konfuzije, bez dodatnog poziva cross_val_predict.
+
+use_scaler=True (za LogRegresija/SVM, ali NE za DummyClassifier) ukljucuje
+StandardScaler PRE klasifikatora - Ollama embeddinzi su gusti realni vektori
+(za razliku od retkih TF-IDF vektora), pa skaliranje na jedinicnu varijansu
+pomaze konvergenciji i performansama linearnih/kernel modela.
+
+Rezultujuci red sadrzi i cv_macroF1_sr (prosek po foldovima) i
+cv_macroF1_oof (macro-F1 racunat direktno iz spojenih out-of-fold predikcija)
+- ove dve vrednosti mogu se blago razlikovati (prosek F1 po foldu nije isto
+sto i F1 racunat nad svim spojenim predikcijama), pa se izvestavaju OBE radi
+transparentnosti.
+
+--- main() i ostatak (analogno 02) ---
+
+main() sled: provera da li podaci postoje -> load_dataset -> provera da svaka
+klasa ima BAR onoliko primera koliko ima foldova (obavezno za stratifikovanu
+K-fold validaciju - inace neki fold ne bi mogao dobiti nijedan primer date
+klase) -> get_embeddings() -> evaluate_model() za svaki model iz MODELI ->
+cuvanje CSV/JSON -> _analiza_najboljeg() (classification_report + matrica
+konfuzije za najbolji model) -> _statisticko_poredjenje() (isti Wilcoxon
+princip kao u 02) -> _grafikon() (jedan horizontalni bar-graf poredjenja
+modela).
+
+
+================================================================================
+DEO 5: 03b_encoder_finetuning.py (Faza 3b - PRAVI fine-tuning transformera)
+================================================================================
+
+Cilj: za razliku od 03 (koji koristi ZAMRZNUTE vektore), ova skripta STVARNO
+dotrenirava tezine samog BERT-olikog enkoder modela na anotiranom skupu -
+ovo je fine-tuning u uzem smislu i odgovara zahtevu projekta da postoji "bar
+jedan monolingvalni i bar jedan visejezicni model". Ovo je RACUNARSKI NAJSKUPLJA
+skripta u pipeline-u - preporucuje se GPU (traje satima na CPU).
+
+--- KONFIGURACIJA ---
+
+PUTANJA_PODACI = "./opj_dataset_no_duplicates.json"   # NAPOMENA: drugaciji fajl
+                                                        # nego kod 01/02/03/04!
+MODELI = [
+    "classla/bcms-bertic",           # MONOLINGVALNI (BCMS), ELECTRA, ~110M param.
+    "xlm-roberta-base",              # VISEJEZICNI, primarni izbor, 278M param.
+    "bert-base-multilingual-cased",  # VISEJEZICNI, referentna tacka
+    # "classla/xlm-r-bertic",        # trazi ~24GB VRAM, obicno ne staje na Colabu
+]
+
+BROJ_EPOHA = 5              # model se evaluira POSLE SVAKE epohe
+BROJ_FOLDOVA = 10
+VELICINA_BATCHA = 16
+STOPA_UCENJA = 2e-5          # tipican opseg za fine-tuning BERT-a: 1e-5 do 5e-5
+MAKSIMALNA_DUZINA = 128      # broj podrec-tokena; manje = brze treniranje
+KORISTI_TEZINE_KLASA = True  # tezine u loss funkciji, zbog neuravnotezenih klasa
+
+Protokol (objasnjen u docstring-u na vrhu skripte): 10-slojna CV; UNUTAR
+svakog folda model se evaluira POSLE SVAKE epohe, cime se dobija kriva
+"broj epoha -> macro-F1". Nema odvojenog test skupa (kao ni kod 02/03) - to je
+namerno, jer bi na malom anotiranom skupu dodatno cepanje ostavilo premalo
+primera po foldu za fino podesavanje transformera. Skripta EKSPLICITNO
+priznaje ogranicenje: broj epoha se bira POST HOC na osnovu istih foldova na
+kojima se izvestava rezultat - to treba pomenuti u dokumentaciji projekta.
+
+Docstring takodje sadrzi detaljno uputstvo za pokretanje na AMD GPU pod
+Windows-om (ROCm 7.2.1, poseban .venv312 sa Python 3.12, i VAZNA napomena da
+se transformers NE sme nadograditi iznad 4.46.3 zbog greske sa
+torch.distributed.fsdp na ROCm-Windows buildu bez torch.distributed podrske).
+
+--- CELINA 1: set_seed() - determinizam ---
+
+def set_seed(s: int):
+    import random, torch
+    random.seed(s); np.random.seed(s); torch.manual_seed(s)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(s)
+
+Postavlja seed za SVE izvore slucajnosti (python random, numpy, torch CPU/GPU)
+da bi ponavljanje eksperimenta davalo (priblizno) iste rezultate.
+
+--- CELINA 2: make_loader() - priprema podataka za PyTorch ---
+
+def make_loader(texts, labels, tokenizer, shuffle):
+    enc = tokenizer(list(texts), truncation=True, padding="max_length",
+                    max_length=MAKSIMALNA_DUZINA, return_tensors="pt")
+    ds = TensorDataset(enc["input_ids"], enc["attention_mask"], torch.tensor(labels, dtype=torch.long))
+    return DataLoader(ds, batch_size=VELICINA_BATCHA, shuffle=shuffle)
+
+Standardan tokenizacija -> tenzori -> DataLoader tok. padding="max_length" (a
+ne dinamicko punjenje) pojednostavljuje kod na racun malo losije iskoriscenosti
+memorije - prihvatljivo za ovako male tekstove i BROJ_FOLDOVA x BROJ_EPOHA
+kombinacija koje se ionako ponavljaju mnogo puta.
+
+--- CELINA 3: fine_tune_fold() - trening i evaluacija JEDNOG folda ---
+
+Ovo je srce skripte - RUCNA petlja obucavanja (bez Trainer API-ja iz
+transformers biblioteke), sa objasnjenjem u docstring-u zasto: da bi skripta
+radila nezavisno od (cesto nekompatibilnih) verzija transformers biblioteke.
+
+def fine_tune_fold(model_name, X_tr, y_tr, X_te, y_te, n_labels, device):
+    tok = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=n_labels).to(device)
+
+    tr = make_loader(X_tr, y_tr, tok, shuffle=True)
+    te = make_loader(X_te, y_te, tok, shuffle=False)
+
+    opt = AdamW(model.parameters(), lr=STOPA_UCENJA, weight_decay=0.01)
+    total = len(tr) * BROJ_EPOHA
+    sched = get_linear_schedule_with_warmup(opt, int(0.1 * total), total)
+
+get_linear_schedule_with_warmup sa 10% warmup-a: stopa ucenja postepeno raste
+prvih 10% koraka (da izbegne nestabilan pocetak treninga na slucajno
+inicijalizovanoj klasifikacionoj glavi), pa linearno opada do kraja.
+
+    if KORISTI_TEZINE_KLASA:
+        counts = np.bincount(y_tr, minlength=n_labels).astype(float)
+        w = torch.tensor(len(y_tr) / (n_labels * np.maximum(counts, 1)), dtype=torch.float, device=device)
+        lossf = torch.nn.CrossEntropyLoss(weight=w)
+
+Tezine klasa u loss funkciji su INVERZNO PROPORCIONALNE frekvenciji klase u
+TRENING delu ovog konkretnog folda (racunaju se iznova za svaki fold, jer se
+raspodela blago menja izmedju foldova) - isti princip kao class_weight=
+"balanced" u 02/03, ali ovde rucno implementiran jer PyTorch nema ugradjenu
+"balanced" opciju kao sklearn.
+
+    for ep in range(1, BROJ_EPOHA + 1):
+        model.train()
+        for ids, mask, y in tr:
+            opt.zero_grad()
+            logits = model(input_ids=ids, attention_mask=mask).logits
+            lossf(logits, y).backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            sched.step()
+
+        model.eval()
+        preds = []
+        with torch.no_grad():
+            for ids, mask, _ in te:
+                logits = model(...).logits
+                preds.extend(logits.argmax(-1).cpu().numpy().tolist())
+        f1 = f1_score(y_te, preds, average="macro", zero_division=0)
+        per_epoch_f1.append(f1)
+        per_epoch_pred.append(preds)
+
+Standardna trening petlja: forward -> loss -> backward -> gradient clipping
+(clip_grad_norm_ na 1.0, sprecava eksplodirajuce gradijente, cesto kod
+transformera) -> optimizer step -> scheduler step. Nakon SVAKE epohe (ne samo
+na kraju), model se evaluira na test delu folda - to je izvor krive
+"epohe -> macro-F1" koju trazi projekat.
+
+    del model
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+Eksplicitno oslobadjanje modela i GPU kesa POSLE svakog folda - bitno jer se
+ovo ponavlja BROJ_FOLDOVA x BROJ_MODELA puta, a svaki model zauzima znacajnu
+kolicinu VRAM-a; bez ovoga bi memorija procurila (OOM posle nekoliko foldova).
+
+--- main() ---
+
+Tok: provera da su torch/transformers instalirani -> detekcija uredjaja (CUDA
+NVIDIA / ROCm AMD / CPU, sa ispisom naziva GPU-a) -> ucitavanje podataka ->
+za SVAKI model iz MODELI:
+    - set_seed() (da svi modeli krecu sa istim slucajnim stanjem)
+    - StratifiedKFold petlja: za svaki fold pozove fine_tune_fold()
+    - fold_f1[k-1] = f1s      # matrica foldovi x epohe
+    - oof[e, te] = preds[e]   # out-of-fold predikcije, po epohi
+
+  mean_f1, std_f1 = fold_f1.mean(axis=0), fold_f1.std(axis=0)
+  best_ep = int(np.argmax(mean_f1)) + 1
+
+Nakon svih foldova za dati model, BROJ EPOHA se bira kao ona sa najvecim
+prosecnim macro-F1 kroz sve foldove - to je "post hoc" izbor pomenut u
+napomeni na vrhu skripte.
+
+Na kraju: cuvanje CSV/JSON rezultata, .npz sa out-of-fold predikcijama
+(finetuning_oof.npz) za svaki model, i tri grafikona:
+  1. finetuning_epohe.png - kriva epohe->macro-F1 PO MODELU (kljucni grafikon)
+  2. finetuning_poredjenje.png - najbolji rezultat po modelu (bar-graf)
+  3. finetuning_matrice_konfuzije.png - matrica konfuzije za svaki model
+     (koriscenjem OOF predikcija iz najboljeg broja epoha)
+
+
+================================================================================
+DEO 6: 04_dekoderski_modeli.py (Faza 3c - dekoderski/generativni LLM)
+================================================================================
+
+Cilj: potpuno drugaciji princip - OVI modeli se UOPSTE NE TRENIRAJU. Umesto
+toga, gotovom velikom jezickom modelu se zada prompt (uputstvo + tekst) i
+parsira se njegov tekstualni odgovor u oznaku sentimenta. Ceo skup podataka je
+zato evaluacioni skup (nema train/test podele jer nema ni treninga).
+
+Sistematski se varira:
+  1. JEZIK UPITA: srpski vs. engleski
+  2. TIP UPITA: zero-shot / zero-shot + definicije oznaka / few-shot (sa
+     primerima)
+
+--- KONFIGURACIJA ---
+
+BACKEND = "ollama"    # "openai" | "gemini" | "ollama" | "dummy"
+NAZIV_MODELA = "olivilo/zora"
+API_KLJUC = ""
+BROJ_NITI = 40         # paralelni HTTP zahtevi
+UPITI = ["sr_zero", "sr_def", "sr_few", "en_zero", "en_def", "en_few"]
+BROJ_FEW_SHOT_PRIMERA = 3
+VELICINA_UZORKA = None   # None = ceo skup
+
+Podrska za VISE backend-ova (OpenAI, Gemini, lokalni Ollama, ili "dummy" za
+testiranje pipeline-a bez pravog modela) preko iste apstrakcije - kod ispod
+poziva samo generickuu call(sys_msg, user_msg) funkciju, sta god da je iza nje.
+
+--- CELINA 1: PROMPTS - sablonovi upita ---
+
+PROMPTS: Dict[str, Dict[str, str]] = {
+    "sr_zero": {
+        "sys": "Ti si anotator sentimenta za tekstove na srpskom jeziku.",
+        "user": ("Odredi sentiment sledece recenice.\n"
+                "Odgovori iskljucivo jednom recju: pozitivan, negativan ili neutralan.\n\n"
+                "Recenica: {tekst}\n\nSentiment:"),
+    },
+    "sr_def": {
+        ...
+        "user": ("... definicijama:\n"
+                "- pozitivan: recenica prenosi povoljan ishod, korist ili odobravanje\n"
+                "- negativan: recenica prenosi nepovoljan ishod, stetu ili neodobravanje\n"
+                "- neutralan: recenica samo iznosi cinjenice, bez vrednosnogstava\n\n"
+                "Vazno: ocenjuje se stav koji tekst prenosi, a ne tvoje misljenje o temi. ..."),
+    },
+    "sr_few": {
+        "user": ("... {primeri}\nRecenica: {tekst}\nSentiment:"),
+    },
+    "en_zero": {...}, "en_def": {...}, "en_few": {...}  # iste varijante na engleskom
+}
+
+Napomena kod "sr_def": eksplicitna instrukcija modelu da "ocenjuje stav koji
+tekst prenosi, a ne [njegovo] misljenje o temi" - sprecava model da mesa
+sentiment TEKSTA (kako je tekst napisan) sa sopstvenim stavom prema temi o
+kojoj tekst govori (npr. vest o povecanju cena moze biti neutralno napisana
+iako je tema "negativna").
+
+--- CELINA 2: parse_label() - parsiranje odgovora modela ---
+
+_PARSE = [
+    (r"\b(pozitiv\w*|positive|pos)\b", "positive"),
+    (r"\b(negativ\w*|negative|neg)\b", "negative"),
+    (r"\b(neutral\w*|neutraln\w*|neu)\b", "neutral"),
+    (r"\b(mesovit\w*|mixed)\b", "mixed"),
+]
+
+def parse_label(raw: str, allowed: List[str]) -> str:
+    t = (raw or "").strip().lower()
+    for pat, lab in _PARSE:
+        if lab in allowed and re.search(pat, t):
+            return lab
+    return "NEPARSIRANO"
+
+LLM ne vraca uvek CISTO "pozitivan"/"negativan"/"neutralan" - moze dodati
+objasnjenje, promeniti oblik reci, ili odgovoriti na drugom jeziku. Regex sa
+\w* hvata razlicite oblike (npr. "pozitivno", "pozitivnog"). Ako NISTA ne
+odgovara, oznaka je "NEPARSIRANO" - ovo se posebno broji i izvestava (vidi
+dole), jer visok procenat neparsiranih odgovora znaci da model ne prati
+instrukciju formata, sto je samo po sebi vazan nalaz.
+
+--- CELINA 3: make_backend() - fabrika za razlicite provajdere ---
+
+if BACKEND == "openai":
+    from openai import OpenAI
+    client = OpenAI(api_key=key)
+    def call(sys_msg, user_msg):
+        r = client.chat.completions.create(model=NAZIV_MODELA, temperature=0, max_tokens=5, ...)
+        return r.choices[0].message.content
+    return call
+
+if BACKEND == "ollama":
+    session = requests.Session()
+    adapter = requests.adapters.HTTPAdapter(pool_connections=10, pool_maxsize=10)
+    session.mount("http://", adapter)
+    def call(sys_msg, user_msg):
+        body = {"model": NAZIV_MODELA, "stream": False,
+                "options": {"temperature": 0, "num_predict": 15}, ...}
+        resp = session.post("http://localhost:11434/api/chat", json=body, timeout=120)
+        return resp.json()["message"]["content"]
+    return call
+
+if BACKEND == "dummy":
+    rng = np.random.default_rng(0)
+    return lambda s, u: str(rng.choice(["pozitivan", "negativan", "neutralan"]))
+
+temperature=0 SVUDA: iskljucuje slucajnost u generisanju - za klasifikacioni
+zadatak zelimo deterministicki, ponovljiv odgovor, ne kreativnost.
+max_tokens=5 / num_predict=15: odgovor treba da bude JEDNA REC, pa se
+generisanje namerno ogranicava da ne trosi vreme/novac na dugacak odgovor.
+
+requests.Session() sa connection pool-om (umesto novog konekcije po pozivu) je
+bitno za performanse jer se radi sa 40 paralelnih niti (BROJ_NITI) - deljeni
+pool konekcija izbegava overhead ponovnog uspostavljanja TCP konekcije za
+svaki od hiljada zahteva.
+
+BACKEND = "dummy" vraca NASUMICNE odgovore - koristi se samo za testiranje da
+pipeline (paralelizacija, kesiranje, parsiranje, grafikoni) radi ispravno BEZ
+stvarnog pozivanja modela; skripta eksplicitno ispisuje upozorenje da se
+rezultati sa "dummy" ne smeju staviti u izvestaj.
+
+--- CELINA 4: few_shot_block() - biranje primera za few-shot upit ---
+
+def few_shot_block(df, labels, lang: str, seed: int = 7):
+    parts = [df[df.sentiment == lab].sample(min(BROJ_FEW_SHOT_PRIMERA, ...), random_state=seed)
+            for lab in labels]
+    ex = pd.concat(parts).sample(frac=1.0, random_state=seed)
+    ...
+    return "\n".join(lines), set(ex.index)
+
+Bira PO N primera za SVAKU klasu (ne slucajno iz celog skupa) - da bi
+few-shot primeri bili balansirani po klasama, ne da model slucajno vidi samo
+pozitivne primere. Vraca i set indeksa iskoriscenih primera - to se koristi u
+main() da se ti primeri IZBACE iz evaluacionog skupa:
+
+  df_eval = df.drop(index=list(used))  # bez curenja podataka
+
+Ovo je kljucna mera protiv curenja podataka (data leakage): tekstovi
+upotrebljeni KAO primeri u promptu ne smeju istovremeno biti i deo skupa na
+kome se model OCENJUJE, jer bi to lazno naduvalo rezultat (model bi mogao
+"prepoznati" tacan primer koji mu je vec dat kao uzorak).
+
+--- CELINA 5: evaluate_prompt() - paralelni pozivi modelu + kesiranje ---
+
+def evaluate_prompt(call, pname, tmpl, df_eval):
+    key = f"{BACKEND}_{NAZIV_MODELA}_{pname}_{len(df_eval)}"
+    cache_f = CACHE / f"gen_{...}.json"
+    if cache_f.exists() and not IGNORISI_KES:
+        return json.loads(cache_f.read_text(encoding="utf-8"))
+
+    msgs = [tmpl["user"].format(tekst=t, primeri=tmpl.get("_primeri", "")) for t in texts]
+
+    with ThreadPoolExecutor(max_workers=BROJ_NITI) as ex:
+        futures = {ex.submit(_call_one, call, tmpl["sys"], msg): i for i, msg in enumerate(msgs)}
+        for fut in as_completed(futures):
+            i = futures[fut]
+            raw_out[i] = fut.result()
+
+    cache_f.write_text(json.dumps(raw_out, ...))
+    return raw_out
+
+Isti kes-princip kao svuda drugde u projektu (hash/kljuc -> JSON fajl u
+.cache/), ovde po kombinaciji (backend, model, naziv upita, velicina skupa) -
+da se skupi LLM pozivi (mogu kostati novac kod OpenAI/Gemini, ili vremenski
+sporo kod lokalnog modela) ne ponavljaju nepotrebno.
+
+_call_one() (koriscen unutar) implementira retry sa eksponencijalnim
+cekanjem - isti obrazac kao _embed_batch u 03_enkoderski_modeli.py, jer se
+mrezni/API pozivi mogu privremeno pokvariti.
+
+--- main() - orkestracija ---
+
+  df["tekst_clean"] = df["tekst"].apply(basic_clean)   # ciscenje SAMO JEDNOM
+
+Optimizacija: basic_clean se poziva JEDNOM na pocetku za CEO skup, umesto da
+se preracunava iznova za svaki od 6 UPITI varijanti.
+
+  for pname in UPITI:
+      tmpl = dict(PROMPTS[pname])
+      df_eval = df
+      if pname.endswith("_few"):
+          block, used = few_shot_block(df, labels, pname[:2])
+          tmpl["_primeri"] = block
+          df_eval = df.drop(index=list(used))
+      ...
+      raw = evaluate_prompt(call, pname, tmpl, df_eval)
+      pred = [parse_label(r, labels) for r in raw]
+      gold = df_eval["sentiment"].tolist()
+
+      neparsirano = sum(p == "NEPARSIRANO" for p in pred)
+      mask = [p != "NEPARSIRANO" for p in pred]
+      g2 = [g for g, m in zip(gold, mask) if m]
+      p2 = [p for p, m in zip(pred, mask) if m]
+
+      f1 = f1_score(g2, p2, average="macro", labels=labels, zero_division=0)
+      acc = float(np.mean([g == p for g, p in zip(gold, pred)]))
+
+macro-F1 se racuna SAMO nad uspesno parsiranim odgovorima (g2/p2) - da
+"NEPARSIRANO" ne bi bila tretirana kao pogresna KLASA i vestacki snizila F1 na
+nacin koji nije reprezentativan za kvalitet klasifikacije. Tacnost (acc), s
+druge strane, racuna se nad SVIM primerima (ukljucujuci neparsirane kao
+automatski netacne) - tako da se i dalje vidi ukupna "cena" neuspesnog
+parsiranja u praksi. Broj neparsiranih (neparsirano) se posebno izvestava.
+
+Za svaku od 6 varijanti upita cuva se red u rows -> na kraju CSV
+(rezultati_dekoder.csv), sortiran po macroF1, i grafikoni:
+  1. dekoder_upiti.png - levo: bar-graf svih 6 upita po macro-F1; desno:
+     pivot tabela (tip upita x jezik) kao grupisani bar-graf - pokazuje da li
+     je npr. srpski bolji od engleskog, i da li definicije/few-shot pomazu
+  2. dekoder_matrica_konfuzije.png - matrica konfuzije za NAJBOLJI upit,
+     ukljucujuci "NEPARSIRANO" kao posebnu kolonu/red ako se pojavljuje
+
+
+================================================================================
+REDOSLED POKRETANJA - REZIME
+================================================================================
+
+1. Pripremiti SerbianStemmer.py pored preprocessing.py (opciono, inace radi
+   ugradjeni fallback stemer uz upozorenje).
+2. pip install classla && python -c "import classla; classla.download('sr')"
+   (za lematizaciju i NER geo-filter).
+3. python 01_statistika.py
+     -> upoznavanje sa podacima, provera balansa klasa, (opciono) slaganje
+        anotatora ako postoji kalibracioni skup.
+4. python 02_osnovni_modeli.py
+     -> najbrzi eksperiment; klasicni TF-IDF + linearni modeli; odgovara
+        na pitanje "koje pretprocesiranje i koje odlike najvise pomazu?"
+5. (opciono) ollama serve && ollama pull paraphrase-multilingual
+   python 03_enkoderski_modeli.py
+     -> poredi gotove multilingvalne embeddinge sa TF-IDF pristupom iz 02.
+6. pip install torch transformers==4.46.3
+   python 03b_encoder_finetuning.py
+     -> najsporije, ali daje "pravi" fine-tuning rezultat (preporucen GPU).
+7. ollama pull <model_za_generisanje> (ili API kljuc za OpenAI/Gemini)
+   python 04_dekoderski_modeli.py
+     -> poredi prompt-inzenjering pristupe (jezik x tip upita) BEZ treninga.
+
+Svaka skripta upisuje rezultate (CSV/JSON/PNG) u SVOJ IZLAZNI_DIREKTORIJUM
+definisan na vrhu fajla - nista se ne mesa medju skriptama, pa se sve mogu
+pokretati nezavisno, bilo kojim redosledom (osim sto sve zavise od
+data.py/preprocessing.py kao biblioteka).
+
+================================================================================
+KRAJ VODICA
+================================================================================
