@@ -1,0 +1,1646 @@
+Pocetak izvrsavanja: 2026-08-04T02:13:15+02:00
+Uklonjeno 11 dupliranih tekstova.
+Ucitano tekstova: 2908
+
+Pokrecem: lower + BOW + MultinomialNB
+  Fold  1/10: accuracy=0.5808, macro-F1=0.5817, najbolje={'classifier__alpha': 0.5}
+  Fold  2/10: accuracy=0.5739, macro-F1=0.5731, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6565, najbolje={'classifier__alpha': 0.1}
+  Fold  4/10: accuracy=0.5876, macro-F1=0.5865, najbolje={'classifier__alpha': 0.5}
+  Fold  5/10: accuracy=0.5773, macro-F1=0.5776, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6559, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.6598, macro-F1=0.6591, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6529, macro-F1=0.6514, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6103, macro-F1=0.6102, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6138, macro-F1=0.6130, najbolje={'classifier__alpha': 0.1}
+
+Pokrecem: lower + BOW + LogisticRegression
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5978, najbolje={}
+  Fold  2/10: accuracy=0.6048, macro-F1=0.6052, najbolje={}
+  Fold  3/10: accuracy=0.6186, macro-F1=0.6186, najbolje={}
+  Fold  4/10: accuracy=0.5670, macro-F1=0.5646, najbolje={}
+  Fold  5/10: accuracy=0.5670, macro-F1=0.5662, najbolje={}
+  Fold  6/10: accuracy=0.6392, macro-F1=0.6382, najbolje={}
+  Fold  7/10: accuracy=0.6392, macro-F1=0.6391, najbolje={}
+  Fold  8/10: accuracy=0.6323, macro-F1=0.6308, najbolje={}
+  Fold  9/10: accuracy=0.6241, macro-F1=0.6229, najbolje={}
+  Fold 10/10: accuracy=0.5966, macro-F1=0.5913, najbolje={}
+
+Pokrecem: lower + BOW + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.5911, macro-F1=0.5909, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6048, macro-F1=0.6052, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6186, macro-F1=0.6186, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.5670, macro-F1=0.5646, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.5842, macro-F1=0.5824, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6447, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6392, macro-F1=0.6391, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6289, macro-F1=0.6264, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6241, macro-F1=0.6229, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.5897, macro-F1=0.5844, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower + BOW + LinearSVM
+  Fold  1/10: accuracy=0.5808, macro-F1=0.5805, najbolje={}
+  Fold  2/10: accuracy=0.5842, macro-F1=0.5844, najbolje={}
+  Fold  3/10: accuracy=0.6151, macro-F1=0.6149, najbolje={}
+  Fold  4/10: accuracy=0.5430, macro-F1=0.5412, najbolje={}
+  Fold  5/10: accuracy=0.5773, macro-F1=0.5774, najbolje={}
+  Fold  6/10: accuracy=0.6220, macro-F1=0.6212, najbolje={}
+  Fold  7/10: accuracy=0.6357, macro-F1=0.6352, najbolje={}
+  Fold  8/10: accuracy=0.5704, macro-F1=0.5702, najbolje={}
+  Fold  9/10: accuracy=0.6276, macro-F1=0.6271, najbolje={}
+  Fold 10/10: accuracy=0.5724, macro-F1=0.5704, najbolje={}
+
+Pokrecem: lower + BOW + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.5842, macro-F1=0.5839, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.5911, macro-F1=0.5909, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6186, macro-F1=0.6184, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5704, macro-F1=0.5685, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.5636, macro-F1=0.5626, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6323, macro-F1=0.6312, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6495, macro-F1=0.6493, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6323, macro-F1=0.6314, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6207, macro-F1=0.6199, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.5724, macro-F1=0.5704, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower + TF + MultinomialNB
+  Fold  1/10: accuracy=0.5670, macro-F1=0.5660, najbolje={'classifier__alpha': 0.01}
+  Fold  2/10: accuracy=0.6048, macro-F1=0.6055, najbolje={'classifier__alpha': 0.01}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6285, najbolje={'classifier__alpha': 0.01}
+  Fold  4/10: accuracy=0.5704, macro-F1=0.5685, najbolje={'classifier__alpha': 0.01}
+  Fold  5/10: accuracy=0.5773, macro-F1=0.5772, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6529, macro-F1=0.6510, najbolje={'classifier__alpha': 0.01}
+  Fold  7/10: accuracy=0.6529, macro-F1=0.6520, najbolje={'classifier__alpha': 0.01}
+  Fold  8/10: accuracy=0.6495, macro-F1=0.6484, najbolje={'classifier__alpha': 0.01}
+  Fold  9/10: accuracy=0.6345, macro-F1=0.6337, najbolje={'classifier__alpha': 0.01}
+  Fold 10/10: accuracy=0.6276, macro-F1=0.6252, najbolje={'classifier__alpha': 0.01}
+
+Pokrecem: lower + TF + LogisticRegression
+  Fold  1/10: accuracy=0.4330, macro-F1=0.4171, najbolje={}
+  Fold  2/10: accuracy=0.4948, macro-F1=0.4873, najbolje={}
+  Fold  3/10: accuracy=0.5017, macro-F1=0.4954, najbolje={}
+  Fold  4/10: accuracy=0.4948, macro-F1=0.4805, najbolje={}
+  Fold  5/10: accuracy=0.4811, macro-F1=0.4671, najbolje={}
+  Fold  6/10: accuracy=0.4983, macro-F1=0.4787, najbolje={}
+  Fold  7/10: accuracy=0.4948, macro-F1=0.4885, najbolje={}
+  Fold  8/10: accuracy=0.5189, macro-F1=0.5053, najbolje={}
+  Fold  9/10: accuracy=0.5138, macro-F1=0.5076, najbolje={}
+  Fold 10/10: accuracy=0.5207, macro-F1=0.5090, najbolje={}
+
+Pokrecem: lower + TF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.5223, macro-F1=0.5207, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.5636, macro-F1=0.5638, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.5636, macro-F1=0.5632, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.5464, macro-F1=0.5412, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.5498, macro-F1=0.5444, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6082, macro-F1=0.6064, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.5876, macro-F1=0.5873, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6014, macro-F1=0.6003, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6103, macro-F1=0.6100, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.5759, macro-F1=0.5713, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower + TF + LinearSVM
+  Fold  1/10: accuracy=0.5086, macro-F1=0.5047, najbolje={}
+  Fold  2/10: accuracy=0.5430, macro-F1=0.5420, najbolje={}
+  Fold  3/10: accuracy=0.5464, macro-F1=0.5459, najbolje={}
+  Fold  4/10: accuracy=0.5292, macro-F1=0.5211, najbolje={}
+  Fold  5/10: accuracy=0.5223, macro-F1=0.5139, najbolje={}
+  Fold  6/10: accuracy=0.5601, macro-F1=0.5568, najbolje={}
+  Fold  7/10: accuracy=0.5670, macro-F1=0.5650, najbolje={}
+  Fold  8/10: accuracy=0.5601, macro-F1=0.5569, najbolje={}
+  Fold  9/10: accuracy=0.6034, macro-F1=0.6013, najbolje={}
+  Fold 10/10: accuracy=0.5828, macro-F1=0.5774, najbolje={}
+
+Pokrecem: lower + TF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.5842, macro-F1=0.5842, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.6117, macro-F1=0.6120, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6014, macro-F1=0.6015, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.5464, macro-F1=0.5439, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6082, macro-F1=0.6076, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6453, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6629, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6048, macro-F1=0.6044, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6448, macro-F1=0.6453, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6241, macro-F1=0.6199, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower + LOG_TF + MultinomialNB
+  Fold  1/10: accuracy=0.5773, macro-F1=0.5783, najbolje={'classifier__alpha': 0.5}
+  Fold  2/10: accuracy=0.5739, macro-F1=0.5725, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6667, macro-F1=0.6669, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.5773, macro-F1=0.5760, najbolje={'classifier__alpha': 0.5}
+  Fold  5/10: accuracy=0.5842, macro-F1=0.5847, najbolje={'classifier__alpha': 0.5}
+  Fold  6/10: accuracy=0.6838, macro-F1=0.6839, najbolje={'classifier__alpha': 0.5}
+  Fold  7/10: accuracy=0.6495, macro-F1=0.6485, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6162, najbolje={'classifier__alpha': 1.0}
+  Fold  9/10: accuracy=0.6172, macro-F1=0.6170, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6069, macro-F1=0.6067, najbolje={'classifier__alpha': 0.1}
+
+Pokrecem: lower + LOG_TF + LogisticRegression
+  Fold  1/10: accuracy=0.6014, macro-F1=0.6015, najbolje={}
+  Fold  2/10: accuracy=0.5876, macro-F1=0.5877, najbolje={}
+  Fold  3/10: accuracy=0.5979, macro-F1=0.5985, najbolje={}
+  Fold  4/10: accuracy=0.5567, macro-F1=0.5533, najbolje={}
+  Fold  5/10: accuracy=0.5876, macro-F1=0.5858, najbolje={}
+  Fold  6/10: accuracy=0.6289, macro-F1=0.6276, najbolje={}
+  Fold  7/10: accuracy=0.6495, macro-F1=0.6501, najbolje={}
+  Fold  8/10: accuracy=0.6357, macro-F1=0.6354, najbolje={}
+  Fold  9/10: accuracy=0.6414, macro-F1=0.6407, najbolje={}
+  Fold 10/10: accuracy=0.6034, macro-F1=0.6002, najbolje={}
+
+Pokrecem: lower + LOG_TF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6014, macro-F1=0.6008, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.5945, macro-F1=0.5946, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6048, macro-F1=0.6050, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5567, macro-F1=0.5533, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.5808, macro-F1=0.5782, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6220, macro-F1=0.6204, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6667, macro-F1=0.6668, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6151, macro-F1=0.6128, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6586, macro-F1=0.6576, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6034, macro-F1=0.6002, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower + LOG_TF + LinearSVM
+  Fold  1/10: accuracy=0.5464, macro-F1=0.5459, najbolje={}
+  Fold  2/10: accuracy=0.5773, macro-F1=0.5773, najbolje={}
+  Fold  3/10: accuracy=0.6048, macro-F1=0.6044, najbolje={}
+  Fold  4/10: accuracy=0.5636, macro-F1=0.5618, najbolje={}
+  Fold  5/10: accuracy=0.5979, macro-F1=0.5979, najbolje={}
+  Fold  6/10: accuracy=0.6151, macro-F1=0.6147, najbolje={}
+  Fold  7/10: accuracy=0.6564, macro-F1=0.6561, najbolje={}
+  Fold  8/10: accuracy=0.5979, macro-F1=0.5980, najbolje={}
+  Fold  9/10: accuracy=0.6034, macro-F1=0.6025, najbolje={}
+  Fold 10/10: accuracy=0.5759, macro-F1=0.5748, najbolje={}
+
+Pokrecem: lower + LOG_TF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.5945, macro-F1=0.5944, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.5842, macro-F1=0.5840, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6048, macro-F1=0.6051, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5533, macro-F1=0.5500, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.5876, macro-F1=0.5864, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6357, macro-F1=0.6351, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6598, macro-F1=0.6594, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6357, macro-F1=0.6357, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6276, macro-F1=0.6263, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6034, macro-F1=0.6012, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower + IDF + MultinomialNB
+  Fold  1/10: accuracy=0.5911, macro-F1=0.5926, najbolje={'classifier__alpha': 1.0}
+  Fold  2/10: accuracy=0.5773, macro-F1=0.5746, najbolje={'classifier__alpha': 2.0}
+  Fold  3/10: accuracy=0.6323, macro-F1=0.6317, najbolje={'classifier__alpha': 2.0}
+  Fold  4/10: accuracy=0.5808, macro-F1=0.5803, najbolje={'classifier__alpha': 2.0}
+  Fold  5/10: accuracy=0.5876, macro-F1=0.5872, najbolje={'classifier__alpha': 2.0}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6553, najbolje={'classifier__alpha': 2.0}
+  Fold  7/10: accuracy=0.6254, macro-F1=0.6250, najbolje={'classifier__alpha': 2.0}
+  Fold  8/10: accuracy=0.6289, macro-F1=0.6276, najbolje={'classifier__alpha': 2.0}
+  Fold  9/10: accuracy=0.6172, macro-F1=0.6167, najbolje={'classifier__alpha': 2.0}
+  Fold 10/10: accuracy=0.5828, macro-F1=0.5829, najbolje={'classifier__alpha': 2.0}
+
+Pokrecem: lower + IDF + LogisticRegression
+  Fold  1/10: accuracy=0.5876, macro-F1=0.5871, najbolje={}
+  Fold  2/10: accuracy=0.5911, macro-F1=0.5912, najbolje={}
+  Fold  3/10: accuracy=0.6220, macro-F1=0.6222, najbolje={}
+  Fold  4/10: accuracy=0.5979, macro-F1=0.5964, najbolje={}
+  Fold  5/10: accuracy=0.6048, macro-F1=0.6013, najbolje={}
+  Fold  6/10: accuracy=0.6254, macro-F1=0.6245, najbolje={}
+  Fold  7/10: accuracy=0.6804, macro-F1=0.6806, najbolje={}
+  Fold  8/10: accuracy=0.6357, macro-F1=0.6357, najbolje={}
+  Fold  9/10: accuracy=0.6172, macro-F1=0.6164, najbolje={}
+  Fold 10/10: accuracy=0.6069, macro-F1=0.6051, najbolje={}
+
+Pokrecem: lower + IDF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6323, macro-F1=0.6321, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.6014, macro-F1=0.6016, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6151, macro-F1=0.6157, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5904, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.5945, macro-F1=0.5938, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6426, macro-F1=0.6418, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6770, macro-F1=0.6773, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6323, macro-F1=0.6324, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6276, macro-F1=0.6276, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6138, macro-F1=0.6115, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower + IDF + LinearSVM
+  Fold  1/10: accuracy=0.5704, macro-F1=0.5699, najbolje={}
+  Fold  2/10: accuracy=0.5533, macro-F1=0.5537, najbolje={}
+  Fold  3/10: accuracy=0.5911, macro-F1=0.5913, najbolje={}
+  Fold  4/10: accuracy=0.5842, macro-F1=0.5828, najbolje={}
+  Fold  5/10: accuracy=0.5773, macro-F1=0.5753, najbolje={}
+  Fold  6/10: accuracy=0.5945, macro-F1=0.5939, najbolje={}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6635, najbolje={}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6178, najbolje={}
+  Fold  9/10: accuracy=0.6034, macro-F1=0.6037, najbolje={}
+  Fold 10/10: accuracy=0.5690, macro-F1=0.5690, najbolje={}
+
+Pokrecem: lower + IDF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.5773, macro-F1=0.5767, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.5533, macro-F1=0.5537, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.5979, macro-F1=0.5983, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5842, macro-F1=0.5828, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.5704, macro-F1=0.5685, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.5979, macro-F1=0.5974, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6529, macro-F1=0.6532, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6048, macro-F1=0.6040, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6034, macro-F1=0.6037, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.5793, macro-F1=0.5794, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower + TF_IDF + MultinomialNB
+  Fold  1/10: accuracy=0.5911, macro-F1=0.5928, najbolje={'classifier__alpha': 0.01}
+  Fold  2/10: accuracy=0.6082, macro-F1=0.6065, najbolje={'classifier__alpha': 1.0}
+  Fold  3/10: accuracy=0.6323, macro-F1=0.6322, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.5808, macro-F1=0.5808, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.5773, macro-F1=0.5771, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6495, macro-F1=0.6490, najbolje={'classifier__alpha': 0.5}
+  Fold  7/10: accuracy=0.6529, macro-F1=0.6525, najbolje={'classifier__alpha': 0.1}
+  Fold  8/10: accuracy=0.5979, macro-F1=0.5959, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6207, macro-F1=0.6213, najbolje={'classifier__alpha': 0.01}
+  Fold 10/10: accuracy=0.6172, macro-F1=0.6159, najbolje={'classifier__alpha': 0.5}
+
+Pokrecem: lower + TF_IDF + LogisticRegression
+  Fold  1/10: accuracy=0.5739, macro-F1=0.5723, najbolje={}
+  Fold  2/10: accuracy=0.6220, macro-F1=0.6228, najbolje={}
+  Fold  3/10: accuracy=0.6186, macro-F1=0.6184, najbolje={}
+  Fold  4/10: accuracy=0.5567, macro-F1=0.5533, najbolje={}
+  Fold  5/10: accuracy=0.5876, macro-F1=0.5855, najbolje={}
+  Fold  6/10: accuracy=0.6598, macro-F1=0.6578, najbolje={}
+  Fold  7/10: accuracy=0.6151, macro-F1=0.6151, najbolje={}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6424, najbolje={}
+  Fold  9/10: accuracy=0.6517, macro-F1=0.6522, najbolje={}
+  Fold 10/10: accuracy=0.6241, macro-F1=0.6199, najbolje={}
+
+Pokrecem: lower + TF_IDF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.5945, macro-F1=0.5945, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6252, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6426, macro-F1=0.6434, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.5739, macro-F1=0.5726, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6082, macro-F1=0.6087, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6457, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6804, macro-F1=0.6805, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6424, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6379, macro-F1=0.6382, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6138, macro-F1=0.6097, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower + TF_IDF + LinearSVM
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5982, najbolje={}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6255, najbolje={}
+  Fold  3/10: accuracy=0.6392, macro-F1=0.6399, najbolje={}
+  Fold  4/10: accuracy=0.5842, macro-F1=0.5837, najbolje={}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6192, najbolje={}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6556, najbolje={}
+  Fold  7/10: accuracy=0.6942, macro-F1=0.6942, najbolje={}
+  Fold  8/10: accuracy=0.6735, macro-F1=0.6733, najbolje={}
+  Fold  9/10: accuracy=0.6379, macro-F1=0.6381, najbolje={}
+  Fold 10/10: accuracy=0.6103, macro-F1=0.6070, najbolje={}
+
+Pokrecem: lower + TF_IDF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5982, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6255, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6392, macro-F1=0.6399, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.5842, macro-F1=0.5837, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6192, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6556, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6942, macro-F1=0.6942, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6735, macro-F1=0.6733, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6379, macro-F1=0.6381, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6103, macro-F1=0.6070, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower + TFIDF_1-2 + MultinomialNB
+  Fold  1/10: accuracy=0.5842, macro-F1=0.5840, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6254, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6701, macro-F1=0.6699, najbolje={'classifier__alpha': 0.1}
+  Fold  4/10: accuracy=0.5876, macro-F1=0.5861, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.6048, macro-F1=0.6063, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6907, macro-F1=0.6897, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.6529, macro-F1=0.6528, najbolje={'classifier__alpha': 0.01}
+  Fold  8/10: accuracy=0.6254, macro-F1=0.6242, najbolje={'classifier__alpha': 0.1}
+  Fold  9/10: accuracy=0.6069, macro-F1=0.6064, najbolje={'classifier__alpha': 0.01}
+  Fold 10/10: accuracy=0.6552, macro-F1=0.6538, najbolje={'classifier__alpha': 0.5}
+
+Pokrecem: lower + TFIDF_1-2 + LogisticRegression
+  Fold  1/10: accuracy=0.6186, macro-F1=0.6175, najbolje={}
+  Fold  2/10: accuracy=0.6426, macro-F1=0.6431, najbolje={}
+  Fold  3/10: accuracy=0.6323, macro-F1=0.6307, najbolje={}
+  Fold  4/10: accuracy=0.5979, macro-F1=0.5942, najbolje={}
+  Fold  5/10: accuracy=0.5670, macro-F1=0.5643, najbolje={}
+  Fold  6/10: accuracy=0.6598, macro-F1=0.6574, najbolje={}
+  Fold  7/10: accuracy=0.6701, macro-F1=0.6692, najbolje={}
+  Fold  8/10: accuracy=0.6392, macro-F1=0.6380, najbolje={}
+  Fold  9/10: accuracy=0.6828, macro-F1=0.6825, najbolje={}
+  Fold 10/10: accuracy=0.6207, macro-F1=0.6176, najbolje={}
+
+Pokrecem: lower + TFIDF_1-2 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6186, macro-F1=0.6175, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6528, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6323, macro-F1=0.6307, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5900, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.5876, macro-F1=0.5871, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6765, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6976, macro-F1=0.6972, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6392, macro-F1=0.6387, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6828, macro-F1=0.6825, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.5897, macro-F1=0.5863, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower + TFIDF_1-2 + LinearSVM
+  Fold  1/10: accuracy=0.6117, macro-F1=0.6118, najbolje={}
+  Fold  2/10: accuracy=0.6701, macro-F1=0.6701, najbolje={}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6286, najbolje={}
+  Fold  4/10: accuracy=0.5876, macro-F1=0.5866, najbolje={}
+  Fold  5/10: accuracy=0.5911, macro-F1=0.5910, najbolje={}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6763, najbolje={}
+  Fold  7/10: accuracy=0.6873, macro-F1=0.6870, najbolje={}
+  Fold  8/10: accuracy=0.6254, macro-F1=0.6252, najbolje={}
+  Fold  9/10: accuracy=0.6414, macro-F1=0.6412, najbolje={}
+  Fold 10/10: accuracy=0.5966, macro-F1=0.5945, najbolje={}
+
+Pokrecem: lower + TFIDF_1-2 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6117, macro-F1=0.6099, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6701, macro-F1=0.6701, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6286, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.5876, macro-F1=0.5866, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.5911, macro-F1=0.5910, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6763, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6873, macro-F1=0.6870, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6254, macro-F1=0.6252, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6414, macro-F1=0.6412, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.5966, macro-F1=0.5945, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower + TFIDF_1-3 + MultinomialNB
+  Fold  1/10: accuracy=0.6014, macro-F1=0.6008, najbolje={'classifier__alpha': 1.0}
+  Fold  2/10: accuracy=0.6392, macro-F1=0.6399, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6151, macro-F1=0.6145, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.5808, macro-F1=0.5774, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.5979, macro-F1=0.5979, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6838, macro-F1=0.6835, najbolje={'classifier__alpha': 0.01}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6619, najbolje={'classifier__alpha': 0.1}
+  Fold  8/10: accuracy=0.6117, macro-F1=0.6101, najbolje={'classifier__alpha': 0.1}
+  Fold  9/10: accuracy=0.6552, macro-F1=0.6561, najbolje={'classifier__alpha': 1.0}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6409, najbolje={'classifier__alpha': 0.1}
+
+Pokrecem: lower + TFIDF_1-3 + LogisticRegression
+  Fold  1/10: accuracy=0.6014, macro-F1=0.6005, najbolje={}
+  Fold  2/10: accuracy=0.6392, macro-F1=0.6407, najbolje={}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6280, najbolje={}
+  Fold  4/10: accuracy=0.5773, macro-F1=0.5732, najbolje={}
+  Fold  5/10: accuracy=0.5842, macro-F1=0.5814, najbolje={}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6424, najbolje={}
+  Fold  7/10: accuracy=0.6564, macro-F1=0.6548, najbolje={}
+  Fold  8/10: accuracy=0.6254, macro-F1=0.6240, najbolje={}
+  Fold  9/10: accuracy=0.6897, macro-F1=0.6891, najbolje={}
+  Fold 10/10: accuracy=0.6207, macro-F1=0.6170, najbolje={}
+
+Pokrecem: lower + TFIDF_1-3 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6014, macro-F1=0.6005, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6392, macro-F1=0.6407, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6280, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.5773, macro-F1=0.5732, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.5842, macro-F1=0.5814, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6424, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6564, macro-F1=0.6548, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6289, macro-F1=0.6281, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6483, macro-F1=0.6481, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6207, macro-F1=0.6170, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower + TFIDF_1-3 + LinearSVM
+  Fold  1/10: accuracy=0.6048, macro-F1=0.6049, najbolje={}
+  Fold  2/10: accuracy=0.6460, macro-F1=0.6466, najbolje={}
+  Fold  3/10: accuracy=0.6151, macro-F1=0.6154, najbolje={}
+  Fold  4/10: accuracy=0.5704, macro-F1=0.5687, najbolje={}
+  Fold  5/10: accuracy=0.5704, macro-F1=0.5707, najbolje={}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6759, najbolje={}
+  Fold  7/10: accuracy=0.6838, macro-F1=0.6831, najbolje={}
+  Fold  8/10: accuracy=0.6151, macro-F1=0.6145, najbolje={}
+  Fold  9/10: accuracy=0.6448, macro-F1=0.6443, najbolje={}
+  Fold 10/10: accuracy=0.6069, macro-F1=0.6041, najbolje={}
+
+Pokrecem: lower + TFIDF_1-3 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5963, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6426, macro-F1=0.6444, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6186, macro-F1=0.6171, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5773, macro-F1=0.5714, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.5739, macro-F1=0.5702, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6701, macro-F1=0.6650, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6598, macro-F1=0.6581, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6151, macro-F1=0.6145, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6759, macro-F1=0.6749, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6069, macro-F1=0.6041, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower + CHAR_3-5 + MultinomialNB
+  Fold  1/10: accuracy=0.5842, macro-F1=0.5845, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6323, macro-F1=0.6328, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6220, macro-F1=0.6220, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6087, najbolje={'classifier__alpha': 0.01}
+  Fold  5/10: accuracy=0.5911, macro-F1=0.5892, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6745, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.6357, macro-F1=0.6345, najbolje={'classifier__alpha': 0.01}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6429, najbolje={'classifier__alpha': 0.1}
+  Fold  9/10: accuracy=0.6241, macro-F1=0.6248, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6552, macro-F1=0.6532, najbolje={'classifier__alpha': 0.01}
+
+Pokrecem: lower + CHAR_3-5 + LogisticRegression
+  Fold  1/10: accuracy=0.6770, macro-F1=0.6763, najbolje={}
+  Fold  2/10: accuracy=0.6460, macro-F1=0.6472, najbolje={}
+  Fold  3/10: accuracy=0.6667, macro-F1=0.6653, najbolje={}
+  Fold  4/10: accuracy=0.6460, macro-F1=0.6422, najbolje={}
+  Fold  5/10: accuracy=0.6357, macro-F1=0.6344, najbolje={}
+  Fold  6/10: accuracy=0.6907, macro-F1=0.6877, najbolje={}
+  Fold  7/10: accuracy=0.6976, macro-F1=0.6966, najbolje={}
+  Fold  8/10: accuracy=0.6907, macro-F1=0.6901, najbolje={}
+  Fold  9/10: accuracy=0.6793, macro-F1=0.6794, najbolje={}
+  Fold 10/10: accuracy=0.6414, macro-F1=0.6346, najbolje={}
+
+Pokrecem: lower + CHAR_3-5 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6770, macro-F1=0.6763, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6495, macro-F1=0.6493, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6667, macro-F1=0.6653, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6460, macro-F1=0.6422, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6357, macro-F1=0.6344, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6907, macro-F1=0.6877, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6976, macro-F1=0.6966, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6907, macro-F1=0.6901, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6793, macro-F1=0.6795, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6400, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower + CHAR_3-5 + LinearSVM
+  Fold  1/10: accuracy=0.6804, macro-F1=0.6790, najbolje={}
+  Fold  2/10: accuracy=0.6426, macro-F1=0.6428, najbolje={}
+  Fold  3/10: accuracy=0.6735, macro-F1=0.6726, najbolje={}
+  Fold  4/10: accuracy=0.6323, macro-F1=0.6300, najbolje={}
+  Fold  5/10: accuracy=0.6529, macro-F1=0.6521, najbolje={}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6739, najbolje={}
+  Fold  7/10: accuracy=0.7216, macro-F1=0.7226, najbolje={}
+  Fold  8/10: accuracy=0.6701, macro-F1=0.6697, najbolje={}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6728, najbolje={}
+  Fold 10/10: accuracy=0.6345, macro-F1=0.6302, najbolje={}
+
+Pokrecem: lower + CHAR_3-5 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6495, macro-F1=0.6484, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6426, macro-F1=0.6428, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6667, macro-F1=0.6650, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6323, macro-F1=0.6282, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6529, macro-F1=0.6521, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6838, macro-F1=0.6799, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6735, macro-F1=0.6722, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6735, macro-F1=0.6723, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6728, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6345, macro-F1=0.6302, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower + REC+CHAR + MultinomialNB
+  Fold  1/10: accuracy=0.6014, macro-F1=0.6014, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6323, macro-F1=0.6329, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6563, najbolje={'classifier__alpha': 0.1}
+  Fold  4/10: accuracy=0.6151, macro-F1=0.6133, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.6048, macro-F1=0.6069, najbolje={'classifier__alpha': 0.5}
+  Fold  6/10: accuracy=0.7113, macro-F1=0.7095, najbolje={'classifier__alpha': 0.01}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6627, najbolje={'classifier__alpha': 0.1}
+  Fold  8/10: accuracy=0.6289, macro-F1=0.6289, najbolje={'classifier__alpha': 0.1}
+  Fold  9/10: accuracy=0.6241, macro-F1=0.6237, najbolje={'classifier__alpha': 0.01}
+  Fold 10/10: accuracy=0.6724, macro-F1=0.6711, najbolje={'classifier__alpha': 0.1}
+
+Pokrecem: lower + REC+CHAR + LogisticRegression
+  Fold  1/10: accuracy=0.6701, macro-F1=0.6698, najbolje={}
+  Fold  2/10: accuracy=0.6598, macro-F1=0.6608, najbolje={}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6626, najbolje={}
+  Fold  4/10: accuracy=0.6220, macro-F1=0.6194, najbolje={}
+  Fold  5/10: accuracy=0.6564, macro-F1=0.6564, najbolje={}
+  Fold  6/10: accuracy=0.6907, macro-F1=0.6890, najbolje={}
+  Fold  7/10: accuracy=0.7182, macro-F1=0.7182, najbolje={}
+  Fold  8/10: accuracy=0.6873, macro-F1=0.6873, najbolje={}
+  Fold  9/10: accuracy=0.6759, macro-F1=0.6750, najbolje={}
+  Fold 10/10: accuracy=0.6310, macro-F1=0.6254, najbolje={}
+
+Pokrecem: lower + REC+CHAR + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6701, macro-F1=0.6698, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6532, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6558, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.6220, macro-F1=0.6194, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6323, macro-F1=0.6319, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6907, macro-F1=0.6890, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.7182, macro-F1=0.7182, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6873, macro-F1=0.6873, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6759, macro-F1=0.6750, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6310, macro-F1=0.6254, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower + REC+CHAR + LinearSVM
+  Fold  1/10: accuracy=0.6529, macro-F1=0.6521, najbolje={}
+  Fold  2/10: accuracy=0.6426, macro-F1=0.6423, najbolje={}
+  Fold  3/10: accuracy=0.6495, macro-F1=0.6493, najbolje={}
+  Fold  4/10: accuracy=0.6254, macro-F1=0.6223, najbolje={}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6389, najbolje={}
+  Fold  6/10: accuracy=0.6976, macro-F1=0.6967, najbolje={}
+  Fold  7/10: accuracy=0.7251, macro-F1=0.7258, najbolje={}
+  Fold  8/10: accuracy=0.6667, macro-F1=0.6667, najbolje={}
+  Fold  9/10: accuracy=0.6586, macro-F1=0.6577, najbolje={}
+  Fold 10/10: accuracy=0.6276, macro-F1=0.6244, najbolje={}
+
+Pokrecem: lower + REC+CHAR + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6701, macro-F1=0.6697, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6460, macro-F1=0.6472, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6495, macro-F1=0.6493, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6254, macro-F1=0.6223, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6460, macro-F1=0.6462, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6942, macro-F1=0.6917, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.7113, macro-F1=0.7113, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6804, macro-F1=0.6797, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6931, macro-F1=0.6920, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6414, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+stem + BOW + MultinomialNB
+  Fold  1/10: accuracy=0.6254, macro-F1=0.6270, najbolje={'classifier__alpha': 0.5}
+  Fold  2/10: accuracy=0.5979, macro-F1=0.5976, najbolje={'classifier__alpha': 0.5}
+  Fold  3/10: accuracy=0.6426, macro-F1=0.6420, najbolje={'classifier__alpha': 1.0}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6115, najbolje={'classifier__alpha': 0.5}
+  Fold  5/10: accuracy=0.5979, macro-F1=0.5962, najbolje={'classifier__alpha': 0.5}
+  Fold  6/10: accuracy=0.6254, macro-F1=0.6245, najbolje={'classifier__alpha': 2.0}
+  Fold  7/10: accuracy=0.6048, macro-F1=0.6030, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6529, macro-F1=0.6527, najbolje={'classifier__alpha': 1.0}
+  Fold  9/10: accuracy=0.6379, macro-F1=0.6377, najbolje={'classifier__alpha': 0.5}
+  Fold 10/10: accuracy=0.6517, macro-F1=0.6516, najbolje={'classifier__alpha': 0.1}
+
+Pokrecem: lower+stem + BOW + LogisticRegression
+  Fold  1/10: accuracy=0.6220, macro-F1=0.6221, najbolje={}
+  Fold  2/10: accuracy=0.5979, macro-F1=0.5995, najbolje={}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6275, najbolje={}
+  Fold  4/10: accuracy=0.5808, macro-F1=0.5783, najbolje={}
+  Fold  5/10: accuracy=0.6220, macro-F1=0.6231, najbolje={}
+  Fold  6/10: accuracy=0.6117, macro-F1=0.6102, najbolje={}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6631, najbolje={}
+  Fold  8/10: accuracy=0.6323, macro-F1=0.6321, najbolje={}
+  Fold  9/10: accuracy=0.6138, macro-F1=0.6132, najbolje={}
+  Fold 10/10: accuracy=0.6138, macro-F1=0.6115, najbolje={}
+
+Pokrecem: lower+stem + BOW + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6220, macro-F1=0.6221, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6289, macro-F1=0.6299, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6151, macro-F1=0.6130, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5808, macro-F1=0.5783, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6151, macro-F1=0.6165, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6289, macro-F1=0.6270, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6907, macro-F1=0.6903, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6323, macro-F1=0.6322, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6138, macro-F1=0.6132, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6276, macro-F1=0.6254, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+stem + BOW + LinearSVM
+  Fold  1/10: accuracy=0.6186, macro-F1=0.6184, najbolje={}
+  Fold  2/10: accuracy=0.5911, macro-F1=0.5927, najbolje={}
+  Fold  3/10: accuracy=0.6357, macro-F1=0.6350, najbolje={}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5900, najbolje={}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6187, najbolje={}
+  Fold  6/10: accuracy=0.5911, macro-F1=0.5889, najbolje={}
+  Fold  7/10: accuracy=0.6186, macro-F1=0.6184, najbolje={}
+  Fold  8/10: accuracy=0.6151, macro-F1=0.6151, najbolje={}
+  Fold  9/10: accuracy=0.6414, macro-F1=0.6413, najbolje={}
+  Fold 10/10: accuracy=0.5724, macro-F1=0.5725, najbolje={}
+
+Pokrecem: lower+stem + BOW + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6082, macro-F1=0.6084, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6117, macro-F1=0.6134, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6274, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5876, macro-F1=0.5859, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6220, macro-F1=0.6234, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.5979, macro-F1=0.5948, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6624, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6428, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6207, macro-F1=0.6202, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6000, macro-F1=0.5982, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+stem + TF + MultinomialNB
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5971, najbolje={'classifier__alpha': 0.01}
+  Fold  2/10: accuracy=0.6048, macro-F1=0.6061, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6426, macro-F1=0.6406, najbolje={'classifier__alpha': 0.01}
+  Fold  4/10: accuracy=0.6014, macro-F1=0.5979, najbolje={'classifier__alpha': 0.01}
+  Fold  5/10: accuracy=0.6426, macro-F1=0.6396, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6289, macro-F1=0.6248, najbolje={'classifier__alpha': 0.01}
+  Fold  7/10: accuracy=0.6289, macro-F1=0.6281, najbolje={'classifier__alpha': 0.01}
+  Fold  8/10: accuracy=0.6392, macro-F1=0.6393, najbolje={'classifier__alpha': 0.01}
+  Fold  9/10: accuracy=0.6310, macro-F1=0.6315, najbolje={'classifier__alpha': 0.01}
+  Fold 10/10: accuracy=0.6586, macro-F1=0.6561, najbolje={'classifier__alpha': 0.01}
+
+Pokrecem: lower+stem + TF + LogisticRegression
+  Fold  1/10: accuracy=0.4639, macro-F1=0.4516, najbolje={}
+  Fold  2/10: accuracy=0.4845, macro-F1=0.4768, najbolje={}
+  Fold  3/10: accuracy=0.5223, macro-F1=0.5141, najbolje={}
+  Fold  4/10: accuracy=0.4983, macro-F1=0.4881, najbolje={}
+  Fold  5/10: accuracy=0.5189, macro-F1=0.5021, najbolje={}
+  Fold  6/10: accuracy=0.5670, macro-F1=0.5574, najbolje={}
+  Fold  7/10: accuracy=0.5052, macro-F1=0.4988, najbolje={}
+  Fold  8/10: accuracy=0.5567, macro-F1=0.5491, najbolje={}
+  Fold  9/10: accuracy=0.5483, macro-F1=0.5443, najbolje={}
+  Fold 10/10: accuracy=0.5586, macro-F1=0.5488, najbolje={}
+
+Pokrecem: lower+stem + TF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.5911, macro-F1=0.5900, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.5876, macro-F1=0.5870, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.5945, macro-F1=0.5928, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.5636, macro-F1=0.5593, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.5945, macro-F1=0.5902, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6151, macro-F1=0.6121, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6289, macro-F1=0.6295, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6220, macro-F1=0.6212, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6345, macro-F1=0.6349, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6103, macro-F1=0.6051, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+stem + TF + LinearSVM
+  Fold  1/10: accuracy=0.5876, macro-F1=0.5856, najbolje={}
+  Fold  2/10: accuracy=0.5704, macro-F1=0.5688, najbolje={}
+  Fold  3/10: accuracy=0.5842, macro-F1=0.5817, najbolje={}
+  Fold  4/10: accuracy=0.5567, macro-F1=0.5505, najbolje={}
+  Fold  5/10: accuracy=0.5739, macro-F1=0.5669, najbolje={}
+  Fold  6/10: accuracy=0.6254, macro-F1=0.6228, najbolje={}
+  Fold  7/10: accuracy=0.5911, macro-F1=0.5914, najbolje={}
+  Fold  8/10: accuracy=0.5979, macro-F1=0.5962, najbolje={}
+  Fold  9/10: accuracy=0.6172, macro-F1=0.6178, najbolje={}
+  Fold 10/10: accuracy=0.6138, macro-F1=0.6067, najbolje={}
+
+Pokrecem: lower+stem + TF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6357, macro-F1=0.6357, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.6426, macro-F1=0.6430, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6254, macro-F1=0.6241, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5893, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6289, macro-F1=0.6285, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6289, macro-F1=0.6284, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6873, macro-F1=0.6874, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6529, macro-F1=0.6530, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6517, macro-F1=0.6516, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6415, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+stem + LOG_TF + MultinomialNB
+  Fold  1/10: accuracy=0.6151, macro-F1=0.6165, najbolje={'classifier__alpha': 1.0}
+  Fold  2/10: accuracy=0.5979, macro-F1=0.5973, najbolje={'classifier__alpha': 0.5}
+  Fold  3/10: accuracy=0.6529, macro-F1=0.6525, najbolje={'classifier__alpha': 1.0}
+  Fold  4/10: accuracy=0.6186, macro-F1=0.6180, najbolje={'classifier__alpha': 0.5}
+  Fold  5/10: accuracy=0.6082, macro-F1=0.6063, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6323, macro-F1=0.6315, najbolje={'classifier__alpha': 2.0}
+  Fold  7/10: accuracy=0.6117, macro-F1=0.6100, najbolje={'classifier__alpha': 1.0}
+  Fold  8/10: accuracy=0.6357, macro-F1=0.6359, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6517, macro-F1=0.6516, najbolje={'classifier__alpha': 0.5}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6454, najbolje={'classifier__alpha': 1.0}
+
+Pokrecem: lower+stem + LOG_TF + LogisticRegression
+  Fold  1/10: accuracy=0.6460, macro-F1=0.6463, najbolje={}
+  Fold  2/10: accuracy=0.6186, macro-F1=0.6212, najbolje={}
+  Fold  3/10: accuracy=0.6254, macro-F1=0.6242, najbolje={}
+  Fold  4/10: accuracy=0.5979, macro-F1=0.5960, najbolje={}
+  Fold  5/10: accuracy=0.6254, macro-F1=0.6256, najbolje={}
+  Fold  6/10: accuracy=0.6220, macro-F1=0.6204, najbolje={}
+  Fold  7/10: accuracy=0.6804, macro-F1=0.6803, najbolje={}
+  Fold  8/10: accuracy=0.6323, macro-F1=0.6318, najbolje={}
+  Fold  9/10: accuracy=0.6448, macro-F1=0.6451, najbolje={}
+  Fold 10/10: accuracy=0.6207, macro-F1=0.6195, najbolje={}
+
+Pokrecem: lower+stem + LOG_TF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6495, macro-F1=0.6490, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6323, macro-F1=0.6333, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6186, macro-F1=0.6168, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5979, macro-F1=0.5960, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6220, macro-F1=0.6220, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6220, macro-F1=0.6197, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6907, macro-F1=0.6907, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6770, macro-F1=0.6762, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6448, macro-F1=0.6451, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6342, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+stem + LOG_TF + LinearSVM
+  Fold  1/10: accuracy=0.5911, macro-F1=0.5906, najbolje={}
+  Fold  2/10: accuracy=0.5842, macro-F1=0.5870, najbolje={}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6276, najbolje={}
+  Fold  4/10: accuracy=0.6048, macro-F1=0.6036, najbolje={}
+  Fold  5/10: accuracy=0.6117, macro-F1=0.6117, najbolje={}
+  Fold  6/10: accuracy=0.6082, macro-F1=0.6069, najbolje={}
+  Fold  7/10: accuracy=0.6495, macro-F1=0.6493, najbolje={}
+  Fold  8/10: accuracy=0.5979, macro-F1=0.5975, najbolje={}
+  Fold  9/10: accuracy=0.6172, macro-F1=0.6172, najbolje={}
+  Fold 10/10: accuracy=0.5690, macro-F1=0.5697, najbolje={}
+
+Pokrecem: lower+stem + LOG_TF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6289, macro-F1=0.6288, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6117, macro-F1=0.6139, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6357, macro-F1=0.6340, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5894, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6220, macro-F1=0.6221, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6048, macro-F1=0.6025, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6770, macro-F1=0.6770, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6254, macro-F1=0.6253, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6517, macro-F1=0.6518, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6138, macro-F1=0.6126, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+stem + IDF + MultinomialNB
+  Fold  1/10: accuracy=0.6117, macro-F1=0.6127, najbolje={'classifier__alpha': 2.0}
+  Fold  2/10: accuracy=0.5842, macro-F1=0.5827, najbolje={'classifier__alpha': 2.0}
+  Fold  3/10: accuracy=0.6701, macro-F1=0.6696, najbolje={'classifier__alpha': 2.0}
+  Fold  4/10: accuracy=0.5876, macro-F1=0.5857, najbolje={'classifier__alpha': 2.0}
+  Fold  5/10: accuracy=0.6289, macro-F1=0.6257, najbolje={'classifier__alpha': 2.0}
+  Fold  6/10: accuracy=0.6392, macro-F1=0.6390, najbolje={'classifier__alpha': 2.0}
+  Fold  7/10: accuracy=0.6289, macro-F1=0.6283, najbolje={'classifier__alpha': 2.0}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6426, najbolje={'classifier__alpha': 2.0}
+  Fold  9/10: accuracy=0.6345, macro-F1=0.6332, najbolje={'classifier__alpha': 2.0}
+  Fold 10/10: accuracy=0.6103, macro-F1=0.6114, najbolje={'classifier__alpha': 2.0}
+
+Pokrecem: lower+stem + IDF + LogisticRegression
+  Fold  1/10: accuracy=0.6220, macro-F1=0.6220, najbolje={}
+  Fold  2/10: accuracy=0.5876, macro-F1=0.5878, najbolje={}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6275, najbolje={}
+  Fold  4/10: accuracy=0.6220, macro-F1=0.6200, najbolje={}
+  Fold  5/10: accuracy=0.6357, macro-F1=0.6359, najbolje={}
+  Fold  6/10: accuracy=0.6048, macro-F1=0.6020, najbolje={}
+  Fold  7/10: accuracy=0.6770, macro-F1=0.6771, najbolje={}
+  Fold  8/10: accuracy=0.6151, macro-F1=0.6153, najbolje={}
+  Fold  9/10: accuracy=0.6310, macro-F1=0.6309, najbolje={}
+  Fold 10/10: accuracy=0.5690, macro-F1=0.5669, najbolje={}
+
+Pokrecem: lower+stem + IDF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6220, macro-F1=0.6217, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.6082, macro-F1=0.6086, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6323, macro-F1=0.6309, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6220, macro-F1=0.6208, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6189, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6151, macro-F1=0.6134, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6735, macro-F1=0.6739, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6254, macro-F1=0.6255, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6483, macro-F1=0.6481, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.5862, macro-F1=0.5837, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+stem + IDF + LinearSVM
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5978, najbolje={}
+  Fold  2/10: accuracy=0.5567, macro-F1=0.5570, najbolje={}
+  Fold  3/10: accuracy=0.5979, macro-F1=0.5977, najbolje={}
+  Fold  4/10: accuracy=0.5842, macro-F1=0.5829, najbolje={}
+  Fold  5/10: accuracy=0.5876, macro-F1=0.5873, najbolje={}
+  Fold  6/10: accuracy=0.5739, macro-F1=0.5725, najbolje={}
+  Fold  7/10: accuracy=0.6117, macro-F1=0.6117, najbolje={}
+  Fold  8/10: accuracy=0.5979, macro-F1=0.5980, najbolje={}
+  Fold  9/10: accuracy=0.5931, macro-F1=0.5929, najbolje={}
+  Fold 10/10: accuracy=0.5517, macro-F1=0.5508, najbolje={}
+
+Pokrecem: lower+stem + IDF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5978, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.5567, macro-F1=0.5572, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6082, macro-F1=0.6073, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5945, macro-F1=0.5934, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.5911, macro-F1=0.5905, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.5808, macro-F1=0.5790, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6186, macro-F1=0.6185, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6014, macro-F1=0.6015, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.5931, macro-F1=0.5929, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.5517, macro-F1=0.5510, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+stem + TF_IDF + MultinomialNB
+  Fold  1/10: accuracy=0.6186, macro-F1=0.6196, najbolje={'classifier__alpha': 0.5}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6263, najbolje={'classifier__alpha': 1.0}
+  Fold  3/10: accuracy=0.6254, macro-F1=0.6252, najbolje={'classifier__alpha': 1.0}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6108, najbolje={'classifier__alpha': 0.5}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6397, najbolje={'classifier__alpha': 1.0}
+  Fold  6/10: accuracy=0.6117, macro-F1=0.6100, najbolje={'classifier__alpha': 1.0}
+  Fold  7/10: accuracy=0.6392, macro-F1=0.6390, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6174, najbolje={'classifier__alpha': 1.0}
+  Fold  9/10: accuracy=0.6345, macro-F1=0.6342, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6345, macro-F1=0.6339, najbolje={'classifier__alpha': 1.0}
+
+Pokrecem: lower+stem + TF_IDF + LogisticRegression
+  Fold  1/10: accuracy=0.6254, macro-F1=0.6253, najbolje={}
+  Fold  2/10: accuracy=0.6323, macro-F1=0.6333, najbolje={}
+  Fold  3/10: accuracy=0.6357, macro-F1=0.6349, najbolje={}
+  Fold  4/10: accuracy=0.5945, macro-F1=0.5894, najbolje={}
+  Fold  5/10: accuracy=0.6220, macro-F1=0.6201, najbolje={}
+  Fold  6/10: accuracy=0.6357, macro-F1=0.6338, najbolje={}
+  Fold  7/10: accuracy=0.6976, macro-F1=0.6976, najbolje={}
+  Fold  8/10: accuracy=0.6529, macro-F1=0.6527, najbolje={}
+  Fold  9/10: accuracy=0.6483, macro-F1=0.6481, najbolje={}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6423, najbolje={}
+
+Pokrecem: lower+stem + TF_IDF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6254, macro-F1=0.6253, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6220, macro-F1=0.6229, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6357, macro-F1=0.6349, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6048, macro-F1=0.6036, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6323, macro-F1=0.6327, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6451, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6942, macro-F1=0.6944, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6598, macro-F1=0.6593, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6310, macro-F1=0.6314, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6453, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+stem + TF_IDF + LinearSVM
+  Fold  1/10: accuracy=0.6323, macro-F1=0.6324, najbolje={}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6264, najbolje={}
+  Fold  3/10: accuracy=0.6289, macro-F1=0.6271, najbolje={}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6092, najbolje={}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6395, najbolje={}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6448, najbolje={}
+  Fold  7/10: accuracy=0.6942, macro-F1=0.6946, najbolje={}
+  Fold  8/10: accuracy=0.6804, macro-F1=0.6802, najbolje={}
+  Fold  9/10: accuracy=0.6517, macro-F1=0.6521, najbolje={}
+  Fold 10/10: accuracy=0.6552, macro-F1=0.6523, najbolje={}
+
+Pokrecem: lower+stem + TF_IDF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6323, macro-F1=0.6324, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6264, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6254, macro-F1=0.6250, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6092, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6395, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6448, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6942, macro-F1=0.6946, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6804, macro-F1=0.6802, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6517, macro-F1=0.6521, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6552, macro-F1=0.6523, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+stem + TFIDF_1-2 + MultinomialNB
+  Fold  1/10: accuracy=0.6117, macro-F1=0.6116, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6535, najbolje={'classifier__alpha': 0.5}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6617, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.5979, macro-F1=0.5958, najbolje={'classifier__alpha': 1.0}
+  Fold  5/10: accuracy=0.6014, macro-F1=0.6016, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6701, macro-F1=0.6681, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.6392, macro-F1=0.6391, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6117, macro-F1=0.6114, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6345, macro-F1=0.6353, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6375, najbolje={'classifier__alpha': 1.0}
+
+Pokrecem: lower+stem + TFIDF_1-2 + LogisticRegression
+  Fold  1/10: accuracy=0.6598, macro-F1=0.6595, najbolje={}
+  Fold  2/10: accuracy=0.6667, macro-F1=0.6673, najbolje={}
+  Fold  3/10: accuracy=0.6529, macro-F1=0.6507, najbolje={}
+  Fold  4/10: accuracy=0.6323, macro-F1=0.6289, najbolje={}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6380, najbolje={}
+  Fold  6/10: accuracy=0.6804, macro-F1=0.6776, najbolje={}
+  Fold  7/10: accuracy=0.6838, macro-F1=0.6825, najbolje={}
+  Fold  8/10: accuracy=0.6701, macro-F1=0.6700, najbolje={}
+  Fold  9/10: accuracy=0.6897, macro-F1=0.6897, najbolje={}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6424, najbolje={}
+
+Pokrecem: lower+stem + TFIDF_1-2 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6598, macro-F1=0.6595, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6667, macro-F1=0.6673, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6667, macro-F1=0.6647, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.6323, macro-F1=0.6289, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6564, macro-F1=0.6555, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6804, macro-F1=0.6776, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.7045, macro-F1=0.7045, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6701, macro-F1=0.6700, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6724, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6241, macro-F1=0.6209, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+stem + TFIDF_1-2 + LinearSVM
+  Fold  1/10: accuracy=0.6804, macro-F1=0.6807, najbolje={}
+  Fold  2/10: accuracy=0.6632, macro-F1=0.6636, najbolje={}
+  Fold  3/10: accuracy=0.6598, macro-F1=0.6582, najbolje={}
+  Fold  4/10: accuracy=0.6392, macro-F1=0.6382, najbolje={}
+  Fold  5/10: accuracy=0.6495, macro-F1=0.6484, najbolje={}
+  Fold  6/10: accuracy=0.6907, macro-F1=0.6903, najbolje={}
+  Fold  7/10: accuracy=0.7148, macro-F1=0.7152, najbolje={}
+  Fold  8/10: accuracy=0.6770, macro-F1=0.6770, najbolje={}
+  Fold  9/10: accuracy=0.6862, macro-F1=0.6858, najbolje={}
+  Fold 10/10: accuracy=0.6276, macro-F1=0.6230, najbolje={}
+
+Pokrecem: lower+stem + TFIDF_1-2 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6667, macro-F1=0.6665, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6632, macro-F1=0.6636, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6598, macro-F1=0.6582, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6392, macro-F1=0.6382, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6495, macro-F1=0.6484, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6735, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.7148, macro-F1=0.7152, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6770, macro-F1=0.6770, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6862, macro-F1=0.6858, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6276, macro-F1=0.6230, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+stem + TFIDF_1-3 + MultinomialNB
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5964, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6535, najbolje={'classifier__alpha': 0.5}
+  Fold  3/10: accuracy=0.6529, macro-F1=0.6495, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.5876, macro-F1=0.5816, najbolje={'classifier__alpha': 2.0}
+  Fold  5/10: accuracy=0.5876, macro-F1=0.5848, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6440, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.6117, macro-F1=0.6109, najbolje={'classifier__alpha': 2.0}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6172, najbolje={'classifier__alpha': 0.1}
+  Fold  9/10: accuracy=0.6690, macro-F1=0.6696, najbolje={'classifier__alpha': 1.0}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6456, najbolje={'classifier__alpha': 1.0}
+
+Pokrecem: lower+stem + TFIDF_1-3 + LogisticRegression
+  Fold  1/10: accuracy=0.6667, macro-F1=0.6661, najbolje={}
+  Fold  2/10: accuracy=0.6735, macro-F1=0.6744, najbolje={}
+  Fold  3/10: accuracy=0.6495, macro-F1=0.6464, najbolje={}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6084, najbolje={}
+  Fold  5/10: accuracy=0.6289, macro-F1=0.6262, najbolje={}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6698, najbolje={}
+  Fold  7/10: accuracy=0.6804, macro-F1=0.6791, najbolje={}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6420, najbolje={}
+  Fold  9/10: accuracy=0.6690, macro-F1=0.6690, najbolje={}
+  Fold 10/10: accuracy=0.6517, macro-F1=0.6476, najbolje={}
+
+Pokrecem: lower+stem + TFIDF_1-3 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6667, macro-F1=0.6661, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6735, macro-F1=0.6744, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6495, macro-F1=0.6464, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.5945, macro-F1=0.5929, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6289, macro-F1=0.6262, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6698, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6804, macro-F1=0.6791, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6420, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6759, macro-F1=0.6765, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6000, macro-F1=0.5962, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+stem + TFIDF_1-3 + LinearSVM
+  Fold  1/10: accuracy=0.6529, macro-F1=0.6535, najbolje={}
+  Fold  2/10: accuracy=0.6632, macro-F1=0.6643, najbolje={}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6544, najbolje={}
+  Fold  4/10: accuracy=0.6014, macro-F1=0.5995, najbolje={}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6371, najbolje={}
+  Fold  6/10: accuracy=0.6804, macro-F1=0.6797, najbolje={}
+  Fold  7/10: accuracy=0.7010, macro-F1=0.7009, najbolje={}
+  Fold  8/10: accuracy=0.6564, macro-F1=0.6563, najbolje={}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6719, najbolje={}
+  Fold 10/10: accuracy=0.6034, macro-F1=0.5994, najbolje={}
+
+Pokrecem: lower+stem + TFIDF_1-3 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6701, macro-F1=0.6694, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6667, macro-F1=0.6682, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6544, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6014, macro-F1=0.5995, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6117, macro-F1=0.6081, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6685, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.7010, macro-F1=0.7009, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6460, macro-F1=0.6457, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6719, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6034, macro-F1=0.5994, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+stem + CHAR_3-5 + MultinomialNB
+  Fold  1/10: accuracy=0.5704, macro-F1=0.5709, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6261, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6529, macro-F1=0.6507, najbolje={'classifier__alpha': 0.01}
+  Fold  4/10: accuracy=0.6186, macro-F1=0.6180, najbolje={'classifier__alpha': 0.5}
+  Fold  5/10: accuracy=0.6082, macro-F1=0.6076, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6538, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.6117, macro-F1=0.6115, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6289, macro-F1=0.6287, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6483, macro-F1=0.6489, najbolje={'classifier__alpha': 0.5}
+  Fold 10/10: accuracy=0.6724, macro-F1=0.6706, najbolje={'classifier__alpha': 0.1}
+
+Pokrecem: lower+stem + CHAR_3-5 + LogisticRegression
+  Fold  1/10: accuracy=0.6838, macro-F1=0.6836, najbolje={}
+  Fold  2/10: accuracy=0.6460, macro-F1=0.6473, najbolje={}
+  Fold  3/10: accuracy=0.6357, macro-F1=0.6330, najbolje={}
+  Fold  4/10: accuracy=0.6357, macro-F1=0.6337, najbolje={}
+  Fold  5/10: accuracy=0.6460, macro-F1=0.6460, najbolje={}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6705, najbolje={}
+  Fold  7/10: accuracy=0.6873, macro-F1=0.6860, najbolje={}
+  Fold  8/10: accuracy=0.6735, macro-F1=0.6731, najbolje={}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6718, najbolje={}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6320, najbolje={}
+
+Pokrecem: lower+stem + CHAR_3-5 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6838, macro-F1=0.6836, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6460, macro-F1=0.6473, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6357, macro-F1=0.6330, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6357, macro-F1=0.6337, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6460, macro-F1=0.6460, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6705, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6873, macro-F1=0.6860, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6735, macro-F1=0.6731, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6718, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6320, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+stem + CHAR_3-5 + LinearSVM
+  Fold  1/10: accuracy=0.6323, macro-F1=0.6319, najbolje={}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6539, najbolje={}
+  Fold  3/10: accuracy=0.6460, macro-F1=0.6452, najbolje={}
+  Fold  4/10: accuracy=0.6426, macro-F1=0.6405, najbolje={}
+  Fold  5/10: accuracy=0.6426, macro-F1=0.6425, najbolje={}
+  Fold  6/10: accuracy=0.6598, macro-F1=0.6583, najbolje={}
+  Fold  7/10: accuracy=0.6770, macro-F1=0.6782, najbolje={}
+  Fold  8/10: accuracy=0.6529, macro-F1=0.6528, najbolje={}
+  Fold  9/10: accuracy=0.6586, macro-F1=0.6583, najbolje={}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6381, najbolje={}
+
+Pokrecem: lower+stem + CHAR_3-5 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6529, macro-F1=0.6526, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6598, macro-F1=0.6612, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6460, macro-F1=0.6443, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6460, macro-F1=0.6423, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6357, macro-F1=0.6341, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6598, macro-F1=0.6583, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6611, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6701, macro-F1=0.6696, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6793, macro-F1=0.6788, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6276, macro-F1=0.6217, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+stem + REC+CHAR + MultinomialNB
+  Fold  1/10: accuracy=0.6048, macro-F1=0.6049, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6357, macro-F1=0.6362, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6547, najbolje={'classifier__alpha': 0.01}
+  Fold  4/10: accuracy=0.6289, macro-F1=0.6274, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6168, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6715, najbolje={'classifier__alpha': 0.01}
+  Fold  7/10: accuracy=0.6392, macro-F1=0.6384, najbolje={'classifier__alpha': 0.1}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6429, najbolje={'classifier__alpha': 0.1}
+  Fold  9/10: accuracy=0.6310, macro-F1=0.6318, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6793, macro-F1=0.6775, najbolje={'classifier__alpha': 0.01}
+
+Pokrecem: lower+stem + REC+CHAR + LogisticRegression
+  Fold  1/10: accuracy=0.6770, macro-F1=0.6767, najbolje={}
+  Fold  2/10: accuracy=0.6701, macro-F1=0.6711, najbolje={}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6615, najbolje={}
+  Fold  4/10: accuracy=0.6323, macro-F1=0.6301, najbolje={}
+  Fold  5/10: accuracy=0.6667, macro-F1=0.6663, najbolje={}
+  Fold  6/10: accuracy=0.7079, macro-F1=0.7053, najbolje={}
+  Fold  7/10: accuracy=0.7182, macro-F1=0.7174, najbolje={}
+  Fold  8/10: accuracy=0.6667, macro-F1=0.6666, najbolje={}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6724, najbolje={}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6329, najbolje={}
+
+Pokrecem: lower+stem + REC+CHAR + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6770, macro-F1=0.6767, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6701, macro-F1=0.6711, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6615, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6254, macro-F1=0.6239, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6667, macro-F1=0.6663, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.7045, macro-F1=0.7033, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.7182, macro-F1=0.7174, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6667, macro-F1=0.6666, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6724, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6329, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+stem + REC+CHAR + LinearSVM
+  Fold  1/10: accuracy=0.6632, macro-F1=0.6636, najbolje={}
+  Fold  2/10: accuracy=0.6598, macro-F1=0.6607, najbolje={}
+  Fold  3/10: accuracy=0.6735, macro-F1=0.6723, najbolje={}
+  Fold  4/10: accuracy=0.6289, macro-F1=0.6273, najbolje={}
+  Fold  5/10: accuracy=0.6873, macro-F1=0.6866, najbolje={}
+  Fold  6/10: accuracy=0.7045, macro-F1=0.7023, najbolje={}
+  Fold  7/10: accuracy=0.7010, macro-F1=0.7013, najbolje={}
+  Fold  8/10: accuracy=0.6942, macro-F1=0.6943, najbolje={}
+  Fold  9/10: accuracy=0.6690, macro-F1=0.6689, najbolje={}
+  Fold 10/10: accuracy=0.6345, macro-F1=0.6300, najbolje={}
+
+Pokrecem: lower+stem + REC+CHAR + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6701, macro-F1=0.6698, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6667, macro-F1=0.6676, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6735, macro-F1=0.6714, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6289, macro-F1=0.6259, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6735, macro-F1=0.6731, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.7045, macro-F1=0.7023, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.7113, macro-F1=0.7113, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6838, macro-F1=0.6840, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6862, macro-F1=0.6858, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6309, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + BOW + MultinomialNB
+  Fold  1/10: accuracy=0.5911, macro-F1=0.5916, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6117, macro-F1=0.6100, najbolje={'classifier__alpha': 0.5}
+  Fold  3/10: accuracy=0.6735, macro-F1=0.6735, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.5945, macro-F1=0.5935, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.6220, macro-F1=0.6202, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6557, najbolje={'classifier__alpha': 1.0}
+  Fold  7/10: accuracy=0.6186, macro-F1=0.6149, najbolje={'classifier__alpha': 1.0}
+  Fold  8/10: accuracy=0.6357, macro-F1=0.6353, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6345, macro-F1=0.6352, najbolje={'classifier__alpha': 0.5}
+  Fold 10/10: accuracy=0.6517, macro-F1=0.6517, najbolje={'classifier__alpha': 1.0}
+
+Pokrecem: lower+lemma + BOW + LogisticRegression
+  Fold  1/10: accuracy=0.6048, macro-F1=0.6047, najbolje={}
+  Fold  2/10: accuracy=0.6151, macro-F1=0.6166, najbolje={}
+  Fold  3/10: accuracy=0.6460, macro-F1=0.6420, najbolje={}
+  Fold  4/10: accuracy=0.5773, macro-F1=0.5749, najbolje={}
+  Fold  5/10: accuracy=0.6014, macro-F1=0.6020, najbolje={}
+  Fold  6/10: accuracy=0.6426, macro-F1=0.6410, najbolje={}
+  Fold  7/10: accuracy=0.6460, macro-F1=0.6447, najbolje={}
+  Fold  8/10: accuracy=0.6323, macro-F1=0.6325, najbolje={}
+  Fold  9/10: accuracy=0.6621, macro-F1=0.6616, najbolje={}
+  Fold 10/10: accuracy=0.6000, macro-F1=0.5993, najbolje={}
+
+Pokrecem: lower+lemma + BOW + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6254, macro-F1=0.6256, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6151, macro-F1=0.6166, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6599, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5567, macro-F1=0.5534, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6117, macro-F1=0.6125, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6117, macro-F1=0.6095, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6392, macro-F1=0.6387, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6392, macro-F1=0.6392, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6621, macro-F1=0.6616, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6000, macro-F1=0.5971, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + BOW + LinearSVM
+  Fold  1/10: accuracy=0.5773, macro-F1=0.5763, najbolje={}
+  Fold  2/10: accuracy=0.5911, macro-F1=0.5920, najbolje={}
+  Fold  3/10: accuracy=0.6151, macro-F1=0.6127, najbolje={}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5907, najbolje={}
+  Fold  5/10: accuracy=0.5808, macro-F1=0.5805, najbolje={}
+  Fold  6/10: accuracy=0.6151, macro-F1=0.6136, najbolje={}
+  Fold  7/10: accuracy=0.6151, macro-F1=0.6148, najbolje={}
+  Fold  8/10: accuracy=0.5842, macro-F1=0.5839, najbolje={}
+  Fold  9/10: accuracy=0.6172, macro-F1=0.6169, najbolje={}
+  Fold 10/10: accuracy=0.5724, macro-F1=0.5727, najbolje={}
+
+Pokrecem: lower+lemma + BOW + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5978, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6151, macro-F1=0.6169, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6426, macro-F1=0.6387, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6014, macro-F1=0.5997, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6117, macro-F1=0.6126, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6254, macro-F1=0.6242, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6392, macro-F1=0.6388, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6185, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6379, macro-F1=0.6375, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6172, macro-F1=0.6162, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + TF + MultinomialNB
+  Fold  1/10: accuracy=0.5773, macro-F1=0.5757, najbolje={'classifier__alpha': 0.01}
+  Fold  2/10: accuracy=0.6117, macro-F1=0.6128, najbolje={'classifier__alpha': 0.01}
+  Fold  3/10: accuracy=0.6495, macro-F1=0.6488, najbolje={'classifier__alpha': 0.01}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5860, najbolje={'classifier__alpha': 0.01}
+  Fold  5/10: accuracy=0.6151, macro-F1=0.6124, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6598, macro-F1=0.6531, najbolje={'classifier__alpha': 0.01}
+  Fold  7/10: accuracy=0.6254, macro-F1=0.6237, najbolje={'classifier__alpha': 0.01}
+  Fold  8/10: accuracy=0.6323, macro-F1=0.6323, najbolje={'classifier__alpha': 0.01}
+  Fold  9/10: accuracy=0.6517, macro-F1=0.6519, najbolje={'classifier__alpha': 0.01}
+  Fold 10/10: accuracy=0.6414, macro-F1=0.6383, najbolje={'classifier__alpha': 0.01}
+
+Pokrecem: lower+lemma + TF + LogisticRegression
+  Fold  1/10: accuracy=0.5086, macro-F1=0.4971, najbolje={}
+  Fold  2/10: accuracy=0.5120, macro-F1=0.5075, najbolje={}
+  Fold  3/10: accuracy=0.5670, macro-F1=0.5578, najbolje={}
+  Fold  4/10: accuracy=0.5017, macro-F1=0.4869, najbolje={}
+  Fold  5/10: accuracy=0.5189, macro-F1=0.5052, najbolje={}
+  Fold  6/10: accuracy=0.5326, macro-F1=0.5165, najbolje={}
+  Fold  7/10: accuracy=0.5258, macro-F1=0.5204, najbolje={}
+  Fold  8/10: accuracy=0.5567, macro-F1=0.5493, najbolje={}
+  Fold  9/10: accuracy=0.5552, macro-F1=0.5491, najbolje={}
+  Fold 10/10: accuracy=0.5379, macro-F1=0.5210, najbolje={}
+
+Pokrecem: lower+lemma + TF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.5979, macro-F1=0.5958, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.5979, macro-F1=0.5988, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6048, macro-F1=0.6037, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.5636, macro-F1=0.5590, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.5498, macro-F1=0.5447, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6151, macro-F1=0.6115, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6082, macro-F1=0.6083, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6182, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6310, macro-F1=0.6311, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6069, macro-F1=0.6030, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+lemma + TF + LinearSVM
+  Fold  1/10: accuracy=0.5601, macro-F1=0.5542, najbolje={}
+  Fold  2/10: accuracy=0.5842, macro-F1=0.5836, najbolje={}
+  Fold  3/10: accuracy=0.6082, macro-F1=0.6073, najbolje={}
+  Fold  4/10: accuracy=0.5498, macro-F1=0.5420, najbolje={}
+  Fold  5/10: accuracy=0.5498, macro-F1=0.5424, najbolje={}
+  Fold  6/10: accuracy=0.5945, macro-F1=0.5899, najbolje={}
+  Fold  7/10: accuracy=0.5876, macro-F1=0.5867, najbolje={}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6166, najbolje={}
+  Fold  9/10: accuracy=0.6241, macro-F1=0.6235, najbolje={}
+  Fold 10/10: accuracy=0.5966, macro-F1=0.5910, najbolje={}
+
+Pokrecem: lower+lemma + TF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6426, macro-F1=0.6426, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.6426, macro-F1=0.6429, najbolje={'classifier__C': 10.0}
+  Fold  3/10: accuracy=0.6460, macro-F1=0.6455, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.6014, macro-F1=0.5986, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.5979, macro-F1=0.5978, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6289, macro-F1=0.6270, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6529, macro-F1=0.6525, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6667, macro-F1=0.6666, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6586, macro-F1=0.6587, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6241, macro-F1=0.6214, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+lemma + LOG_TF + MultinomialNB
+  Fold  1/10: accuracy=0.5911, macro-F1=0.5919, najbolje={'classifier__alpha': 1.0}
+  Fold  2/10: accuracy=0.6151, macro-F1=0.6136, najbolje={'classifier__alpha': 0.5}
+  Fold  3/10: accuracy=0.6701, macro-F1=0.6701, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5897, najbolje={'classifier__alpha': 0.5}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6179, najbolje={'classifier__alpha': 0.5}
+  Fold  6/10: accuracy=0.6529, macro-F1=0.6516, najbolje={'classifier__alpha': 2.0}
+  Fold  7/10: accuracy=0.6186, macro-F1=0.6151, najbolje={'classifier__alpha': 1.0}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6423, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6379, macro-F1=0.6385, najbolje={'classifier__alpha': 0.5}
+  Fold 10/10: accuracy=0.6586, macro-F1=0.6583, najbolje={'classifier__alpha': 0.5}
+
+Pokrecem: lower+lemma + LOG_TF + LogisticRegression
+  Fold  1/10: accuracy=0.6151, macro-F1=0.6150, najbolje={}
+  Fold  2/10: accuracy=0.6151, macro-F1=0.6160, najbolje={}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6597, najbolje={}
+  Fold  4/10: accuracy=0.5601, macro-F1=0.5576, najbolje={}
+  Fold  5/10: accuracy=0.6082, macro-F1=0.6085, najbolje={}
+  Fold  6/10: accuracy=0.6289, macro-F1=0.6278, najbolje={}
+  Fold  7/10: accuracy=0.6564, macro-F1=0.6554, najbolje={}
+  Fold  8/10: accuracy=0.6289, macro-F1=0.6291, najbolje={}
+  Fold  9/10: accuracy=0.6621, macro-F1=0.6620, najbolje={}
+  Fold 10/10: accuracy=0.6000, macro-F1=0.5979, najbolje={}
+
+Pokrecem: lower+lemma + LOG_TF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6426, macro-F1=0.6426, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6151, macro-F1=0.6160, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6667, macro-F1=0.6651, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5739, macro-F1=0.5710, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6151, macro-F1=0.6159, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6014, macro-F1=0.6005, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6632, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6426, macro-F1=0.6423, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6448, macro-F1=0.6442, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.5897, macro-F1=0.5866, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + LOG_TF + LinearSVM
+  Fold  1/10: accuracy=0.6014, macro-F1=0.6011, najbolje={}
+  Fold  2/10: accuracy=0.6014, macro-F1=0.6024, najbolje={}
+  Fold  3/10: accuracy=0.6220, macro-F1=0.6214, najbolje={}
+  Fold  4/10: accuracy=0.5876, macro-F1=0.5870, najbolje={}
+  Fold  5/10: accuracy=0.5945, macro-F1=0.5942, najbolje={}
+  Fold  6/10: accuracy=0.6220, macro-F1=0.6192, najbolje={}
+  Fold  7/10: accuracy=0.6323, macro-F1=0.6318, najbolje={}
+  Fold  8/10: accuracy=0.5945, macro-F1=0.5940, najbolje={}
+  Fold  9/10: accuracy=0.6379, macro-F1=0.6384, najbolje={}
+  Fold 10/10: accuracy=0.5897, macro-F1=0.5901, najbolje={}
+
+Pokrecem: lower+lemma + LOG_TF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6082, macro-F1=0.6082, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6048, macro-F1=0.6060, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6600, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5773, macro-F1=0.5748, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.6082, macro-F1=0.6084, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6220, macro-F1=0.6211, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6426, macro-F1=0.6420, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6254, macro-F1=0.6253, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6483, macro-F1=0.6486, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6034, macro-F1=0.6031, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + IDF + MultinomialNB
+  Fold  1/10: accuracy=0.6014, macro-F1=0.6018, najbolje={'classifier__alpha': 2.0}
+  Fold  2/10: accuracy=0.5945, macro-F1=0.5932, najbolje={'classifier__alpha': 2.0}
+  Fold  3/10: accuracy=0.6220, macro-F1=0.6219, najbolje={'classifier__alpha': 2.0}
+  Fold  4/10: accuracy=0.5911, macro-F1=0.5901, najbolje={'classifier__alpha': 2.0}
+  Fold  5/10: accuracy=0.6529, macro-F1=0.6520, najbolje={'classifier__alpha': 2.0}
+  Fold  6/10: accuracy=0.6667, macro-F1=0.6659, najbolje={'classifier__alpha': 2.0}
+  Fold  7/10: accuracy=0.6426, macro-F1=0.6413, najbolje={'classifier__alpha': 2.0}
+  Fold  8/10: accuracy=0.6254, macro-F1=0.6251, najbolje={'classifier__alpha': 2.0}
+  Fold  9/10: accuracy=0.6103, macro-F1=0.6102, najbolje={'classifier__alpha': 2.0}
+  Fold 10/10: accuracy=0.6414, macro-F1=0.6423, najbolje={'classifier__alpha': 2.0}
+
+Pokrecem: lower+lemma + IDF + LogisticRegression
+  Fold  1/10: accuracy=0.6048, macro-F1=0.6031, najbolje={}
+  Fold  2/10: accuracy=0.6014, macro-F1=0.6017, najbolje={}
+  Fold  3/10: accuracy=0.6254, macro-F1=0.6250, najbolje={}
+  Fold  4/10: accuracy=0.5842, macro-F1=0.5814, najbolje={}
+  Fold  5/10: accuracy=0.6048, macro-F1=0.6048, najbolje={}
+  Fold  6/10: accuracy=0.6048, macro-F1=0.6032, najbolje={}
+  Fold  7/10: accuracy=0.6495, macro-F1=0.6493, najbolje={}
+  Fold  8/10: accuracy=0.6048, macro-F1=0.6044, najbolje={}
+  Fold  9/10: accuracy=0.6655, macro-F1=0.6651, najbolje={}
+  Fold 10/10: accuracy=0.5862, macro-F1=0.5857, najbolje={}
+
+Pokrecem: lower+lemma + IDF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6151, macro-F1=0.6138, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.5945, macro-F1=0.5952, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6460, macro-F1=0.6454, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5773, macro-F1=0.5767, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6390, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6082, macro-F1=0.6055, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6323, macro-F1=0.6321, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6184, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6517, macro-F1=0.6518, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.5897, macro-F1=0.5887, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + IDF + LinearSVM
+  Fold  1/10: accuracy=0.5911, macro-F1=0.5894, najbolje={}
+  Fold  2/10: accuracy=0.5842, macro-F1=0.5845, najbolje={}
+  Fold  3/10: accuracy=0.6014, macro-F1=0.6010, najbolje={}
+  Fold  4/10: accuracy=0.5636, macro-F1=0.5625, najbolje={}
+  Fold  5/10: accuracy=0.5601, macro-F1=0.5601, najbolje={}
+  Fold  6/10: accuracy=0.5911, macro-F1=0.5887, najbolje={}
+  Fold  7/10: accuracy=0.6048, macro-F1=0.6047, najbolje={}
+  Fold  8/10: accuracy=0.5498, macro-F1=0.5496, najbolje={}
+  Fold  9/10: accuracy=0.6310, macro-F1=0.6293, najbolje={}
+  Fold 10/10: accuracy=0.5414, macro-F1=0.5413, najbolje={}
+
+Pokrecem: lower+lemma + IDF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6014, macro-F1=0.5997, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.5842, macro-F1=0.5841, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.5979, macro-F1=0.5978, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.5670, macro-F1=0.5661, najbolje={'classifier__C': 0.1}
+  Fold  5/10: accuracy=0.5601, macro-F1=0.5601, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.5876, macro-F1=0.5853, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6151, macro-F1=0.6147, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.5533, macro-F1=0.5532, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6276, macro-F1=0.6264, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.5517, macro-F1=0.5519, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + TF_IDF + MultinomialNB
+  Fold  1/10: accuracy=0.6151, macro-F1=0.6153, najbolje={'classifier__alpha': 0.5}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6244, najbolje={'classifier__alpha': 0.5}
+  Fold  3/10: accuracy=0.6701, macro-F1=0.6700, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.5979, macro-F1=0.5964, najbolje={'classifier__alpha': 0.5}
+  Fold  5/10: accuracy=0.6220, macro-F1=0.6208, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6357, macro-F1=0.6316, najbolje={'classifier__alpha': 2.0}
+  Fold  7/10: accuracy=0.6082, macro-F1=0.6079, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6117, macro-F1=0.6095, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6414, macro-F1=0.6423, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6378, najbolje={'classifier__alpha': 0.5}
+
+Pokrecem: lower+lemma + TF_IDF + LogisticRegression
+  Fold  1/10: accuracy=0.6151, macro-F1=0.6142, najbolje={}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6539, najbolje={}
+  Fold  3/10: accuracy=0.6254, macro-F1=0.6237, najbolje={}
+  Fold  4/10: accuracy=0.5773, macro-F1=0.5726, najbolje={}
+  Fold  5/10: accuracy=0.6014, macro-F1=0.6002, najbolje={}
+  Fold  6/10: accuracy=0.6460, macro-F1=0.6416, najbolje={}
+  Fold  7/10: accuracy=0.6426, macro-F1=0.6412, najbolje={}
+  Fold  8/10: accuracy=0.6529, macro-F1=0.6519, najbolje={}
+  Fold  9/10: accuracy=0.6448, macro-F1=0.6447, najbolje={}
+  Fold 10/10: accuracy=0.6310, macro-F1=0.6267, najbolje={}
+
+Pokrecem: lower+lemma + TF_IDF + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6151, macro-F1=0.6142, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6539, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6667, macro-F1=0.6655, najbolje={'classifier__C': 10.0}
+  Fold  4/10: accuracy=0.6151, macro-F1=0.6141, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6403, najbolje={'classifier__C': 10.0}
+  Fold  6/10: accuracy=0.6357, macro-F1=0.6349, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.6976, macro-F1=0.6973, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6495, macro-F1=0.6482, najbolje={'classifier__C': 10.0}
+  Fold  9/10: accuracy=0.6655, macro-F1=0.6655, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6310, macro-F1=0.6297, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+lemma + TF_IDF + LinearSVM
+  Fold  1/10: accuracy=0.6323, macro-F1=0.6321, najbolje={}
+  Fold  2/10: accuracy=0.6289, macro-F1=0.6293, najbolje={}
+  Fold  3/10: accuracy=0.6460, macro-F1=0.6456, najbolje={}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6109, najbolje={}
+  Fold  5/10: accuracy=0.6323, macro-F1=0.6331, najbolje={}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6556, najbolje={}
+  Fold  7/10: accuracy=0.6770, macro-F1=0.6769, najbolje={}
+  Fold  8/10: accuracy=0.6632, macro-F1=0.6619, najbolje={}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6723, najbolje={}
+  Fold 10/10: accuracy=0.6172, macro-F1=0.6156, najbolje={}
+
+Pokrecem: lower+lemma + TF_IDF + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6323, macro-F1=0.6321, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6289, macro-F1=0.6293, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6460, macro-F1=0.6456, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6109, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6323, macro-F1=0.6331, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6556, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6770, macro-F1=0.6769, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6632, macro-F1=0.6619, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6723, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6172, macro-F1=0.6156, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+lemma + TFIDF_1-2 + MultinomialNB
+  Fold  1/10: accuracy=0.6117, macro-F1=0.6106, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6323, macro-F1=0.6311, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6907, macro-F1=0.6903, najbolje={'classifier__alpha': 0.5}
+  Fold  4/10: accuracy=0.6151, macro-F1=0.6117, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6177, najbolje={'classifier__alpha': 0.1}
+  Fold  6/10: accuracy=0.6495, macro-F1=0.6474, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.6529, macro-F1=0.6529, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6186, macro-F1=0.6174, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6414, macro-F1=0.6416, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6429, najbolje={'classifier__alpha': 0.1}
+
+Pokrecem: lower+lemma + TFIDF_1-2 + LogisticRegression
+  Fold  1/10: accuracy=0.6426, macro-F1=0.6416, najbolje={}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6537, najbolje={}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6551, najbolje={}
+  Fold  4/10: accuracy=0.6117, macro-F1=0.6091, najbolje={}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6187, najbolje={}
+  Fold  6/10: accuracy=0.6426, macro-F1=0.6403, najbolje={}
+  Fold  7/10: accuracy=0.6804, macro-F1=0.6804, najbolje={}
+  Fold  8/10: accuracy=0.6701, macro-F1=0.6698, najbolje={}
+  Fold  9/10: accuracy=0.7138, macro-F1=0.7132, najbolje={}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6440, najbolje={}
+
+Pokrecem: lower+lemma + TFIDF_1-2 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6426, macro-F1=0.6416, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6529, macro-F1=0.6537, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6551, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6186, macro-F1=0.6173, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6187, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6723, najbolje={'classifier__C': 10.0}
+  Fold  7/10: accuracy=0.7148, macro-F1=0.7152, najbolje={'classifier__C': 10.0}
+  Fold  8/10: accuracy=0.6701, macro-F1=0.6698, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6793, macro-F1=0.6784, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6449, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+lemma + TFIDF_1-2 + LinearSVM
+  Fold  1/10: accuracy=0.6254, macro-F1=0.6260, najbolje={}
+  Fold  2/10: accuracy=0.6667, macro-F1=0.6666, najbolje={}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6556, najbolje={}
+  Fold  4/10: accuracy=0.6151, macro-F1=0.6139, najbolje={}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6388, najbolje={}
+  Fold  6/10: accuracy=0.6804, macro-F1=0.6795, najbolje={}
+  Fold  7/10: accuracy=0.7113, macro-F1=0.7120, najbolje={}
+  Fold  8/10: accuracy=0.6495, macro-F1=0.6492, najbolje={}
+  Fold  9/10: accuracy=0.6759, macro-F1=0.6740, najbolje={}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6424, najbolje={}
+
+Pokrecem: lower+lemma + TFIDF_1-2 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6323, macro-F1=0.6295, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6667, macro-F1=0.6666, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6564, macro-F1=0.6555, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6151, macro-F1=0.6139, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6392, macro-F1=0.6388, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6804, macro-F1=0.6795, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.7113, macro-F1=0.7120, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6495, macro-F1=0.6492, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6759, macro-F1=0.6740, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6424, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+lemma + TFIDF_1-3 + MultinomialNB
+  Fold  1/10: accuracy=0.6014, macro-F1=0.5990, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6426, macro-F1=0.6435, najbolje={'classifier__alpha': 0.5}
+  Fold  3/10: accuracy=0.6838, macro-F1=0.6827, najbolje={'classifier__alpha': 0.1}
+  Fold  4/10: accuracy=0.5979, macro-F1=0.5926, najbolje={'classifier__alpha': 1.0}
+  Fold  5/10: accuracy=0.6014, macro-F1=0.6003, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6529, macro-F1=0.6485, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.6323, macro-F1=0.6310, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6048, macro-F1=0.6042, najbolje={'classifier__alpha': 0.5}
+  Fold  9/10: accuracy=0.6897, macro-F1=0.6897, najbolje={'classifier__alpha': 0.5}
+  Fold 10/10: accuracy=0.6448, macro-F1=0.6401, najbolje={'classifier__alpha': 0.01}
+
+Pokrecem: lower+lemma + TFIDF_1-3 + LogisticRegression
+  Fold  1/10: accuracy=0.6357, macro-F1=0.6345, najbolje={}
+  Fold  2/10: accuracy=0.6667, macro-F1=0.6674, najbolje={}
+  Fold  3/10: accuracy=0.6495, macro-F1=0.6481, najbolje={}
+  Fold  4/10: accuracy=0.6048, macro-F1=0.6010, najbolje={}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6192, najbolje={}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6540, najbolje={}
+  Fold  7/10: accuracy=0.6701, macro-F1=0.6701, najbolje={}
+  Fold  8/10: accuracy=0.6598, macro-F1=0.6592, najbolje={}
+  Fold  9/10: accuracy=0.6828, macro-F1=0.6813, najbolje={}
+  Fold 10/10: accuracy=0.6552, macro-F1=0.6501, najbolje={}
+
+Pokrecem: lower+lemma + TFIDF_1-3 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6357, macro-F1=0.6345, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6667, macro-F1=0.6674, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6495, macro-F1=0.6481, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.5979, macro-F1=0.5948, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6186, macro-F1=0.6192, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6540, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6701, macro-F1=0.6701, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6598, macro-F1=0.6592, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6793, macro-F1=0.6776, najbolje={'classifier__C': 10.0}
+  Fold 10/10: accuracy=0.6552, macro-F1=0.6501, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+lemma + TFIDF_1-3 + LinearSVM
+  Fold  1/10: accuracy=0.6186, macro-F1=0.6187, najbolje={}
+  Fold  2/10: accuracy=0.6564, macro-F1=0.6569, najbolje={}
+  Fold  3/10: accuracy=0.6598, macro-F1=0.6590, najbolje={}
+  Fold  4/10: accuracy=0.5945, macro-F1=0.5922, najbolje={}
+  Fold  5/10: accuracy=0.6357, macro-F1=0.6355, najbolje={}
+  Fold  6/10: accuracy=0.6701, macro-F1=0.6694, najbolje={}
+  Fold  7/10: accuracy=0.7079, macro-F1=0.7087, najbolje={}
+  Fold  8/10: accuracy=0.6529, macro-F1=0.6526, najbolje={}
+  Fold  9/10: accuracy=0.6586, macro-F1=0.6566, najbolje={}
+  Fold 10/10: accuracy=0.6310, macro-F1=0.6271, najbolje={}
+
+Pokrecem: lower+lemma + TFIDF_1-3 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6220, macro-F1=0.6193, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6564, macro-F1=0.6569, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6598, macro-F1=0.6590, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.5945, macro-F1=0.5922, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6082, macro-F1=0.6066, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6701, macro-F1=0.6694, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6632, macro-F1=0.6625, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6529, macro-F1=0.6526, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6586, macro-F1=0.6566, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6435, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + CHAR_3-5 + MultinomialNB
+  Fold  1/10: accuracy=0.5773, macro-F1=0.5779, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6254, macro-F1=0.6257, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6460, macro-F1=0.6453, najbolje={'classifier__alpha': 0.1}
+  Fold  4/10: accuracy=0.6014, macro-F1=0.5988, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.6151, macro-F1=0.6127, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6529, macro-F1=0.6508, najbolje={'classifier__alpha': 0.1}
+  Fold  7/10: accuracy=0.5842, macro-F1=0.5818, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6357, macro-F1=0.6357, najbolje={'classifier__alpha': 0.1}
+  Fold  9/10: accuracy=0.6241, macro-F1=0.6246, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6759, macro-F1=0.6746, najbolje={'classifier__alpha': 0.1}
+
+Pokrecem: lower+lemma + CHAR_3-5 + LogisticRegression
+  Fold  1/10: accuracy=0.6564, macro-F1=0.6558, najbolje={}
+  Fold  2/10: accuracy=0.6392, macro-F1=0.6401, najbolje={}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6609, najbolje={}
+  Fold  4/10: accuracy=0.6529, macro-F1=0.6490, najbolje={}
+  Fold  5/10: accuracy=0.6426, macro-F1=0.6418, najbolje={}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6706, najbolje={}
+  Fold  7/10: accuracy=0.6804, macro-F1=0.6787, najbolje={}
+  Fold  8/10: accuracy=0.6701, macro-F1=0.6696, najbolje={}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6725, najbolje={}
+  Fold 10/10: accuracy=0.6310, macro-F1=0.6256, najbolje={}
+
+Pokrecem: lower+lemma + CHAR_3-5 + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6564, macro-F1=0.6558, najbolje={'classifier__C': 1.0}
+  Fold  2/10: accuracy=0.6392, macro-F1=0.6401, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6609, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6529, macro-F1=0.6490, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6426, macro-F1=0.6418, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6735, macro-F1=0.6706, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.6804, macro-F1=0.6787, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6701, macro-F1=0.6696, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6724, macro-F1=0.6725, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6310, macro-F1=0.6256, najbolje={'classifier__C': 1.0}
+
+Pokrecem: lower+lemma + CHAR_3-5 + LinearSVM
+  Fold  1/10: accuracy=0.6495, macro-F1=0.6492, najbolje={}
+  Fold  2/10: accuracy=0.6564, macro-F1=0.6573, najbolje={}
+  Fold  3/10: accuracy=0.6735, macro-F1=0.6702, najbolje={}
+  Fold  4/10: accuracy=0.6186, macro-F1=0.6159, najbolje={}
+  Fold  5/10: accuracy=0.6460, macro-F1=0.6458, najbolje={}
+  Fold  6/10: accuracy=0.6564, macro-F1=0.6541, najbolje={}
+  Fold  7/10: accuracy=0.6976, macro-F1=0.6976, najbolje={}
+  Fold  8/10: accuracy=0.6598, macro-F1=0.6597, najbolje={}
+  Fold  9/10: accuracy=0.6655, macro-F1=0.6660, najbolje={}
+  Fold 10/10: accuracy=0.6345, macro-F1=0.6306, najbolje={}
+
+Pokrecem: lower+lemma + CHAR_3-5 + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6426, macro-F1=0.6415, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6460, macro-F1=0.6474, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6529, macro-F1=0.6506, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6186, macro-F1=0.6159, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6426, macro-F1=0.6401, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6736, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6976, macro-F1=0.6976, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6804, macro-F1=0.6800, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.6793, macro-F1=0.6792, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6379, macro-F1=0.6341, najbolje={'classifier__C': 0.1}
+
+Pokrecem: lower+lemma + REC+CHAR + MultinomialNB
+  Fold  1/10: accuracy=0.6048, macro-F1=0.6048, najbolje={'classifier__alpha': 0.1}
+  Fold  2/10: accuracy=0.6495, macro-F1=0.6501, najbolje={'classifier__alpha': 0.1}
+  Fold  3/10: accuracy=0.6770, macro-F1=0.6764, najbolje={'classifier__alpha': 0.1}
+  Fold  4/10: accuracy=0.6082, macro-F1=0.6056, najbolje={'classifier__alpha': 0.1}
+  Fold  5/10: accuracy=0.6289, macro-F1=0.6277, najbolje={'classifier__alpha': 0.01}
+  Fold  6/10: accuracy=0.6632, macro-F1=0.6597, najbolje={'classifier__alpha': 0.01}
+  Fold  7/10: accuracy=0.6014, macro-F1=0.6005, najbolje={'classifier__alpha': 0.5}
+  Fold  8/10: accuracy=0.6460, macro-F1=0.6460, najbolje={'classifier__alpha': 0.1}
+  Fold  9/10: accuracy=0.6448, macro-F1=0.6458, najbolje={'classifier__alpha': 0.1}
+  Fold 10/10: accuracy=0.6862, macro-F1=0.6845, najbolje={'classifier__alpha': 0.01}
+
+Pokrecem: lower+lemma + REC+CHAR + LogisticRegression
+  Fold  1/10: accuracy=0.6632, macro-F1=0.6630, najbolje={}
+  Fold  2/10: accuracy=0.6735, macro-F1=0.6739, najbolje={}
+  Fold  3/10: accuracy=0.6804, macro-F1=0.6783, najbolje={}
+  Fold  4/10: accuracy=0.6323, macro-F1=0.6296, najbolje={}
+  Fold  5/10: accuracy=0.6632, macro-F1=0.6635, najbolje={}
+  Fold  6/10: accuracy=0.6667, macro-F1=0.6648, najbolje={}
+  Fold  7/10: accuracy=0.7079, macro-F1=0.7075, najbolje={}
+  Fold  8/10: accuracy=0.6838, macro-F1=0.6834, najbolje={}
+  Fold  9/10: accuracy=0.6897, macro-F1=0.6897, najbolje={}
+  Fold 10/10: accuracy=0.6517, macro-F1=0.6463, najbolje={}
+
+Pokrecem: lower+lemma + REC+CHAR + LogisticRegression (GridSearch)
+  Fold  1/10: accuracy=0.6667, macro-F1=0.6664, najbolje={'classifier__C': 10.0}
+  Fold  2/10: accuracy=0.6735, macro-F1=0.6739, najbolje={'classifier__C': 1.0}
+  Fold  3/10: accuracy=0.6804, macro-F1=0.6783, najbolje={'classifier__C': 1.0}
+  Fold  4/10: accuracy=0.6186, macro-F1=0.6162, najbolje={'classifier__C': 10.0}
+  Fold  5/10: accuracy=0.6632, macro-F1=0.6635, najbolje={'classifier__C': 1.0}
+  Fold  6/10: accuracy=0.6667, macro-F1=0.6648, najbolje={'classifier__C': 1.0}
+  Fold  7/10: accuracy=0.7079, macro-F1=0.7075, najbolje={'classifier__C': 1.0}
+  Fold  8/10: accuracy=0.6838, macro-F1=0.6834, najbolje={'classifier__C': 1.0}
+  Fold  9/10: accuracy=0.6897, macro-F1=0.6897, najbolje={'classifier__C': 1.0}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6456, najbolje={'classifier__C': 10.0}
+
+Pokrecem: lower+lemma + REC+CHAR + LinearSVM
+  Fold  1/10: accuracy=0.6426, macro-F1=0.6427, najbolje={}
+  Fold  2/10: accuracy=0.6392, macro-F1=0.6395, najbolje={}
+  Fold  3/10: accuracy=0.6529, macro-F1=0.6516, najbolje={}
+  Fold  4/10: accuracy=0.6048, macro-F1=0.6034, najbolje={}
+  Fold  5/10: accuracy=0.6701, macro-F1=0.6703, najbolje={}
+  Fold  6/10: accuracy=0.6770, macro-F1=0.6752, najbolje={}
+  Fold  7/10: accuracy=0.7148, macro-F1=0.7149, najbolje={}
+  Fold  8/10: accuracy=0.6598, macro-F1=0.6597, najbolje={}
+  Fold  9/10: accuracy=0.6621, macro-F1=0.6617, najbolje={}
+  Fold 10/10: accuracy=0.6483, macro-F1=0.6452, najbolje={}
+
+Pokrecem: lower+lemma + REC+CHAR + LinearSVM (GridSearch)
+  Fold  1/10: accuracy=0.6701, macro-F1=0.6698, najbolje={'classifier__C': 0.1}
+  Fold  2/10: accuracy=0.6804, macro-F1=0.6814, najbolje={'classifier__C': 0.1}
+  Fold  3/10: accuracy=0.6632, macro-F1=0.6608, najbolje={'classifier__C': 0.1}
+  Fold  4/10: accuracy=0.6048, macro-F1=0.6034, najbolje={'classifier__C': 1.0}
+  Fold  5/10: accuracy=0.6460, macro-F1=0.6458, najbolje={'classifier__C': 0.1}
+  Fold  6/10: accuracy=0.6838, macro-F1=0.6815, najbolje={'classifier__C': 0.1}
+  Fold  7/10: accuracy=0.6942, macro-F1=0.6934, najbolje={'classifier__C': 0.1}
+  Fold  8/10: accuracy=0.6735, macro-F1=0.6731, najbolje={'classifier__C': 0.1}
+  Fold  9/10: accuracy=0.7000, macro-F1=0.6998, najbolje={'classifier__C': 0.1}
+  Fold 10/10: accuracy=0.6655, macro-F1=0.6601, najbolje={'classifier__C': 0.1}
+Rezultati za MultinomialNB sacuvani u: rezultati_novi_jednostavno\rezultati_multinomialnb.csv
+Rezultati za LogisticRegression sacuvani u: rezultati_novi_jednostavno\rezultati_logisticregression.csv
+Rezultati za LogisticRegression (GridSearch) sacuvani u: rezultati_novi_jednostavno\rezultati_logisticregression (gridsearch).csv
+Rezultati za LinearSVM sacuvani u: rezultati_novi_jednostavno\rezultati_linearsvm.csv
+Rezultati za LinearSVM (GridSearch) sacuvani u: rezultati_novi_jednostavno\rezultati_linearsvm (gridsearch).csv
+
+=== TOP 10 KONFIGURACIJA ===
+ 1. lower+stem | REC+CHAR | LinearSVM (GridSearch): macro-F1=0.6722 (std=0.0258), accuracy=0.6737
+ 2. lower+stem | REC+CHAR | LinearSVM: macro-F1=0.6707 (std=0.0254), accuracy=0.6716
+ 3. lower+stem | REC+CHAR | LogisticRegression: macro-F1=0.6700 (std=0.0257), accuracy=0.6712
+ 4. lower+lemma | REC+CHAR | LogisticRegression: macro-F1=0.6700 (std=0.0209), accuracy=0.6713
+ 5. lower+stem | REC+CHAR | LogisticRegression (GridSearch): macro-F1=0.6692 (std=0.0265), accuracy=0.6702
+ 6. lower+lemma | REC+CHAR | LogisticRegression (GridSearch): macro-F1=0.6689 (std=0.0237), accuracy=0.6699
+ 7. lower+stem | TFIDF_1-2 | LinearSVM: macro-F1=0.6680 (std=0.0259), accuracy=0.6688
+ 8. lower+lemma | REC+CHAR | LinearSVM (GridSearch): macro-F1=0.6669 (std=0.0261), accuracy=0.6682
+ 9. lower | REC+CHAR | LogisticRegression: macro-F1=0.6664 (std=0.0278), accuracy=0.6675
+10. lower | CHAR_3-5 | LogisticRegression (GridSearch): macro-F1=0.6661 (std=0.0219), accuracy=0.6678
+Najinformativnije odlike sacuvane u: rezultati_novi_jednostavno\najinformativnije_odlike.csv
+Friedman test svih konfiguracija: statistika=879.2724, p=7.03335e-110
+Wilcoxon poredjenja svih parova sacuvana u: rezultati_novi_jednostavno\wilcoxon_sve_konfiguracije.csv
+Finalna top 10 tabela sacuvana u: rezultati_novi_jednostavno\finalna_top10.csv
+Najbolja konfiguracija: lower+stem | REC+CHAR | LinearSVM (GridSearch)
+Kraj izvrsavanja: 2026-08-04T02:51:07+02:00

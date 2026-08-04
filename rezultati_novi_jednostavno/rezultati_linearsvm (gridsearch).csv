@@ -1,0 +1,462 @@
+﻿MODEL,LinearSVM (GridSearch)
+SAZETAK REZULTATA
+preprocessing,features,accuracy,accuracy_std,accuracy_min,accuracy_max,macro_f1,macro_f1_std,macro_f1_min,macro_f1_max,accuracy_po_foldu,macro_f1_po_foldu,unutrasnji_cv_foldovi,kriterijum_izbora,mreza_hiperparametara,najbolji_hiperparametri_po_foldu,vreme_s
+lower,BOW,0.6035,0.0291,0.5636,0.6495,0.6026,0.0294,0.5626,0.6493,"[0.584192439862543, 0.5910652920962199, 0.6185567010309279, 0.570446735395189, 0.563573883161512, 0.6323024054982818, 0.6494845360824743, 0.6323024054982818, 0.6206896551724138, 0.5724137931034483]","[0.5838602483460851, 0.5909245400068636, 0.6183589999096198, 0.5684522826480288, 0.5626359195381019, 0.63124411416031, 0.6492708751146985, 0.6313696074651767, 0.619949441752686, 0.5703548487236431]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}]",11.00
+lower,TF,0.6135,0.0320,0.5464,0.6632,0.6127,0.0323,0.5439,0.6629,"[0.584192439862543, 0.6116838487972509, 0.6013745704467354, 0.5463917525773195, 0.6082474226804123, 0.6460481099656358, 0.6632302405498282, 0.6048109965635738, 0.6448275862068965, 0.6241379310344828]","[0.5842005218887187, 0.6119700260668735, 0.6014751534994199, 0.5439425728798201, 0.6076430049553782, 0.6452850877192983, 0.6629406927741802, 0.6043648228522178, 0.6453205395633431, 0.6199451334437819]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}]",6.92
+lower,LOG_TF,0.6087,0.0297,0.5533,0.6598,0.6077,0.0302,0.5500,0.6594,"[0.5945017182130584, 0.584192439862543, 0.6048109965635738, 0.5532646048109966, 0.5876288659793815, 0.6357388316151202, 0.6597938144329897, 0.6357388316151202, 0.6275862068965518, 0.603448275862069]","[0.5944078947368422, 0.5839555174012246, 0.6050715370448364, 0.5499662008825064, 0.5863552486562628, 0.6350593547447382, 0.659435551772612, 0.6356810733048358, 0.6262820512820513, 0.6011924784919395]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",8.38
+lower,IDF,0.5922,0.0255,0.5533,0.6529,0.5918,0.0257,0.5537,0.6532,"[0.5773195876288659, 0.5532646048109966, 0.5979381443298969, 0.584192439862543, 0.570446735395189, 0.5979381443298969, 0.6529209621993127, 0.6048109965635738, 0.603448275862069, 0.5793103448275863]","[0.5767291755082243, 0.5537307252913367, 0.5982530122303438, 0.5827635359331533, 0.5685383120520405, 0.5974187714502969, 0.6532395095324157, 0.6039594516303529, 0.6036606563445315, 0.5793595402054363]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",9.80
+lower,TF_IDF,0.6338,0.0322,0.5842,0.6942,0.6335,0.0324,0.5837,0.6942,"[0.5979381443298969, 0.6254295532646048, 0.6391752577319587, 0.584192439862543, 0.6185567010309279, 0.6563573883161512, 0.6941580756013745, 0.6735395189003437, 0.6379310344827587, 0.6103448275862069]","[0.5981658211069975, 0.6255165448038117, 0.6398890869479105, 0.5836863256218096, 0.6191813370774382, 0.6556404067003144, 0.6941839301230165, 0.6733457274667769, 0.6381030995258967, 0.6070452121913311]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}]",4.61
+lower,TFIDF_1-2,0.6317,0.0346,0.5876,0.6873,0.6310,0.0349,0.5866,0.6870,"[0.6116838487972509, 0.6701030927835051, 0.6288659793814433, 0.5876288659793815, 0.5910652920962199, 0.6769759450171822, 0.6872852233676976, 0.6254295532646048, 0.6413793103448275, 0.596551724137931]","[0.6098872380605883, 0.6700615470446141, 0.6286015112102068, 0.5865777460322185, 0.5909529577585445, 0.6762792382576955, 0.6869765209052169, 0.6252167340095104, 0.6411994640504058, 0.5944771333708196]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}]",6.70
+lower,TFIDF_1-3,0.6238,0.0349,0.5739,0.6759,0.6216,0.0357,0.5702,0.6749,"[0.5979381443298969, 0.6426116838487973, 0.6185567010309279, 0.5773195876288659, 0.5738831615120275, 0.6701030927835051, 0.6597938144329897, 0.6151202749140894, 0.6758620689655173, 0.6068965517241379]","[0.5963219929723648, 0.6444444444444444, 0.617058321305498, 0.5714024012096243, 0.5702074114813797, 0.6649873728091769, 0.6580612403115881, 0.6144544997486174, 0.674946662602865, 0.6040697968872076]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}]",7.81
+lower,CHAR_3-5,0.6582,0.0173,0.6323,0.6838,0.6564,0.0177,0.6282,0.6799,"[0.6494845360824743, 0.6426116838487973, 0.6666666666666666, 0.6323024054982818, 0.6529209621993127, 0.6838487972508591, 0.6735395189003437, 0.6735395189003437, 0.6724137931034483, 0.6344827586206897]","[0.6483604474796548, 0.642812958629079, 0.6649675749246083, 0.6282211645797201, 0.6520927917606852, 0.679943079700894, 0.672178431716004, 0.6723179290857715, 0.6728276482702525, 0.6301996164391981]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}]",36.11
+lower,REC+CHAR,0.6664,0.0261,0.6254,0.7113,0.6651,0.0267,0.6223,0.7113,"[0.6701030927835051, 0.6460481099656358, 0.6494845360824743, 0.6254295532646048, 0.6460481099656358, 0.6941580756013745, 0.711340206185567, 0.6804123711340206, 0.6931034482758621, 0.6482758620689655]","[0.6696646247172143, 0.6472424000948341, 0.6492563294775013, 0.6222970310045853, 0.6461627526491983, 0.6917039428887769, 0.7113011042260395, 0.679683777231311, 0.6920120701223693, 0.6414141414141414]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",35.66
+lower+stem,BOW,0.6183,0.0214,0.5876,0.6632,0.6177,0.0219,0.5859,0.6624,"[0.6082474226804123, 0.6116838487972509, 0.6288659793814433, 0.5876288659793815, 0.6219931271477663, 0.5979381443298969, 0.6632302405498282, 0.6426116838487973, 0.6206896551724138, 0.6]","[0.6083994664860826, 0.6134136190267153, 0.6273572440103204, 0.5858823507806844, 0.6234065301422814, 0.5947820236496831, 0.6624305390565192, 0.6428215572699175, 0.6202339511660173, 0.5982424284749865]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",17.87
+lower+stem,TF,0.6389,0.0233,0.5911,0.6873,0.6383,0.0237,0.5893,0.6874,"[0.6357388316151202, 0.6426116838487973, 0.6254295532646048, 0.5910652920962199, 0.6288659793814433, 0.6288659793814433, 0.6872852233676976, 0.6529209621993127, 0.6517241379310345, 0.6448275862068965]","[0.635727938644917, 0.6429613746686917, 0.624128412180907, 0.5893150719579129, 0.6285071733656088, 0.6283928178510821, 0.6873642521239774, 0.6529846261861135, 0.6516439909297052, 0.6415277777777778]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}]",6.35
+lower+stem,LOG_TF,0.6262,0.0232,0.5911,0.6770,0.6258,0.0236,0.5894,0.6770,"[0.6288659793814433, 0.6116838487972509, 0.6357388316151202, 0.5910652920962199, 0.6219931271477663, 0.6048109965635738, 0.6769759450171822, 0.6254295532646048, 0.6517241379310345, 0.6137931034482759]","[0.6287607255349191, 0.613945206174043, 0.6340480960453222, 0.5894350747291924, 0.622089437197889, 0.6025435156306291, 0.6769731561318872, 0.6253205128205127, 0.6518111012848423, 0.6126017277151493]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",16.03
+lower+stem,IDF,0.5894,0.0201,0.5517,0.6186,0.5889,0.0201,0.5510,0.6185,"[0.5979381443298969, 0.5567010309278351, 0.6082474226804123, 0.5945017182130584, 0.5910652920962199, 0.5807560137457045, 0.6185567010309279, 0.6013745704467354, 0.593103448275862, 0.5517241379310345]","[0.5977894014537357, 0.557156523329977, 0.6072681607913991, 0.5933638358322935, 0.5905228758169935, 0.5789675584298083, 0.6185497016974209, 0.6014609607449576, 0.5929220691125453, 0.5509543232268441]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}]",125.15
+lower+stem,TF_IDF,0.6462,0.0242,0.6117,0.6942,0.6457,0.0245,0.6092,0.6946,"[0.6323024054982818, 0.6254295532646048, 0.6254295532646048, 0.6116838487972509, 0.6391752577319587, 0.6460481099656358, 0.6941580756013745, 0.6804123711340206, 0.6517241379310345, 0.6551724137931034]","[0.6324264874011067, 0.6263938383193121, 0.6250120679201857, 0.6092046169009834, 0.6395165573703422, 0.644819691317387, 0.6946151338248603, 0.6801791672379908, 0.6521435135630389, 0.6523299087876872]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}]",5.47
+lower+stem,TFIDF_1-2,0.6661,0.0235,0.6276,0.7148,0.6649,0.0244,0.6230,0.7152,"[0.6666666666666666, 0.6632302405498282, 0.6597938144329897, 0.6391752577319587, 0.6494845360824743, 0.6769759450171822, 0.7147766323024055, 0.6769759450171822, 0.6862068965517242, 0.6275862068965518]","[0.6664520572695265, 0.663627740482324, 0.65818725557856, 0.6382436030072176, 0.6483923617972759, 0.6735176208147138, 0.71519844019844, 0.6769545836860722, 0.685844550586192, 0.6229865680529377]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}]",8.54
+lower+stem,TFIDF_1-3,0.6503,0.0322,0.6014,0.7010,0.6486,0.0332,0.5994,0.7009,"[0.6701030927835051, 0.6666666666666666, 0.6563573883161512, 0.6013745704467354, 0.6116838487972509, 0.6735395189003437, 0.7010309278350515, 0.6460481099656358, 0.6724137931034483, 0.603448275862069]","[0.6693560996966569, 0.668230243973951, 0.6543924055326881, 0.5995122712058748, 0.6080832133034716, 0.6685013210436939, 0.7009242666840221, 0.6457130552123466, 0.6718538856198043, 0.5994119774963469]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}]",10.56
+lower+stem,CHAR_3-5,0.6541,0.0149,0.6276,0.6793,0.6524,0.0162,0.6217,0.6788,"[0.6529209621993127, 0.6597938144329897, 0.6460481099656358, 0.6460481099656358, 0.6357388316151202, 0.6597938144329897, 0.6632302405498282, 0.6701030927835051, 0.6793103448275862, 0.6275862068965518]","[0.6525990541904744, 0.66119924074437, 0.6442982397925888, 0.6423386635991747, 0.6340740476154495, 0.6582636731766807, 0.6611038299111693, 0.6696159175883075, 0.6788144379522043, 0.6216515566102644]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",36.18
+lower+stem,REC+CHAR,0.6737,0.0244,0.6289,0.7113,0.6722,0.0258,0.6259,0.7113,"[0.6701030927835051, 0.6666666666666666, 0.6735395189003437, 0.6288659793814433, 0.6735395189003437, 0.7044673539518901, 0.711340206185567, 0.6838487972508591, 0.6862068965517242, 0.6379310344827587]","[0.6697924387893993, 0.6676453796590817, 0.6713628119915332, 0.6259028281363307, 0.6730684993442301, 0.7022972548876854, 0.7113493356056285, 0.6839545968554158, 0.6858286177657905, 0.6309266323540839]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",39.47
+lower+lemma,BOW,0.6207,0.0147,0.5979,0.6426,0.6201,0.0142,0.5978,0.6388,"[0.5979381443298969, 0.6151202749140894, 0.6426116838487973, 0.6013745704467354, 0.6116838487972509, 0.6254295532646048, 0.6391752577319587, 0.6185567010309279, 0.6379310344827587, 0.6172413793103448]","[0.597804649476382, 0.6168543745353253, 0.638722786647315, 0.5996993729151349, 0.6126179573187687, 0.6242346048247222, 0.6387519731392044, 0.6184791794214367, 0.6374751525596792, 0.6161601130979418]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",19.53
+lower+lemma,TF,0.6362,0.0218,0.5979,0.6667,0.6354,0.0225,0.5978,0.6666,"[0.6426116838487973, 0.6426116838487973, 0.6460481099656358, 0.6013745704467354, 0.5979381443298969, 0.6288659793814433, 0.6529209621993127, 0.6666666666666666, 0.6586206896551724, 0.6241379310344828]","[0.6425747863247863, 0.6428882805120429, 0.6454612184976756, 0.5985773322448152, 0.597821457376143, 0.6270467918530485, 0.6524883005529151, 0.6665625519146748, 0.658712715855573, 0.6213825204625316]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}, {""classifier__C"": 10.0}]",9.08
+lower+lemma,LOG_TF,0.6204,0.0241,0.5773,0.6632,0.6198,0.0239,0.5748,0.6600,"[0.6082474226804123, 0.6048109965635738, 0.6632302405498282, 0.5773195876288659, 0.6082474226804123, 0.6219931271477663, 0.6426116838487973, 0.6254295532646048, 0.6482758620689655, 0.603448275862069]","[0.6081607798933027, 0.6060335328628011, 0.6600082457225315, 0.5748179498179499, 0.608364481223837, 0.6211177057713654, 0.6420436174862217, 0.6253205128205127, 0.6486115878798616, 0.6030671252709364]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",12.02
+lower+lemma,IDF,0.5846,0.0249,0.5517,0.6276,0.5839,0.0246,0.5519,0.6264,"[0.6013745704467354, 0.584192439862543, 0.5979381443298969, 0.5670103092783505, 0.5601374570446735, 0.5876288659793815, 0.6151202749140894, 0.5532646048109966, 0.6275862068965518, 0.5517241379310345]","[0.5997486834326479, 0.5840595365044635, 0.5978236116270864, 0.5660888631228037, 0.5601087801087802, 0.5853110082984504, 0.6147294938917975, 0.5532082315211101, 0.6264387330660182, 0.5518728859214145]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 10.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",9.94
+lower+lemma,TF_IDF,0.6437,0.0216,0.6117,0.6770,0.6433,0.0217,0.6109,0.6769,"[0.6323024054982818, 0.6288659793814433, 0.6460481099656358, 0.6116838487972509, 0.6323024054982818, 0.6563573883161512, 0.6769759450171822, 0.6632302405498282, 0.6724137931034483, 0.6172413793103448]","[0.6321054557095166, 0.6292871464753061, 0.6456331430244474, 0.6108654293455843, 0.633057927472064, 0.655598449952475, 0.6769189945481738, 0.6619077399565204, 0.6723346828609987, 0.6155885567427224]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}]",5.61
+lower+lemma,TFIDF_1-2,0.6572,0.0261,0.6151,0.7113,0.6561,0.0267,0.6139,0.7120,"[0.6323024054982818, 0.6666666666666666, 0.6563573883161512, 0.6151202749140894, 0.6391752577319587, 0.6804123711340206, 0.711340206185567, 0.6494845360824743, 0.6758620689655173, 0.6448275862068965]","[0.6295021788292714, 0.6666214233067467, 0.655525077042907, 0.6139457916832709, 0.6387971997930967, 0.6794587182784837, 0.712003319846457, 0.6491799717606169, 0.673994042061269, 0.6424438091163104]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}]",10.66
+lower+lemma,TFIDF_1-3,0.6434,0.0244,0.5945,0.6701,0.6419,0.0250,0.5922,0.6694,"[0.6219931271477663, 0.6563573883161512, 0.6597938144329897, 0.5945017182130584, 0.6082474226804123, 0.6701030927835051, 0.6632302405498282, 0.6529209621993127, 0.6586206896551724, 0.6482758620689655]","[0.619304117498339, 0.6569360993661862, 0.6589821918032696, 0.5922050108548964, 0.6065930049389355, 0.6693507348102653, 0.6625193333296465, 0.6526397476312984, 0.6565687137746503, 0.6434676834611325]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}]",11.85
+lower+lemma,CHAR_3-5,0.6575,0.0234,0.6186,0.6976,0.6560,0.0241,0.6159,0.6976,"[0.6426116838487973, 0.6460481099656358, 0.6529209621993127, 0.6185567010309279, 0.6426116838487973, 0.6769759450171822, 0.697594501718213, 0.6804123711340206, 0.6793103448275862, 0.6379310344827587]","[0.6415155228084828, 0.647386039004214, 0.6506208676019997, 0.6159027569541213, 0.640050897554847, 0.6736062074439969, 0.6975567190226877, 0.6799926219157478, 0.6791509208230421, 0.6340576418424605]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",37.10
+lower+lemma,REC+CHAR,0.6682,0.0258,0.6048,0.7000,0.6669,0.0261,0.6034,0.6998,"[0.6701030927835051, 0.6804123711340206, 0.6632302405498282, 0.6048109965635738, 0.6460481099656358, 0.6838487972508591, 0.6941580756013745, 0.6735395189003437, 0.7, 0.6655172413793103]","[0.6697664115285459, 0.6813894452274395, 0.6607824986373253, 0.6034047863878854, 0.6458375374716678, 0.6815135893738224, 0.693369301743686, 0.6730906072106261, 0.6998372712218709, 0.6601471235931892]",2,f1_macro,"{""classifier__C"": [0.1, 1.0, 10.0]}","[{""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 1.0}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}, {""classifier__C"": 0.1}]",47.97
+
+KONFIGURACIJA,lower + BOW + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.602,0.601,0.601,959
+neutral,0.616,0.636,0.626,997
+positive,0.591,0.572,0.582,952
+macro avg,0.603,0.603,0.603,2908
+weighted avg,0.603,0.604,0.603,2908
+accuracy,,,0.604,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,576,189,194
+neutral,180,634,183
+positive,201,206,545
+
+KONFIGURACIJA,lower + TF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.617,0.611,0.614,959
+neutral,0.626,0.647,0.636,997
+positive,0.596,0.581,0.588,952
+macro avg,0.613,0.613,0.613,2908
+weighted avg,0.613,0.613,0.613,2908
+accuracy,,,0.613,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,586,174,199
+neutral,176,645,176
+positive,187,212,553
+
+KONFIGURACIJA,lower + LOG_TF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.604,0.591,0.597,959
+neutral,0.617,0.644,0.630,997
+positive,0.604,0.589,0.596,952
+macro avg,0.608,0.608,0.608,2908
+weighted avg,0.608,0.609,0.608,2908
+accuracy,,,0.609,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,567,192,200
+neutral,187,642,168
+positive,185,206,561
+
+KONFIGURACIJA,lower + IDF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.594,0.594,0.594,959
+neutral,0.607,0.604,0.606,997
+positive,0.574,0.578,0.576,952
+macro avg,0.592,0.592,0.592,2908
+weighted avg,0.592,0.592,0.592,2908
+accuracy,,,0.592,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,570,186,203
+neutral,190,602,205
+positive,199,203,550
+
+KONFIGURACIJA,lower + TF_IDF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.632,0.658,0.645,959
+neutral,0.657,0.627,0.641,997
+positive,0.613,0.617,0.615,952
+macro avg,0.634,0.634,0.634,2908
+weighted avg,0.634,0.634,0.634,2908
+accuracy,,,0.634,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,631,149,179
+neutral,181,625,191
+positive,187,178,587
+
+KONFIGURACIJA,lower + TFIDF_1-2 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.631,0.644,0.638,959
+neutral,0.633,0.663,0.647,997
+positive,0.631,0.586,0.608,952
+macro avg,0.632,0.631,0.631,2908
+weighted avg,0.632,0.632,0.631,2908
+accuracy,,,0.632,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,618,173,168
+neutral,178,661,158
+positive,183,211,558
+
+KONFIGURACIJA,lower + TFIDF_1-3 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.636,0.613,0.625,959
+neutral,0.613,0.704,0.655,997
+positive,0.625,0.550,0.585,952
+macro avg,0.625,0.623,0.622,2908
+weighted avg,0.625,0.624,0.622,2908
+accuracy,,,0.624,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,588,197,174
+neutral,155,702,140
+positive,181,247,524
+
+KONFIGURACIJA,lower + CHAR_3-5 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.676,0.654,0.665,959
+neutral,0.656,0.712,0.683,997
+positive,0.643,0.606,0.624,952
+macro avg,0.658,0.657,0.657,2908
+weighted avg,0.658,0.658,0.658,2908
+accuracy,,,0.658,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,627,168,164
+neutral,130,710,157
+positive,171,204,577
+
+KONFIGURACIJA,lower + REC+CHAR + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.679,0.667,0.673,959
+neutral,0.660,0.713,0.685,997
+positive,0.661,0.617,0.638,952
+macro avg,0.667,0.666,0.666,2908
+weighted avg,0.667,0.666,0.666,2908
+accuracy,,,0.666,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,640,168,151
+neutral,136,711,150
+positive,166,199,587
+
+KONFIGURACIJA,lower+stem + BOW + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.647,0.634,0.641,959
+neutral,0.625,0.636,0.631,997
+positive,0.582,0.584,0.583,952
+macro avg,0.618,0.618,0.618,2908
+weighted avg,0.618,0.618,0.618,2908
+accuracy,,,0.618,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,608,161,190
+neutral,154,634,209
+positive,177,219,556
+
+KONFIGURACIJA,lower+stem + TF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.651,0.648,0.649,959
+neutral,0.649,0.657,0.653,997
+positive,0.617,0.611,0.614,952
+macro avg,0.639,0.639,0.639,2908
+weighted avg,0.639,0.639,0.639,2908
+accuracy,,,0.639,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,621,151,187
+neutral,167,655,175
+positive,166,204,582
+
+KONFIGURACIJA,lower+stem + LOG_TF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.651,0.638,0.645,959
+neutral,0.635,0.644,0.639,997
+positive,0.592,0.596,0.594,952
+macro avg,0.626,0.626,0.626,2908
+weighted avg,0.626,0.626,0.626,2908
+accuracy,,,0.626,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,612,161,186
+neutral,151,642,204
+positive,177,208,567
+
+KONFIGURACIJA,lower+stem + IDF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.624,0.619,0.622,959
+neutral,0.599,0.585,0.592,997
+positive,0.547,0.564,0.555,952
+macro avg,0.590,0.589,0.590,2908
+weighted avg,0.590,0.589,0.590,2908
+accuracy,,,0.589,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,594,164,201
+neutral,170,583,244
+positive,188,227,537
+
+KONFIGURACIJA,lower+stem + TF_IDF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.666,0.665,0.666,959
+neutral,0.660,0.646,0.653,997
+positive,0.613,0.627,0.620,952
+macro avg,0.646,0.646,0.646,2908
+weighted avg,0.647,0.646,0.646,2908
+accuracy,,,0.646,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,638,142,179
+neutral,155,644,198
+positive,165,190,597
+
+KONFIGURACIJA,lower+stem + TFIDF_1-2 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.678,0.679,0.678,959
+neutral,0.664,0.698,0.681,997
+positive,0.656,0.620,0.637,952
+macro avg,0.666,0.666,0.665,2908
+weighted avg,0.666,0.666,0.666,2908
+accuracy,,,0.666,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,651,158,150
+neutral,141,696,160
+positive,168,194,590
+
+KONFIGURACIJA,lower+stem + TFIDF_1-3 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.671,0.650,0.660,959
+neutral,0.644,0.715,0.678,997
+positive,0.636,0.583,0.609,952
+macro avg,0.650,0.649,0.649,2908
+weighted avg,0.650,0.650,0.649,2908
+accuracy,,,0.650,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,623,171,165
+neutral,132,713,152
+positive,174,223,555
+
+KONFIGURACIJA,lower+stem + CHAR_3-5 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.672,0.649,0.660,959
+neutral,0.644,0.715,0.678,997
+positive,0.648,0.596,0.621,952
+macro avg,0.655,0.653,0.653,2908
+weighted avg,0.654,0.654,0.653,2908
+accuracy,,,0.654,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,622,172,165
+neutral,141,713,143
+positive,163,222,567
+
+KONFIGURACIJA,lower+stem + REC+CHAR + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.682,0.684,0.683,959
+neutral,0.670,0.717,0.693,997
+positive,0.669,0.618,0.642,952
+macro avg,0.674,0.673,0.673,2908
+weighted avg,0.674,0.674,0.673,2908
+accuracy,,,0.674,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,656,154,149
+neutral,140,715,142
+positive,166,198,588
+
+KONFIGURACIJA,lower+lemma + BOW + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.650,0.635,0.642,959
+neutral,0.629,0.635,0.632,997
+positive,0.583,0.591,0.587,952
+macro avg,0.621,0.620,0.621,2908
+weighted avg,0.621,0.621,0.621,2908
+accuracy,,,0.621,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,609,158,192
+neutral,154,633,210
+positive,174,215,563
+
+KONFIGURACIJA,lower+lemma + TF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.646,0.638,0.642,959
+neutral,0.650,0.658,0.654,997
+positive,0.613,0.611,0.612,952
+macro avg,0.636,0.636,0.636,2908
+weighted avg,0.636,0.636,0.636,2908
+accuracy,,,0.636,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,612,157,190
+neutral,163,656,178
+positive,173,197,582
+
+KONFIGURACIJA,lower+lemma + LOG_TF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.643,0.633,0.638,959
+neutral,0.631,0.637,0.634,997
+positive,0.587,0.590,0.589,952
+macro avg,0.620,0.620,0.620,2908
+weighted avg,0.620,0.620,0.620,2908
+accuracy,,,0.620,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,607,161,191
+neutral,158,635,204
+positive,179,211,562
+
+KONFIGURACIJA,lower+lemma + IDF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.605,0.610,0.607,959
+neutral,0.601,0.566,0.583,997
+positive,0.550,0.579,0.564,952
+macro avg,0.585,0.585,0.585,2908
+weighted avg,0.585,0.585,0.585,2908
+accuracy,,,0.585,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,585,171,203
+neutral,185,564,248
+positive,197,204,551
+
+KONFIGURACIJA,lower+lemma + TF_IDF + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.649,0.668,0.659,959
+neutral,0.666,0.627,0.646,997
+positive,0.616,0.637,0.626,952
+macro avg,0.644,0.644,0.644,2908
+weighted avg,0.644,0.644,0.644,2908
+accuracy,,,0.644,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,641,144,174
+neutral,169,625,203
+positive,177,169,606
+
+KONFIGURACIJA,lower+lemma + TFIDF_1-2 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.663,0.680,0.671,959
+neutral,0.658,0.680,0.669,997
+positive,0.651,0.610,0.630,952
+macro avg,0.657,0.657,0.657,2908
+weighted avg,0.657,0.657,0.657,2908
+accuracy,,,0.657,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,652,162,145
+neutral,152,678,167
+positive,180,191,581
+
+KONFIGURACIJA,lower+lemma + TFIDF_1-3 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.651,0.651,0.651,959
+neutral,0.653,0.694,0.673,997
+positive,0.624,0.583,0.603,952
+macro avg,0.643,0.643,0.642,2908
+weighted avg,0.643,0.643,0.643,2908
+accuracy,,,0.643,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,624,153,182
+neutral,152,692,153
+positive,182,215,555
+
+KONFIGURACIJA,lower+lemma + CHAR_3-5 + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.679,0.662,0.671,959
+neutral,0.651,0.710,0.679,997
+positive,0.642,0.598,0.619,952
+macro avg,0.658,0.657,0.656,2908
+weighted avg,0.658,0.657,0.657,2908
+accuracy,,,0.657,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,635,161,163
+neutral,135,708,154
+positive,165,218,569
+
+KONFIGURACIJA,lower+lemma + REC+CHAR + LinearSVM (GridSearch)
+CLASSIFICATION REPORT
+klasa,precision,recall,f1-score,support
+negative,0.681,0.667,0.674,959
+neutral,0.669,0.712,0.690,997
+positive,0.654,0.623,0.638,952
+macro avg,0.668,0.667,0.667,2908
+weighted avg,0.668,0.668,0.668,2908
+accuracy,,,0.668,2908
+
+MATRICA KONFUZIJE
+stvarno \ predvidjeno,negative,neutral,positive
+negative,640,155,164
+neutral,137,710,150
+positive,163,196,593

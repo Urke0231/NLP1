@@ -1,0 +1,61 @@
+﻿klasa,rang,odlika,koeficijent
+negative,1,word__pad,0.738448
+negative,2,word__zbog,0.640690
+negative,3,word__cen,0.631117
+negative,4,word__manj,0.527839
+negative,5,char__ pa,0.524795
+negative,6,word__pal,0.462027
+negative,7,char__ ne,0.425079
+negative,8,word__pao,0.407624
+negative,9,word__gubitak,0.404975
+negative,10,char__gub,0.397060
+negative,11,char__pad ,0.394267
+negative,12,word__trošk,0.389576
+negative,13,char__gubi,0.389468
+negative,14,char__manj,0.387140
+negative,15,char__pad,0.377180
+negative,16,char__ubi,0.376850
+negative,17,char__ pad ,0.370770
+negative,18,word__radni,0.370559
+negative,19,word__nij,0.369025
+negative,20,char__ pad,0.368582
+neutral,1,word__o,0.580536
+neutral,2,word__prodat,0.376749
+neutral,3,char__men,0.327234
+neutral,4,word__direktor,0.312432
+neutral,5,word__iznosi je,0.309449
+neutral,6,word__rad,0.303338
+neutral,7,char__ o ,0.269458
+neutral,8,word__javn,0.268685
+neutral,9,word__je da,0.265596
+neutral,10,word__porez,0.260359
+neutral,11,word__24,0.259482
+neutral,12,word__tender,0.251314
+neutral,13,word__odst i,0.241461
+neutral,14,char__pis,0.240780
+neutral,15,char__jek,0.238875
+neutral,16,word__u vredn,0.235904
+neutral,17,word__stop,0.227371
+neutral,18,word__očekivanj,0.224641
+neutral,19,char__dat ,0.221694
+neutral,20,word__poziv za,0.221553
+positive,1,word__rast,0.667926
+positive,2,char__ast,0.538856
+positive,3,word__rast od,0.485097
+positive,4,char__rast ,0.484169
+positive,5,char__ast ,0.472228
+positive,6,char__rast,0.457192
+positive,7,char__ras,0.439571
+positive,8,word__viš neg,0.411008
+positive,9,word__porast,0.395315
+positive,10,char__ rast,0.363634
+positive,11,word__izjavi je,0.351469
+positive,12,char__već,0.331298
+positive,13,word__poveć,0.324196
+positive,14,word__je,0.316583
+positive,15,word__nezaposlen,0.313558
+positive,16,word__izjavi,0.312800
+positive,17,char__poras,0.291071
+positive,18,char__oras,0.291071
+positive,19,word__nov radn,0.289658
+positive,20,word__je i,0.288791
