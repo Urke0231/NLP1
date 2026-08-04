@@ -70,7 +70,7 @@ warnings.filterwarnings("ignore")
 PUTANJA_PODACI = "./anotacije-2026-07-26.json"
 
 # Direktorijum za tabele i grafikone. Kreira se automatski.
-IZLAZNI_DIREKTORIJUM = "rezultati_osnovni_modeli_notebook_stil"
+IZLAZNI_DIREKTORIJUM = "rezultati_osnovni_modeli_notebook_stil1"
 
 # Varijante pretprocesiranja koje se porede (isto sto i u 02_osnovni_modeli.py).
 # "lower+lema" zahteva CLASSLA i traje najduze - prvi put je pustite preko
@@ -135,7 +135,7 @@ SLUCAJNO_SEME = 42
 # thread-ovi bi samo naizmenicno cekali na GIL bez stvarnog ubrzanja. Svaki
 # proces ima svoj GIL, pa se ovo realno paralelizuje na vise jezgara.
 # Idite blizu broja fizickih jezgara (npr. 16-24 na 24-jezgarnom CPU-u).
-BROJ_PROCESA = 20
+BROJ_PROCESA = 8
 
 # Broj jezgara za GridSearchCV UNUTAR jednog procesa (n_jobs). Ostaje na 1 -
 # BROJ_PROCESA vec koristi sve fizicke procese/jezgra na spoljnom nivou, pa bi
@@ -154,28 +154,81 @@ TOK = r"(?u)\S+"
 
 def _feature_defs() -> Dict[str, callable]:
     """Fabrike vektorizatora po varijanti odlika - isto sto i u
-    02_osnovni_modeli.py."""
+    02_osnovni_modeli.py.
+
+    Bez parametara. Vraca recnik {naziv_varijante: fabrika}, gde je fabrika
+    funkcija bez argumenata koja pravi NOVU, nefitovanu instancu vektorizatora
+    pri svakom pozivu (bitno jer svaka konfiguracija/fold/proces mora dobiti
+    svoju svezu instancu, ne deljenu vec-fitovanu)."""
+
+    def napravi_tf():
+        return CountVectorizer(token_pattern=TOK, min_df=MIN_DF_REC)
+
+    def napravi_idf():
+        return TfidfVectorizer(
+            token_pattern=TOK,
+            min_df=MIN_DF_REC,
+            binary=True,
+            use_idf=True,
+        )
+
+    def napravi_tfidf():
+        return TfidfVectorizer(
+            token_pattern=TOK,
+            min_df=MIN_DF_REC,
+            sublinear_tf=True,
+            use_idf=True,
+        )
+
+    def napravi_tfidf_1_2():
+        return TfidfVectorizer(
+            token_pattern=TOK,
+            min_df=MIN_DF_REC,
+            ngram_range=(1, 2),
+            sublinear_tf=True,
+            use_idf=True,
+        )
+
+    def napravi_tfidf_1_3():
+        return TfidfVectorizer(
+            token_pattern=TOK,
+            min_df=MIN_DF_KARAKTER,
+            ngram_range=(1, 3),
+            sublinear_tf=True,
+            use_idf=True,
+        )
+
+    def napravi_char_3_5():
+        return TfidfVectorizer(
+            analyzer="char_wb",
+            ngram_range=(3, 5),
+            min_df=MIN_DF_KARAKTER,
+            sublinear_tf=True,
+        )
+
+    def napravi_rec_char_uniju():
+        rec_odlike = TfidfVectorizer(
+            token_pattern=TOK,
+            min_df=MIN_DF_REC,
+            ngram_range=(1, 2),
+            sublinear_tf=True,
+        )
+        char_odlike = TfidfVectorizer(
+            analyzer="char_wb",
+            ngram_range=(3, 5),
+            min_df=MIN_DF_KARAKTER,
+            sublinear_tf=True,
+        )
+        return FeatureUnion([("rec", rec_odlike), ("char", char_odlike)])
+
     return {
-        "TF": lambda: CountVectorizer(token_pattern=TOK, min_df=MIN_DF_REC),
-        "IDF": lambda: TfidfVectorizer(token_pattern=TOK, min_df=MIN_DF_REC,
-                                       binary=True, use_idf=True),
-        "TFIDF": lambda: TfidfVectorizer(token_pattern=TOK, min_df=MIN_DF_REC,
-                                         sublinear_tf=True, use_idf=True),
-        "TFIDF_1-2": lambda: TfidfVectorizer(token_pattern=TOK, min_df=MIN_DF_REC,
-                                             ngram_range=(1, 2),
-                                             sublinear_tf=True, use_idf=True),
-        "TFIDF_1-3": lambda: TfidfVectorizer(token_pattern=TOK,
-                                             min_df=MIN_DF_KARAKTER,
-                                             ngram_range=(1, 3),
-                                             sublinear_tf=True, use_idf=True),
-        "CHAR_3-5": lambda: TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5),
-                                            min_df=MIN_DF_KARAKTER, sublinear_tf=True),
-        "REC+CHAR": lambda: FeatureUnion([
-            ("rec", TfidfVectorizer(token_pattern=TOK, min_df=MIN_DF_REC,
-                                    ngram_range=(1, 2), sublinear_tf=True)),
-            ("char", TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5),
-                                     min_df=MIN_DF_KARAKTER, sublinear_tf=True)),
-        ]),
+        "TF": napravi_tf,
+        "IDF": napravi_idf,
+        "TFIDF": napravi_tfidf,
+        "TFIDF_1-2": napravi_tfidf_1_2,
+        "TFIDF_1-3": napravi_tfidf_1_3,
+        "CHAR_3-5": napravi_char_3_5,
+        "REC+CHAR": napravi_rec_char_uniju,
     }
 
 
@@ -192,12 +245,48 @@ def _cv_report(naziv: str, pretprocesiranje: str, model: str, odlika: str,
     konfiguracije nikad ne dele stanje. Kada je estimator vec GridSearchCV
     (ima svoj n_jobs za unutrasnju pretragu), spoljasnji cross_val_score se
     namerno pusta sekvencijalno da ne bi doslo do ugnjezdenih pod-procesa.
+
+    Parametri:
+        naziv: puni citljiv naziv konfiguracije (npr. "lower | TFIDF |
+            MultinomialNB") - ide u kolonu "konfiguracija" reda rezultata i
+            u ispis progresa.
+        pretprocesiranje: naziv varijante pretprocesiranja (pname, npr.
+            "lower+stem") - samo se upisuje u red rezultata, radi kasnijeg
+            grupisanja/toplotne mape.
+        model: naziv modela (npr. "LogRegresija (GridSearch)") - upisuje se
+            u red rezultata.
+        odlika: naziv varijante odlika (fname, npr. "CHAR_3-5") - upisuje se
+            u red rezultata.
+        estimator: sklearn Pipeline (ili GridSearchCV oko pipeline-a) koji
+            se fituje/evaluira preko cross_val_score-a.
+        corpus: lista (vec pretprocesiranih) tekstova nad kojima se
+            estimator trenira/testira kroz CV.
+        y: serija labela (sentiment) - target za klasifikaciju.
+        cv: splitter (ovde outer_cv, StratifiedKFold) koji definise spoljne
+            foldove za cross_val_score.
+        f1_takodje: ako je True, racuna se i drugi cross_val_score poziv sa
+            scoring="f1_macro", pored accuracy-ja.
+        n_jobs: broj jezgara za spoljni cross_val_score - interno se
+            prisiljava na 1 ako je estimator vec GridSearchCV, da se izbegnu
+            ugnjezdeni pod-procesi.
     """
     t0 = time.time()
-    outer_n_jobs = 1 if isinstance(estimator, GridSearchCV) else n_jobs
 
-    acc = cross_val_score(estimator, corpus, y, cv=cv, scoring="accuracy",
-                          n_jobs=outer_n_jobs)
+    # Ako je estimator vec GridSearchCV, ne pokrecemo dodatne paralelne
+    # procese ovde - unutrasnja pretraga vec koristi n_jobs (videti main()).
+    if isinstance(estimator, GridSearchCV):
+        outer_n_jobs = 1
+    else:
+        outer_n_jobs = n_jobs
+
+    acc = cross_val_score(
+        estimator,
+        corpus,
+        y,
+        cv=cv,
+        scoring="accuracy",
+        n_jobs=outer_n_jobs,
+    )
     row = {
         "konfiguracija": naziv,
         "pretprocesiranje": pretprocesiranje,
@@ -212,8 +301,14 @@ def _cv_report(naziv: str, pretprocesiranje: str, model: str, odlika: str,
     }
 
     if f1_takodje:
-        f1 = cross_val_score(estimator, corpus, y, cv=cv, scoring="f1_macro",
-                             n_jobs=outer_n_jobs)
+        f1 = cross_val_score(
+            estimator,
+            corpus,
+            y,
+            cv=cv,
+            scoring="f1_macro",
+            n_jobs=outer_n_jobs,
+        )
         row["cv_f1_sr"] = f1.mean()
         row["cv_f1_std"] = f1.std()
 
@@ -222,6 +317,14 @@ def _cv_report(naziv: str, pretprocesiranje: str, model: str, odlika: str,
 
 
 def main():
+    """Glavna orkestraciona funkcija - bez parametara (sve se cita iz
+    konstanti u bloku KONFIGURACIJA na vrhu fajla).
+
+    Ucitava podatke, gradi sve varijante pretprocesiranja i odlika, sastavlja
+    listu svih kombinacija (pretprocesiranje x odlike x model) u `tasks`,
+    pokrece ih paralelno preko ProcessPoolExecutor pozivajuci _cv_report za
+    svaku, cuva CSV sa rezultatima i poziva _najbolji_model/_grafikon/
+    _heatmapa za izlazne grafikone."""
     put = Path(PUTANJA_PODACI)
     if not put.exists():
         sys.exit(f"GRESKA: ne postoji fajl sa podacima: {put.resolve()}\n"
@@ -243,11 +346,28 @@ def main():
     # (preprocessing.py) - i deli se (pickle-om) izmedju svih procesa i
     # konfiguracija ispod.
     trazi_lemu = "lower+lema" in VARIJANTE_PRETPROCESIRANJA
-    variants = build_variants(df["tekst"].tolist(), include_lemma=trazi_lemu,
-                              lemma_use_gpu=True, geo_filter=GEO_FILTER)
-    variants = {k: v for k, v in variants.items()
-               if k in VARIJANTE_PRETPROCESIRANJA}
-    features = {k: v for k, v in _feature_defs().items() if k in VARIJANTE_ODLIKA}
+    svi_tekstovi = df["tekst"].tolist()
+    sve_varijante = build_variants(
+        svi_tekstovi,
+        include_lemma=trazi_lemu,
+        lemma_use_gpu=True,
+        geo_filter=GEO_FILTER,
+    )
+
+    # Zadrzavamo samo varijante pretprocesiranja koje su ukljucene u
+    # konfiguraciji (VARIJANTE_PRETPROCESIRANJA) - build_variants ume da
+    # vrati i vise od toga.
+    variants = {}
+    for naziv_varijante, tekstovi_varijante in sve_varijante.items():
+        if naziv_varijante in VARIJANTE_PRETPROCESIRANJA:
+            variants[naziv_varijante] = tekstovi_varijante
+
+    # Isto tako, od svih definisanih fabrika odlika (_feature_defs) zadrzavamo
+    # samo one ukljucene u konfiguraciji (VARIJANTE_ODLIKA).
+    features = {}
+    for naziv_odlike, fabrika_vektorizatora in _feature_defs().items():
+        if naziv_odlike in VARIJANTE_ODLIKA:
+            features[naziv_odlike] = fabrika_vektorizatora
 
     if not variants or not features:
         sys.exit("GRESKA: prazna VARIJANTE_PRETPROCESIRANJA/VARIJANTE_ODLIKA. "
@@ -258,24 +378,37 @@ def main():
     vectorizer = CountVectorizer()
     clf = MultinomialNB()
     corpus_train, corpus_test, y_train, y_test = train_test_split(
-        df["tekst"], y, test_size=0.2, random_state=SLUCAJNO_SEME)
+        df["tekst"],
+        y,
+        test_size=0.2,
+        random_state=SLUCAJNO_SEME,
+    )
     X_train = vectorizer.fit_transform(corpus_train)
     clf.fit(X_train, y_train)
     X_test = vectorizer.transform(corpus_test)
     y_pred = clf.predict(X_test)
+
+    broj_tacnih = (y_test == y_pred).sum()
+    accuracy = broj_tacnih / X_test.shape[0]
     print("\n--- Brza provera (jedna train/test podela): "
          "MultinomialNB + CountVectorizer (sirov tekst) ---")
-    print("Accuracy: ", (y_test == y_pred).sum() / X_test.shape[0])
+    print("Accuracy: ", accuracy)
 
     n_jobs = BROJ_JEZGARA
 
     # Jedan te isti spoljni fold-splitter za BAS SVE konfiguracije (stratifikovan,
     # promesan, fiksni seme) - direktna uporedivost rezultata. Unutrasnji
     # splitter se koristi SAMO unutar GridSearchCV-a, za odabir C.
-    outer_cv = StratifiedKFold(n_splits=BROJ_FOLDOVA, shuffle=True,
-                               random_state=SLUCAJNO_SEME)
-    inner_cv = StratifiedKFold(n_splits=BROJ_FOLDOVA_UNUTRASNJI, shuffle=True,
-                               random_state=SLUCAJNO_SEME)
+    outer_cv = StratifiedKFold(
+        n_splits=BROJ_FOLDOVA,
+        shuffle=True,
+        random_state=SLUCAJNO_SEME,
+    )
+    inner_cv = StratifiedKFold(
+        n_splits=BROJ_FOLDOVA_UNUTRASNJI,
+        shuffle=True,
+        random_state=SLUCAJNO_SEME,
+    )
 
     # --- Gradimo listu (naziv, pretprocesiranje, model, odlika, estimator,
     #     corpus, cv, f1_takodje) za sve konfiguracije ---------------------
@@ -287,9 +420,20 @@ def main():
 
             # --- Celija 2: MultinomialNB, 10-slojna CV ----------------------
             naziv = f"{pname} | {fname} | MultinomialNB"
-            p_clf = Pipeline([("vectorizer", vec_factory()), ("classifier", MultinomialNB())])
-            tasks.append((naziv, pname, "MultinomialNB", fname, p_clf, corpus,
-                         outer_cv, True))
+            p_clf = Pipeline([
+                ("vectorizer", vec_factory()),
+                ("classifier", MultinomialNB()),
+            ])
+            tasks.append((
+                naziv,          # citljiv naziv konfiguracije
+                pname,          # naziv varijante pretprocesiranja (lower, lower+stem, ...)
+                "MultinomialNB",  # naziv modela
+                fname,          # naziv varijante odlika (TF, TFIDF, ...)
+                p_clf,          # sklearn pipeline (estimator) koji se evaluira
+                corpus,         # tekstovi ove varijante pretprocesiranja
+                outer_cv,       # spoljni CV splitter (isti za sve konfiguracije)
+                True,           # f1_takodje - racunaj i macro-F1, ne samo accuracy
+            ))
             estimators[naziv] = (p_clf, corpus)
 
             # --- Celija 3/4: LogRegresija, 10-slojna CV (acc i F1) ----------
@@ -298,9 +442,20 @@ def main():
             # lbfgs radi multiklasno nativno.
             naziv = f"{pname} | {fname} | LogRegresija"
             clf = LogisticRegression(solver="lbfgs", max_iter=1000)
-            p_clf = Pipeline([("vectorizer", vec_factory()), ("classifier", clf)])
-            tasks.append((naziv, pname, "LogRegresija", fname, p_clf, corpus,
-                         outer_cv, True))
+            p_clf = Pipeline([
+                ("vectorizer", vec_factory()),
+                ("classifier", clf),
+            ])
+            tasks.append((
+                naziv,
+                pname,
+                "LogRegresija",
+                fname,
+                p_clf,
+                corpus,
+                outer_cv,
+                True,
+            ))
             estimators[naziv] = (p_clf, corpus)
 
             # --- Celija 5: LogRegresija, optimizacija hiperparametara -------
@@ -313,33 +468,77 @@ def main():
             naziv = f"{pname} | {fname} | LogRegresija (GridSearch)"
             clf = LogisticRegression(solver="lbfgs", max_iter=1000)
             p_grid_lr = {"classifier__C": MREZA_C}
-            p_clf = Pipeline([("vectorizer", vec_factory()), ("classifier", clf)])
-            gs_clf = GridSearchCV(estimator=p_clf, param_grid=p_grid_lr,
-                                  cv=inner_cv, scoring="accuracy", n_jobs=n_jobs)
-            tasks.append((naziv, pname, "LogRegresija (GridSearch)", fname,
-                         gs_clf, corpus, outer_cv, True))
+            p_clf = Pipeline([
+                ("vectorizer", vec_factory()),
+                ("classifier", clf),
+            ])
+            gs_clf = GridSearchCV(
+                estimator=p_clf,
+                param_grid=p_grid_lr,
+                cv=inner_cv,
+                scoring="accuracy",
+                n_jobs=n_jobs,
+            )
+            tasks.append((
+                naziv,
+                pname,
+                "LogRegresija (GridSearch)",
+                fname,
+                gs_clf,   # ovde je estimator GridSearchCV, ne "goli" pipeline
+                corpus,
+                outer_cv,
+                True,
+            ))
             estimators[naziv] = (gs_clf, corpus)
 
             # --- Celija 6: LinearSVM, sa i bez optimizacije ------------------
             # SVM bez kernela, L2 regularizacija, L2 funkcija gubitka,
             # resavanje u primalnom domenu.
-            clf = LinearSVC(penalty="l2", loss="squared_hinge", dual=True,
-                           max_iter=100000)
-            p_clf = Pipeline([("vectorizer", vec_factory()), ("classifier", clf)])
+            clf = LinearSVC(
+                penalty="l2",
+                loss="squared_hinge",
+                dual=True,
+                max_iter=100000,
+            )
+            p_clf = Pipeline([
+                ("vectorizer", vec_factory()),
+                ("classifier", clf),
+            ])
 
             naziv = f"{pname} | {fname} | LinearSVM"
-            tasks.append((naziv, pname, "LinearSVM", fname, p_clf, corpus,
-                         outer_cv, True))
+            tasks.append((
+                naziv,
+                pname,
+                "LinearSVM",
+                fname,
+                p_clf,
+                corpus,
+                outer_cv,
+                True,
+            ))
             estimators[naziv] = (p_clf, corpus)
 
             # Isto nested-CV nacelo kao za LogRegresiju iznad: inner_cv bira
             # C, outer_cv daje finalnu, nepristrasnu ocenu.
             naziv = f"{pname} | {fname} | LinearSVM (GridSearch)"
             p_grid_svm = {"classifier__C": MREZA_C}
-            gs_clf = GridSearchCV(estimator=p_clf, param_grid=p_grid_svm,
-                                  cv=inner_cv, scoring="accuracy", n_jobs=n_jobs)
-            tasks.append((naziv, pname, "LinearSVM (GridSearch)", fname, gs_clf,
-                         corpus, outer_cv, True))
+            gs_clf = GridSearchCV(
+                estimator=p_clf,
+                param_grid=p_grid_svm,
+                cv=inner_cv,
+                scoring="accuracy",
+                n_jobs=n_jobs,
+            )
+            tasks.append((
+                naziv,
+                pname,
+                "LinearSVM (GridSearch)",
+                fname,
+                gs_clf,
+                corpus,
+                outer_cv,
+                True,
+            ))
             estimators[naziv] = (gs_clf, corpus)
 
     # --- Izvrsavanje konfiguracija paralelno preko BROJ_PROCESA OS procesa -----
@@ -351,11 +550,27 @@ def main():
     rows: List[Dict] = []
     try:
         with concurrent.futures.ProcessPoolExecutor(max_workers=BROJ_PROCESA) as ex:
-            futures = {
-                ex.submit(_cv_report, naziv, pname, model, odlika, estimator,
-                         task_corpus, y, cv, f1_takodje, n_jobs): naziv
-                for naziv, pname, model, odlika, estimator, task_corpus, cv, f1_takodje in tasks
-            }
+            # Svaki task je (naziv, pname, model, odlika, estimator,
+            # task_corpus, cv, f1_takodje) - raspakujemo ga i predajemo
+            # kao zasebne argumente _cv_report-u, u zasebnom OS procesu.
+            futures = {}
+            for zadatak in tasks:
+                naziv, pname, model, odlika, estimator, task_corpus, cv, f1_takodje = zadatak
+                buduci_rezultat = ex.submit(
+                    _cv_report,
+                    naziv,
+                    pname,
+                    model,
+                    odlika,
+                    estimator,
+                    task_corpus,
+                    y,
+                    cv,
+                    f1_takodje,
+                    n_jobs,
+                )
+                futures[buduci_rezultat] = naziv
+
             for i, fut in enumerate(concurrent.futures.as_completed(futures), 1):
                 row = fut.result()
                 rows.append(row)
@@ -372,22 +587,30 @@ def main():
              f"nakon {len(rows)}/{total} zavrsenih konfiguracija. Cuvam "
              f"delimicne rezultate i prekidam.", file=sys.stderr)
         if rows:
-            pd.DataFrame(rows).drop(columns=["fold_accuracy"]).to_csv(
+            delimicni_rezultati = pd.DataFrame(rows)
+            delimicni_rezultati = delimicni_rezultati.drop(columns=["fold_accuracy"])
+            delimicni_rezultati.to_csv(
                 outdir / "rezultati_osnovni_modeli_notebook_stil_DELIMICNO.csv",
-                index=False, encoding="utf-8")
+                index=False,
+                encoding="utf-8",
+            )
         raise
 
     print(f"\nUkupno vreme: {(time.time() - t0) / 60:.1f} min")
 
     # --- Rezultati -------------------------------------------------------------
     res = pd.DataFrame(rows).sort_values("cv_f1_sr", ascending=False)
-    res.drop(columns=["fold_accuracy"]).to_csv(
-        outdir / "rezultati_osnovni_modeli_notebook_stil.csv", index=False,
-        encoding="utf-8")
 
+    res_za_csv = res.drop(columns=["fold_accuracy"])
+    res_za_csv.to_csv(
+        outdir / "rezultati_osnovni_modeli_notebook_stil.csv",
+        index=False,
+        encoding="utf-8",
+    )
+
+    top_15 = res.head(15)[["konfiguracija", "cv_accuracy_sr", "cv_f1_sr", "cv_f1_std"]]
     print(f"\n=== TOP 15 KONFIGURACIJA (rangirano po CV macro-F1, od {len(res)}) ===")
-    print(res.head(15)[["konfiguracija", "cv_accuracy_sr", "cv_f1_sr",
-                        "cv_f1_std"]].to_string(index=False))
+    print(top_15.to_string(index=False))
 
     _najbolji_model(res, estimators, y, labels, outdir)
     _grafikon(res, outdir)
@@ -400,19 +623,40 @@ def _najbolji_model(res: pd.DataFrame, estimators: Dict[str, Tuple[object, List[
                     y, labels: List[str], outdir: Path):
     """Matrica konfuzije i classification_report za najbolju konfiguraciju,
     racunati preko cross_val_predict (van-uzorka predikcije) - bez odvojenog
-    test skupa, isto kao i ostatak evaluacije."""
+    test skupa, isto kao i ostatak evaluacije.
+
+    Parametri:
+        res: DataFrame rezultata svih konfiguracija, sortiran po cv_f1_sr -
+            uzima se prvi red (res.iloc[0]) kao najbolja konfiguracija.
+        estimators: recnik {naziv: (estimator, corpus)} - koristi se da se
+            za naziv najbolje konfiguracije dohvati konkretan (nefitovan)
+            estimator i njegov corpus, radi ponovnog cross_val_predict-a.
+        y: serija labela - target za classification_report i matricu
+            konfuzije.
+        labels: lista mogucih klasa (npr. ["negative","neutral","positive"])
+            - redosled/oznake za classification_report i ose matrice
+            konfuzije.
+        outdir: Path direktorijuma u koji se cuva matrica_konfuzije.png.
+    """
     best_naziv = res.iloc[0]["konfiguracija"]
     best_est, best_corpus = estimators[best_naziv]
 
     print(f"\n=== NAJBOLJA KONFIGURACIJA: {best_naziv} ===")
-    cv = StratifiedKFold(n_splits=BROJ_FOLDOVA, shuffle=True, random_state=SLUCAJNO_SEME)
+    cv = StratifiedKFold(
+        n_splits=BROJ_FOLDOVA,
+        shuffle=True,
+        random_state=SLUCAJNO_SEME,
+    )
     pred_cv = cross_val_predict(best_est, best_corpus, y, cv=cv)
-    print(classification_report(y, pred_cv, labels=labels, digits=3, zero_division=0))
+    izvestaj = classification_report(
+        y, pred_cv, labels=labels, digits=3, zero_division=0,
+    )
+    print(izvestaj)
 
     fig, ax = plt.subplots(figsize=(6, 5))
     cm = confusion_matrix(y, pred_cv, labels=labels)
-    ConfusionMatrixDisplay(cm, display_labels=labels).plot(
-        ax=ax, cmap="Blues", colorbar=False, values_format="d")
+    cm_prikaz = ConfusionMatrixDisplay(cm, display_labels=labels)
+    cm_prikaz.plot(ax=ax, cmap="Blues", colorbar=False, values_format="d")
     ax.set_title(f"Matrica konfuzije (unakrsna validacija)\n{best_naziv}")
     ax.set_xlabel("predvidjeno")
     ax.set_ylabel("stvarno")
@@ -422,7 +666,14 @@ def _najbolji_model(res: pd.DataFrame, estimators: Dict[str, Tuple[object, List[
 
 def _heatmapa(res: pd.DataFrame, outdir: Path):
     """Toplotna mapa pretprocesiranje x odlike, po modelu - isto sto i
-    toplotna_mapa.png u 02_osnovni_modeli.py."""
+    toplotna_mapa.png u 02_osnovni_modeli.py.
+
+    Parametri:
+        res: DataFrame svih rezultata - pivotira se po pretprocesiranje/
+            odlika/cv_f1_sr, odvojeno za svaki model (jedna podmapa po
+            modelu).
+        outdir: Path direktorijuma u koji se cuva toplotna_mapa.png.
+    """
     modeli = sorted(res.model.unique())
     fig, axes = plt.subplots(1, len(modeli), figsize=(6 * len(modeli), 4.5),
                              squeeze=False)
@@ -448,6 +699,14 @@ def _heatmapa(res: pd.DataFrame, outdir: Path):
 
 
 def _grafikon(res: pd.DataFrame, outdir: Path):
+    """Horizontalni bar-grafikon top 15 konfiguracija po macro-F1 (sa
+    error-bar-ovima std).
+
+    Parametri:
+        res: DataFrame rezultata - uzima se res.head(15) (vec sortirano po
+            cv_f1_sr) i redosled se obrce radi prikaza (najbolji na vrhu).
+        outdir: Path direktorijuma u koji se cuva top_konfiguracije.png.
+    """
     top = res.head(15).iloc[::-1]
     fig, ax = plt.subplots(figsize=(10, 7))
     ax.barh(top.konfiguracija, top.cv_f1_sr, xerr=top.cv_f1_std,
